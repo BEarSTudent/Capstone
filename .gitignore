@@ -2,10 +2,6 @@ ai/ViT-Adapter
 ai/release/*
 ai/data/*
 __pycache__/
-<<<<<<< HEAD
-
-=======
->>>>>>> 30925161077b2f13770fe57297f7d926c45243dd
 
 # 폴더 유지용
 !ai/release/empty.txt
