@@ -3,6 +3,28 @@ from socketserver import ThreadingMixIn, TCPServer, ThreadingTCPServer, BaseRequ
 import threading
 import sys
 
+class CustomException(Exception):
+    """
+    Exception 클래스를 상속한 클래스를 만든다
+    """
+    def __init__(self, value):
+        """
+        생성할때 value 값을 입력 받음
+        """
+        self.value = value
+
+    def __str__(self):
+        """
+        생성할때 받은 value 값을 확인
+        """
+        return self.value
+
+def raise_exception(err_msg, ip_addr=None):
+    """
+    예외를 발생하는 함수
+    """
+    raise CustomException(err_msg)
+
 class ThreadedTCPRequestHandler(BaseRequestHandler):
     """
     The request handler class for our server.
@@ -23,7 +45,7 @@ class ThreadedTCPRequestHandler(BaseRequestHandler):
 
                 # :/quit 를 입력하거나 데이터가 없다면 루프를 종료
                 if self.recv_data == ":/quit" or not self.recv_data:
-                    raise("{} was gone".format(self.client_address[0]))
+                    raise_exception("{} was gone".format(self.client_address[0]))
 
             except NameError as e:
                 print("{0} got an error : {1}".format(self.client_address[0], e))
@@ -45,7 +67,7 @@ class ThreadedTCPRequestHandler(BaseRequestHandler):
               .format(cur_thread.getName(), self.client_address[0]))
 
 class serversocket:
-    def __init__(self, host = "0.0.0.0", port = 40078):
+    def __init__(self, host = "0.0.0.0", port = 23400):
         self.host = host
         self.port = port
         
