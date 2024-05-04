@@ -1,7 +1,7 @@
 import socket
 
 # 서버 설정
-server_address = "juyeolweb.site"  # 서버의 실제 IP 주소 또는 도메인 이름
+server_address = "localhost"  # 서버의 실제 IP 주소 또는 도메인 이름
 server_port = 23400        # 서버 포트 번호
 
 # 서버에 연결

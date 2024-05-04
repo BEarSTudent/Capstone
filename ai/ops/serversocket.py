@@ -1,7 +1,9 @@
 import socket
-from socketserver import ThreadingMixIn, TCPServer, ThreadingTCPServer, BaseRequestHandler
+from socketserver import BaseRequestHandler, ThreadingMixIn, TCPServer
+import cv2
 import threading
 import sys
+from dataclasses import dataclass
 
 class CustomException(Exception):
     """
@@ -25,6 +27,18 @@ def raise_exception(err_msg, ip_addr=None):
     """
     raise CustomException(err_msg)
 
+@dataclass(
+    frozen=False
+)
+
+@dataclass
+class User:
+    pid:int
+    input_type:int
+    transfer_type:int
+    target_image:str
+    source_image:str
+
 class ThreadedTCPRequestHandler(BaseRequestHandler):
     """
     The request handler class for our server.
@@ -33,7 +47,9 @@ class ThreadedTCPRequestHandler(BaseRequestHandler):
     override the handle() method to implement communication to the
     client.
     """
-
+    def __init__(self, User:User):
+        self.User = User
+        
     def handle(self):
         cur_thread = threading.current_thread()
         print("{} was started for {}"
@@ -65,7 +81,8 @@ class ThreadedTCPRequestHandler(BaseRequestHandler):
 
         print("{} was ended for {}"
               .format(cur_thread.getName(), self.client_address[0]))
-
+class ThreadingTCPServer(ThreadingMixIn, TCPServer):
+    pass
 class serversocket:
     def __init__(self, host = "0.0.0.0", port = 23400):
         self.host = host
