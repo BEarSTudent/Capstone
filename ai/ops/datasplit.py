@@ -1,7 +1,7 @@
 import os
 import random
 
-def main():
+def datasplit() -> int:
     # 학습할 데이터 폴더
     train_image_root_path = os.path.join("../data/HumanSegmentationDataset")
     ImageSets_path = train_image_root_path + "/ImageSets"
@@ -11,7 +11,7 @@ def main():
     else:
         if os.path.exists(ImageSets_path+"/train.txt"):
             print("already exisits")
-            return 0
+            return 1
         
     # 이미지 데이터와 어노테이션 데이터
     image_list = os.listdir(train_image_root_path + "/Training_Images/")
@@ -46,5 +46,4 @@ def main():
             f.write(image + "\n")
     f.close()
     
-if __name__ == "__main__":
-    main()
+    return 0
