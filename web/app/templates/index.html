@@ -2,13 +2,13 @@
 <html>
     <head>
         <title>STR - Style Transfer for Recollection</title>
-        <script type="text/javascript" src="../static/js/vanner_include.js"></script>
-        <link type="text/css" rel="stylesheet" href="../static/css/vanner_style.css">
+        <script src="{{url_for('static', filename='js/vanner_include.js')}}"></script>
+        <link href="{{url_for('static', filename='css/vanner_style.css')}}" rel="stylesheet">
     </head>
     <body>
         <header>
             <!--VANNER-->
-            <div include-html="./vanner.html"></div>
+            {% include 'vanner.html' %}
         </header>
 
         <!--page contents-->
