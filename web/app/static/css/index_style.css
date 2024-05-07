@@ -1,5 +1,6 @@
 section{
     z-index: -1;
+    min-width: 1220px;
 }
 
 #intro_intro{
@@ -101,4 +102,79 @@ section{
     left: 50%;
 
     width: 40px;
+}
+
+#intro_example{
+    position: relative;
+
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#ex_1{
+    width: 940px;
+    margin: 0 auto;
+
+    padding: 20px;
+}
+
+#ex_1 p{
+    display: inline-block;
+
+    text-align: right;
+    font-size: 16px;
+    width: 220px;
+
+    position: relative;
+    bottom: 8px;
+}
+
+#ex_1 img{
+    width: 320px;
+    height: 240px;
+    margin-left: 20px;
+}
+
+#ex_2{
+    width: 940px;
+    margin: 0 auto;
+
+    padding: 20px;
+}
+
+#ex_2 img{
+    width: 320px;
+    height: 240px;
+    margin-left: 20px;
+}
+
+#ex_2 p{
+    display: inline-block;
+
+    font-size: 16px;
+    width: 220px;
+
+    position: relative;
+    bottom: 8px;
+    margin-left: 20px;
+}
+
+#ex_3{
+    width: 940px;
+    margin: 0 auto;
+
+    padding: 20px;
+}
+
+#ex_3 p{
+    font-size: 16px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    margin-left: 24px;
+}
+
+#ex_3 img{
+    width: 284px;
+    height: 200px;
+    margin-left: 20px;
 }
