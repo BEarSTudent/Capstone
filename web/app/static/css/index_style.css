@@ -178,3 +178,51 @@ section{
     height: 200px;
     margin-left: 20px;
 }
+
+#intro_use{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#use_block{
+    width: 1000px;
+    height: 360px;
+    margin: 0 auto;
+}
+
+#use_block div{
+    display: inline-block;
+}
+
+.use_detail{
+    padding: 40px;
+    position: relative;
+    bottom: 32px;
+}
+
+.use_number{
+    display: block;
+    margin: 0 auto;
+    width: 32px;
+    height: 32x;
+    margin-bottom: 20px;
+}
+
+.use_img{
+    display: block;
+    margin: 0 auto;
+    width: 240px;
+    height: 160px;
+    margin-bottom: 20px;
+}
+
+#use_block p{
+    margin: 0 auto;
+    text-align: center;
+}
+
+.v-line{
+    border-left: thin solid black;
+    height: 300px;
+    margin-top: 40px;
+}
