@@ -99,4 +99,6 @@ section{
     position: absolute;
     bottom: 20px;
     left: 50%;
+
+    width: 40px;
 }
