@@ -226,3 +226,14 @@ section{
     height: 300px;
     margin-top: 40px;
 }
+
+footer{
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+footer p{
+    text-align: center;
+    font-size: 16px;
+    margin: 0;
+}
