@@ -104,6 +104,55 @@ section{
     width: 40px;
 }
 
+#intro_style_example{
+    position: relative;
+
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+.stex_block{
+    width: 920px;
+    margin: 0 auto;
+
+    padding: 20px;
+}
+
+.stex_text{
+    font-size: 16px;
+    padding-left: 8px;
+    margin-left: 40px;
+}
+
+.stex_before{
+    width: 280px;
+    height: 200px;
+
+    margin-left: 40px;
+}
+
+.stex_st{
+    width: 180px;
+    height: 120px;
+
+    position: relative;
+    right: 60px;
+}
+
+.stex_process{
+    width: 20px;
+
+    position: relative;
+    bottom: 80px;
+}
+
+.stex_after{
+    width: 280px;
+    height: 200px;
+
+    margin-left: 60px;
+}
+
 #intro_upload_example{
     position: relative;
 
