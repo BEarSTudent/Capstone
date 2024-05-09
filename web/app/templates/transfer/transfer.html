@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>STR - Style Transfer for Recollection</title>
+        <!-- <link href="{{url_for('static', filename='css/vanner_style.css')}}" rel="stylesheet"> -->
+        <link rel="stylesheet" href="../../static/css/transfer_style.css">
+    </head>
+    <body>
+        <header>
+            <!--VANNER-->
+            {% include 'vanner.html' %}
+        </header>
+
+        <!--page contents-->
+        <div class = "container">
+            <div class ="step-status">
+                <span class = " step active">업로드 유형 선택</span>
+                <span class = " step">사진 업로드</span>
+                <span class = " step">화풍 유형 선택</span>
+                <span class = " step">화풍 선택</span>
+                <span class = " step">Style transfer</span>
+                <span class = " step">결과 확인</span>
+            </div>
+            
+        </div>
+
+
+        <script>
+            includeHTML();
+        </script>
+    </body>
+</html>
