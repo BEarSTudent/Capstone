@@ -107,8 +107,8 @@ section{
 #intro_example{
     position: relative;
 
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 60px;
+    padding-bottom: 60px;
 }
 
 #ex_1{
@@ -180,8 +180,8 @@ section{
 }
 
 #intro_use{
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 60px;
+    padding-bottom: 60px;
 }
 
 #use_block{
@@ -228,7 +228,7 @@ section{
 }
 
 footer{
-    padding-top: 20px;
+    padding-top: 40px;
     padding-bottom: 40px;
 }
 
