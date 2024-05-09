@@ -137,6 +137,8 @@ section{
 
     position: relative;
     right: 60px;
+
+    object-fit: cover;
 }
 
 .stex_process{
