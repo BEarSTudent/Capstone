@@ -192,6 +192,8 @@ section{
 
 #use_block div{
     display: inline-block;
+
+    z-index: -1;
 }
 
 .use_detail{
@@ -204,7 +206,7 @@ section{
     display: block;
     margin: 0 auto;
     width: 32px;
-    height: 32x;
+    height: 32px;
     margin-bottom: 20px;
 }
 
