@@ -104,21 +104,21 @@ section{
     width: 40px;
 }
 
-#intro_example{
+#intro_upload_example{
     position: relative;
 
     padding-top: 60px;
     padding-bottom: 60px;
 }
 
-#ex_1{
+#upex_1{
     width: 940px;
     margin: 0 auto;
 
     padding: 20px;
 }
 
-#ex_1 p{
+#upex_1 p{
     display: inline-block;
 
     text-align: right;
@@ -129,26 +129,26 @@ section{
     bottom: 8px;
 }
 
-#ex_1 img{
+#upex_1 img{
     width: 320px;
     height: 240px;
     margin-left: 20px;
 }
 
-#ex_2{
+#upex_2{
     width: 940px;
     margin: 0 auto;
 
     padding: 20px;
 }
 
-#ex_2 img{
+#upex_2 img{
     width: 320px;
     height: 240px;
     margin-left: 20px;
 }
 
-#ex_2 p{
+#upex_2 p{
     display: inline-block;
 
     font-size: 16px;
@@ -159,21 +159,21 @@ section{
     margin-left: 20px;
 }
 
-#ex_3{
+#upex_3{
     width: 940px;
     margin: 0 auto;
 
     padding: 20px;
 }
 
-#ex_3 p{
+#upex_3 p{
     font-size: 16px;
     margin-top: 8px;
     margin-bottom: 12px;
     margin-left: 24px;
 }
 
-#ex_3 img{
+#upex_3 img{
     width: 284px;
     height: 200px;
     margin-left: 20px;
