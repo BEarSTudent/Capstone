@@ -1,15 +1,14 @@
 .process-container{
     max-width: 1280px;
     width: 90%;
-    height: 4px;
     margin:2rem auto;
     background: #FCF8E8;
     border-radius: 45px;
-    padding: 2rem;
+    padding: 16px;
 }
 
 .step-status{
-    height: 1px;
+    height: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,6 +17,7 @@
 
 .step-status span{
     color: #707070;
+    pointer-events: none;
 }
 
 .step-status span.active{
@@ -27,6 +27,7 @@
 
 .step-status span.prev{
     color: #000000;
+    pointer-events: all;
 }
 
 .stepation{
