@@ -1,9 +1,3 @@
-:root{
-
-}
-body{
-
-}
 .process-container{
     max-width: 1280px;
     width: 90%;
@@ -29,4 +23,13 @@ body{
 .step-status span.active{
     font-weight: bold;
     color: #DF7861;
+}
+
+.step-status span.prev{
+    color: #000000;
+}
+
+.stepation{
+    width: 20px;
+    height: 20px;
 }
