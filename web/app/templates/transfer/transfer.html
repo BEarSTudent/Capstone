@@ -3,7 +3,7 @@
     <head>
         <title>STR - Style Transfer for Recollection</title>
         <link href="{{url_for('static', filename='css/vanner_style.css')}}" rel="stylesheet">
-        <link rel="stylesheet" href="../../static/css/transfer_style.css">
+        <link href="{{url_for('static', filename='css/transfer_style.css')}}" rel="stylesheet">
         <script src="{{ url_for('static',filename='js/transfer.js') }}"></script>
     </head>
     <body>
@@ -15,17 +15,17 @@
         <!--page contents-->
         <div class = "process-container">
             <div class ="step-status">
-                <span class = "step active" onclick="stepBack(0);">¾÷·Îµå À¯Çü ¼±ÅÃ</span>
+                <span class = "step active" onclick="stepBack(0);">ì—…ë¡œë“œ ìœ í˜• ì„ íƒ</span>
                 <img src="../../static/images/vector_next_triangle.png" width="8" height="16">
-                <span class = " step" onclick="stepBack(1);">»çÁø ¾÷·Îµå</span>
+                <span class = " step" onclick="stepBack(1);">ì‚¬ì§„ ì—…ë¡œë“œ</span>
                 <img src="../../static/images/vector_next_triangle.png" width="8" height="16">
-                <span class = "step" onclick="stepBack(2);">È­Ç³ À¯Çü ¼±ÅÃ</span>
+                <span class = "step" onclick="stepBack(2);">í™”í’ ìœ í˜• ì„ íƒ</span>
                 <img src="../../static/images/vector_next_triangle.png" width="8" height="16">
-                <span class = "step" onclick="stepBack(3);">È­Ç³ ¼±ÅÃ</span>
+                <span class = "step" onclick="stepBack(3);">í™”í’ ì„ íƒ</span>
                 <img src="../../static/images/vector_next_triangle.png" width="8" height="16">
                 <span class = "step" onclick="stepBack(4);">Style transfer</span>
                 <img src="../../static/images/vector_next_triangle.png" width="8" height="16">
-                <span class = "step">°á°ú È®ÀÎ</span>
+                <span class = "step">ê²°ê³¼ í™•ì¸</span>
             </div>
         </div>
 
