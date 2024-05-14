@@ -1,8 +1,9 @@
 ai/ViT-Adapter
-ai/release/*
+ai/released/*
 ai/data/*
 __pycache__/
 .Ds_Store
+*.pyc
 
 # 폴더 유지용
 !ai/release/empty.txt
