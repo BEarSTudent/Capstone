@@ -1,15 +1,14 @@
-from flask import Flask, render_template, request, redirect
-from ops import *
-
-IP:str
-PORT:int
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 @app.route('/')
-def create_app():
-    pass
+def hello():
+    return render_template("index.html")
 
 @app.route('/waiting')
 def wait():
     return render_template('/transfer/wait.html')
+
+if __name__ == "__main__":
+    app.run()
