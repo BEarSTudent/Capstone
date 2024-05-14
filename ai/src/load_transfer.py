@@ -157,15 +157,14 @@ class Transfer:
         optimizer = optim.LBFGS([input_img])
         return optimizer
     
-    def run_style_transfer(self, content_img, style_img, num_steps=300,
+    def run_style_transfer(self, content_img, style_img, num_steps=600,
                        style_weight=1000000, content_weight=1):
         """Run the style transfer."""
         print('Building the style transfer model..')
-        # self.content_image_check_size(content_img)
-        # style_img = self.image_loader(style_img)
-        # content_img = self.image_loader(content_img)
+
+        content_img = content_img.to(device, torch.float)
+        style_img = style_img.to(device, torch.float)
         input_img = content_img.clone()
-        
         model, style_losses, content_losses = self.get_style_model_and_losses(style_img=style_img, content_img=content_img)
 
         # 모델의 매개변수를 제외한 입력을 최적화해야 하므로

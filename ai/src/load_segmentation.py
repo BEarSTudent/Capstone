@@ -9,7 +9,8 @@ import cv2
 import os.path as osp
 from PIL import Image
 import numpy as np
-import_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/ViT-Adapter/segmentation"
+parent_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import_path = parent_path + "/ViT-Adapter/segmentation"
 sys.path.append(import_path)
 import mmcv_custom   # noqa: F401,F403
 import mmseg_custom   # noqa: F401,F403
@@ -19,7 +20,7 @@ class Segmenter:
         self.parser = ArgumentParser()
         self.parse_args()
         self.config = import_path + "/configs/ade20k/upernet_augreg_adapter_base_512_160k_ade20k.py"
-        self.checkpoint = import_path + "/released/upernet_augreg_adapter_base_512_160k_ade20k.pth.tar"
+        self.checkpoint = parent_path + "/released/upernet_augreg_adapter_base_512_160k_ade20k.pth.tar"
         self.img = ""
         self.args = self.parser.parse_args([self.config, 
                                             self.checkpoint, 
@@ -53,7 +54,7 @@ class Segmenter:
             self.model.CLASSES = get_classes(self.args.palette)
     
     def run(self, img_name:str)->np:
-        self.args.img = f"{import_path}/data/content/{img_name}"
+        self.args.img = f"{parent_path}/data/content/{img_name}"
         
         result = inference_segmentor(self.model, self.args.img)
         mask = (result[0] == 12).astype(np.uint8) #* 255
