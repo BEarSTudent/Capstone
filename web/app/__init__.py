@@ -6,7 +6,7 @@ app = Flask(__name__)
 def hello():
     return render_template("index.html")
 
-@app.route('/waiting')
+@app.route('/transfer/waiting')
 def wait():
     return render_template('/transfer/wait.html')
 
