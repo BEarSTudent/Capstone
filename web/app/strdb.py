@@ -72,3 +72,38 @@ def savebox_delete(savebox_id: int):
     sql = "DELETE FROM str_savebox WHERE savebox_id=" + str(savebox_id) + ";"
 
     write_db(sql)
+
+def board_one(board_id: int, user_id: str):
+    board_sql = "SELECT * FROM str_board WHERE board_id=" + str(board_id) + ";"
+    board_data = read_db(board_sql)
+
+    like_sql = "SELECT COUNT(*) FROM str_like WHERE board_id=" + str(board_id) + ";"
+    like_count = read_db(like_sql)
+
+    comment_sql = "SELECT * FROM str_comment WHERE board_id=" + str(board_id) + ";"
+    comment_data = read_db(comment_sql)
+
+    like_user_sql = "SELECT * FROM str_like WHERE board_id=" + str(board_id) + " AND user_id='" + user_id + "';"
+    like_user_data = read_db(like_user_sql)
+
+    return {'board_data': board_data, 'like_count': like_count, 'comment_data': comment_data, 'like_user_data': like_user_data}
+
+def like_insert(board_id: int, user_id: str):
+    sql = "INSERT INTO str_like(board_id, user_id) VALUES(" + str(board_id) + ", '" + user_id + "');"
+
+    write_db(sql)
+
+def like_delete(board_id: int, user_id: str):
+    sql = "DELETE FROM str_like WHERE board_id=" + str(board_id) + " AND user_id='" + user_id + "';"
+
+    write_db(sql)
+
+def comment_insert(board_id: int, user_id: str, contents: str):
+    sql = "INSERT INTO str_comment(board_id, user_id, contents) VALUES(" + str(board_id) + ", '" + user_id + "', '" + contents + "');"
+
+    write_db(sql)
+
+def comment_delete(comment_id: int):
+    sql = "DELETE FROM str_comment WHERE comment_id=" + str(comment_id) + ";"
+
+    write_db(sql)
