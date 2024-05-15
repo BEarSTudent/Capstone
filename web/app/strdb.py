@@ -7,7 +7,7 @@ def read_db(sql: str):
     
     cursor.execute(sql)
     
-    data = fetchall()
+    data = cursor.fetchall()
     
     db.close()
     
@@ -21,7 +21,7 @@ def write_db(sql: str):
     cursor.execute(sql)
 
     db.commit()
-    
+
     db.close
 
 def user_insert(user_id: str, pw: str, user_name: str):    
