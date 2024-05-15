@@ -13,7 +13,7 @@
         {% include 'transfer/process_bar.html' %}
         
         <!--page contents-->
-        <div class="form uploadtype-container">
+        <div class="form uploadtype-container hidden">
             <div class = "singleupload">
                 <div class="uploadimg_ex">
                     <div class="uploadimg_ex_one">
@@ -52,6 +52,37 @@
                 <button type="button" class="next minrabtn" id="doubleuploadbtn">선택하기</button>
             </div>
         </div>
+
+        <div class="form uploadform">
+            <div class="uploadsingle-container">
+                <div class="image-upload" id="image-upload">
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="uploadfilebutton">
+                            <div for="chooseFile">
+                                <img class="uploadex" src="../../static/images/vector_upload.png">
+                            </div>
+                        </div>
+                        <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
+                    </form>
+
+                    <div class="fileContainer">
+                        <div class="fileInput">
+                            <p>FILE NAME: </p>
+                            <p id="fileName"></p>
+                        </div>
+                    </div>
+
+                    <div><input type="checkbox" name="color" value="blue">인물 제외하고 화풍 변경하기</div>
+
+                    <button type="button" class="next btn" id="singlefileupload">다음</button>
+
+                </div>    
+            </div>
+            <div class="uploaddouble-conntainer">
+
+            </div>
+        </div>
+
         <script type="text/javascript" src="{{url_for('static',filename='js/transfer.js')}}"></script>
     </body>
 </html>

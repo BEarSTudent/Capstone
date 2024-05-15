@@ -7,6 +7,18 @@ const uptp_double_Button = document.querySelector('#doubleuploadbtn');
 
 let currentStep = 0;
 
+let request_data = {
+    user_id : 0,
+    person_transfer_bool : 0,
+    encoding_type : "",
+    content_target_name : "",
+    content_target_image : null,
+    content_source_name : "",
+    content_source_image : null,
+    style_name : "",
+    style_image : null
+}
+
 function stepNext(){
     stepTargets[currentStep].classList.remove('active');
     stepTargets[currentStep].classList.add('prev');
