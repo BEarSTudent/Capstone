@@ -37,3 +37,24 @@ def user_update(user_id: str, pw: str, user_name: str, user_image: str):
     sql = "UPDATE str_user SET user_id='" + user_id + "', pw='" + pw + "', user_name='" + user_name + "', user_image='" + user_image + "' WHERE user_id='" + user_id + "';"
     
     write_db(sql)
+
+def board_select_all():
+    sql = "SELECT * FROM str_board"
+    
+    return read_db(sql)
+
+def board_insert(user_id: str, board_date: str, board_image: str, contents: str):
+    sql = "INSERT INTO str_board(user_id, board_date, board_image, contents) VALUES('" + user_id + "', '" + board_date + "', '" + board_image + "', '" + contents + "');"
+    
+    write_db(sql)
+
+def board_update(board_id: int, board_image: str, contents: str):
+    sql = "UPDATE str_board SET board_image='" + board_image + "', contents='" + contents + "' WHERE board_id='" + str(board_id) + "';"
+    
+    write_db(sql)
+
+def board_delete(board_id: int):
+    sql = "DELETE FROM str_board WHERE board_id=" + str(board_id) + ";"
+
+    write_db(sql)
+    
