@@ -5,7 +5,6 @@ from io import BytesIO
 import base64
 import os
 app = Flask(__name__)
-current_path = os.path.dirname(os.path.abspath(__file__))
 
 @app.route('/')
 def hello():
