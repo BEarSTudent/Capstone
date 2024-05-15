@@ -1,10 +1,4 @@
 from flask import Flask, render_template, url_for, request, session, current_app, redirect
-import requests
-import json
-import base64
-import cv2
-import random
-import time
 app = Flask(__name__)
 
 @app.route('/')

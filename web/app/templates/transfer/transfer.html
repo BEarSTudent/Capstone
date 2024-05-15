@@ -4,7 +4,6 @@
         <title>STR - Style Transfer for Recollection</title>
         <link href="{{url_for('static', filename='css/vanner_style.css')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/transfer_style.css')}}" rel="stylesheet">
-        <script src="{{ url_for('static',filename='js/transfer.js') }}"></script>
     </head>
     <body>
         <header>
@@ -14,6 +13,45 @@
         {% include 'transfer/process_bar.html' %}
         
         <!--page contents-->
-
+        <div class="form uploadtype-container">
+            <div class = "singleupload">
+                <div class="uploadimg_ex">
+                    <div class="uploadimg_ex_one">
+                        <img class="upex" src="../../static/images/sample_image.png">
+                    </div>
+                    <div class="uploadimg_ex_one">
+                        <img class= "righttri" src="../../static/images/vector_right_triangle.png">
+                    </div>
+                    <div class="uploadimg_ex_hor">
+                        <img class="upex" src="../../static/images/sample_image.png">
+                        <div>OR</div>
+                        <img class="upex" src="../../static/images/sample_image.png"> 
+                    </div>
+                </div>
+                <p class="textex">사진에 새로운 화풍을 적용해보세요. 사진 전체에 적용할 수도, 인물을 제외한 배경에만 적용할 수도 있습니다.</p>
+                <button type="button" class="next minrabtn" id="singleuploadbtn">선택하기</button>
+            </div>
+            <div class="v-line"></div>
+            <div class = "doubleupload">
+                <div class="uploadimg_ex">
+                    <div class="uploadimg_ex_hor">
+                        <img class="upex" src="../../static/images/sample_image.png">
+                        <div>
+                            <img class="plus" src="../../static/images/vector_plus.png">
+                        </div>
+                        <img class="upex" src="../../static/images/sample_image.png">
+                    </div>
+                    <div class="uploadimg_ex_one">
+                        <img class= "righttri" src="../../static/images/vector_right_triangle.png">
+                    </div>
+                    <div class="uploadimg_ex_one">
+                        <img class="upex" src="../../static/images/sample_image.png">
+                    </div>
+                </div>
+                <p class="textex">새로운 배경에 인물을 합성해보세요. 배경에 새로운 화풍을 적용한 뒤, 인물을 사진의 위치에 합성합니다.</p>
+                <button type="button" class="next minrabtn" id="doubleuploadbtn">선택하기</button>
+            </div>
+        </div>
+        <script type="text/javascript" src="{{url_for('static',filename='js/transfer.js')}}"></script>
     </body>
 </html>
