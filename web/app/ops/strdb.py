@@ -26,12 +26,13 @@ def write_db(sql: str):
 
 def user_insert(user_id: str, pw: str, user_name: str):    
     sql = "INSERT INTO str_user(user_id, pw, user_name) VALUES('" + user_id + "', '" + pw + "', '" + user_name + "');"
+    
     write_db(sql)
 
 def user_select(user_id: str):
     sql = "SELECT * FROM str_user WHERE user_id = '" + user_id + "';"
 
-    return read_db(sql)
+    return read_db(sql)[0]
 
 def user_update(user_id: str, pw: str, user_name: str, user_image: str):
     sql = "UPDATE str_user SET pw='" + pw + "', user_name='" + user_name + "', user_image='" + user_image + "' WHERE user_id='" + user_id + "';"
@@ -75,16 +76,16 @@ def savebox_delete(savebox_id: int):
 
 def board_one(board_id: int, user_id: str):
     board_sql = "SELECT * FROM str_board WHERE board_id=" + str(board_id) + ";"
-    board_data = read_db(board_sql)
+    board_data = read_db(board_sql)[0]
 
     like_sql = "SELECT COUNT(*) FROM str_like WHERE board_id=" + str(board_id) + ";"
-    like_count = read_db(like_sql)
+    like_count = int(read_db(like_sql)[0][0])
 
     comment_sql = "SELECT * FROM str_comment WHERE board_id=" + str(board_id) + ";"
     comment_data = read_db(comment_sql)
 
     like_user_sql = "SELECT * FROM str_like WHERE board_id=" + str(board_id) + " AND user_id='" + user_id + "';"
-    like_user_data = read_db(like_user_sql)
+    like_user_data = len(read_db(like_user_sql))
 
     return {'board_data': board_data, 'like_count': like_count, 'comment_data': comment_data, 'like_user_data': like_user_data}
 
