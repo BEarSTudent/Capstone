@@ -57,4 +57,18 @@ def board_delete(board_id: int):
     sql = "DELETE FROM str_board WHERE board_id=" + str(board_id) + ";"
 
     write_db(sql)
-    
+
+def savebox_select(user_id: str):
+    sql = "SELECT * FROM str_savebox WHERE user_id='" + user_id + "';"
+
+    return read_db(sql)
+
+def savebox_insert(user_id: str, savebox_image: str):
+    sql = "INSERT INTO str_savebox(user_id, savebox_image) VALUES('" + user_id + "', '" + savebox_image + "');"
+
+    write_db(sql)
+
+def savebox_delete(savebox_id: int):
+    sql = "DELETE FROM str_savebox WHERE savebox_id=" + str(savebox_id) + ";"
+
+    write_db(sql)
