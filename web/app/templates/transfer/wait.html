@@ -3,12 +3,19 @@
     <head>
         <title>STR - Style Transfer for Recollection</title>
         <link href="{{url_for('static', filename='css/vanner_style.css')}}" rel="stylesheet">
-        <link href="{{url_for('static', filename='css/index_style.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='css/transfer_style.css')}}" rel="stylesheet">
+        <script src="{{ url_for('static',filename='js/transfer.js') }}"></script>
+        <link href="{{url_for('static', filename='css/wait.css')}}" rel="stylesheet">
     </head>
     <body>
         <header>
             <!--VANNER-->
-            {% include '../vanner.html' %}
+            {% include 'vanner.html' %}
         </header>
+        {% include 'transfer/process_bar.html' %}
+        <CENTER>
+        <img class="rotating-image-clockwise", src='../../static/images/Loading.png'>
+        </CENTER>
+        <p class="wait_text">잠시만 기다려주세요</p>
     </body>
 </html>
