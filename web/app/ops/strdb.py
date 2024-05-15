@@ -34,7 +34,7 @@ def user_select(user_id: str):
     return read_db(sql)
 
 def user_update(user_id: str, pw: str, user_name: str, user_image: str):
-    sql = "UPDATE str_user SET user_id='" + user_id + "', pw='" + pw + "', user_name='" + user_name + "', user_image='" + user_image + "' WHERE user_id='" + user_id + "';"
+    sql = "UPDATE str_user SET pw='" + pw + "', user_name='" + user_name + "', user_image='" + user_image + "' WHERE user_id='" + user_id + "';"
     
     write_db(sql)
 
