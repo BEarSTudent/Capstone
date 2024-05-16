@@ -17,7 +17,7 @@ def save_image():
     if request.method == 'POST':
         # json 형식으로 요청해야한다.
         json_data = request.get_json()
-        dict_data = json.loads(json_data)
+        dict_data = json.loads(json.dumps(json_data))
         
         '''
         user_id             : 요청한 유저의 id. 나중에 이 id를 통해 변환된 이미지를 전송
