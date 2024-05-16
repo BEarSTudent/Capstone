@@ -40,5 +40,9 @@ def download(filename):
     return send_file(filename,
                      as_attachment=True)
 
+@app.route('/community')
+def community():
+    return render_template("/community/community.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
