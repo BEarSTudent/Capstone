@@ -7,7 +7,7 @@ def read_db(sql: str):
         sql (str): str형식으로 입력받는 sql 구문
 
     Returns:
-        _type_: 데이터베이스에서 읽어온 tuple 형식의 데이터
+        tuple: 데이터베이스에서 읽어온 tuple 형식의 데이터
     """
     db = pymysql.connect(host='127.0.0.1', user='web', password='strweb', db='str_capstone')
     
@@ -56,7 +56,7 @@ def user_select(user_id: str):
         user_id (str): 검색할 user의 id
 
     Returns:
-        _type_: 검색된 user의 tuple 형식의 데이터. (user_id, pw, user_name, user_image)
+        tuple: 검색된 user의 tuple 형식의 데이터. (user_id, pw, user_name, user_image)
     """
     sql = "SELECT * FROM str_user WHERE user_id = '" + user_id + "';"
 
@@ -79,7 +79,7 @@ def board_select_all():
     """str_board table의 모든 게시물 데이터를 반환하는 함수
 
     Returns:
-        _type_: 모든 게시물 데이터. ((board_id, user_id, board_date, board_image, contents), ...)
+        tuple: 모든 게시물 데이터. ((board_id, user_id, board_date, board_image, contents), ...)
     """
     sql = "SELECT * FROM str_board"
     
@@ -127,7 +127,7 @@ def savebox_select(user_id: str):
         user_id (str): 사용자의 id
 
     Returns:
-        _type_: 사용자의 보관함 데이터. ((savebox_id, user_id, savebox_image), ...)
+        tuple: 사용자의 보관함 데이터. ((savebox_id, user_id, savebox_image), ...)
     """
     sql = "SELECT * FROM str_savebox WHERE user_id='" + user_id + "';"
 
@@ -162,7 +162,7 @@ def board_one(board_id: int, user_id: str):
         user_id (str): 해당 내용을 조회하는 사용자 id
 
     Returns:
-        _type_: 게시물에 관련된 데이터 dictionary. {'board_data': board_data, 'user_data': user_data, 'like_count': like_count, 'comment_data': comment_data, 'like_user_data': like_user_data}
+        dictionary: 게시물에 관련된 데이터 dictionary. {'board_data': board_data, 'user_data': user_data, 'like_count': like_count, 'comment_data': comment_data, 'like_user_data': like_user_data}
     """
     board_sql = "SELECT * FROM str_board WHERE board_id=" + str(board_id) + ";"
     board_data = read_db(board_sql)[0]
