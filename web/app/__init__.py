@@ -4,20 +4,36 @@ from PIL import Image
 from io import BytesIO
 import base64
 import os
+import xml.etree.ElementTree as elemTree
 app = Flask(__name__)
+
+# secret_key를 관리하기 위해 xml 파일 사용
+tree = elemTree.parse('web/keys.xml') # 사용 환경에 맞춰 절대 경로 적용 후 사용
+app.secret_key = tree.find('string[@name="secret_key"]').text
 
 @app.route('/')
 def index():
-    user_data = ["user_id", "사용자", "../static/images/sample_image.png"]
-    return render_template("index.html", user_data=user_data)
+    if 'id' in session:
+        user_data = ["user_id", "사용자", "../static/images/sample_image.png"] # database 연결 후 데이터 불러오기
+        return render_template("index.html", user_data=user_data)
+    else:
+        return render_template("index.html")
 
 @app.route('/transfer')
 def transfer_page():
-    return render_template("/transfer/transfer.html", user_data=["user_id", "사용자", "../static/images/sample_image.png"])
+    if 'id' in session:
+        user_data = ["user_id", "사용자", "../static/images/sample_image.png"] # database 연결 후 데이터 불러오기
+        return render_template("/transfer/transfer.html", user_data=user_data)
+    else:
+        return render_template("/transfer/transfer.html")
 
 @app.route('/transfer/wait')
 def wait():
-    return render_template("/transfer/wait.html", user_data=["user_id", "사용자", "../static/images/sample_image.png"])
+    if 'id' in session:
+        user_data = ["user_id", "사용자", "../static/images/sample_image.png"] # database 연결 후 데이터 불러오기
+        return render_template("/transfer/wait.html", user_data=user_data)
+    else:
+        return render_template("/transfer/wait.html")
 
 @app.route('/transfer/result', methods=["GET", "POST"])
 def result():
@@ -32,8 +48,12 @@ def result():
         image = dict_data['img']
         image = Image.open(BytesIO(base64.b64encode(image)))
         image.save(image_path)
-        
-    return render_template('/transfer/result.html', user_data=["user_id", "사용자", "../static/images/sample_image.png"], image = image_path)
+    
+    if 'id' in session:
+        user_data = ["user_id", "사용자", "../static/images/sample_image.png"] # database 연결 후 데이터 불러오기
+        return render_template("/transfer/result.html", user_data=user_data, image = image_path)
+    else:
+        return render_template('/transfer/result.html', image = image_path)
 
 @app.route('/transfer/download/<path:filename>')
 def download(filename):
