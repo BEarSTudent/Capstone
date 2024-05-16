@@ -1,7 +1,10 @@
 import pymysql
+import xml.etree.ElementTree as elemTree
 
 def connect_str_db():
-    return pymysql.connect(host='127.0.0.1', user='web', password='strweb', db='str_capstone')
+    tree = elemTree.parse("web/keys.xml")
+    db_pw = tree.find('string[@name="db_web_pw"]').text
+    return pymysql.connect(host='127.0.0.1', user='web', password=db_pw, db='str_capstone')
 
 def read_db(db, sql: str):
     """데이터베이스에서 데이터를 읽어올 때 사용하는 함수
