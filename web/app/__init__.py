@@ -13,5 +13,9 @@ def transfer_page():
 def wait():
     return render_template("/transfer/wait.html")
 
+@app.route('/register')
+def register():
+    return render_template("/member/register.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
