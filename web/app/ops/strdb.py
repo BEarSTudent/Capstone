@@ -162,10 +162,12 @@ def board_one(board_id: int, user_id: str):
         user_id (str): 해당 내용을 조회하는 사용자 id
 
     Returns:
-        _type_: 게시물에 관련된 데이터 dictionary. {'board_data': board_data, 'like_count': like_count, 'comment_data': comment_data, 'like_user_data': like_user_data}
+        _type_: 게시물에 관련된 데이터 dictionary. {'board_data': board_data, 'user_data': user_data, 'like_count': like_count, 'comment_data': comment_data, 'like_user_data': like_user_data}
     """
     board_sql = "SELECT * FROM str_board WHERE board_id=" + str(board_id) + ";"
     board_data = read_db(board_sql)[0]
+    
+    user_data = user_select(board_data[1])
 
     like_sql = "SELECT COUNT(*) FROM str_like WHERE board_id=" + str(board_id) + ";"
     like_count = int(read_db(like_sql)[0][0])
@@ -176,7 +178,7 @@ def board_one(board_id: int, user_id: str):
     like_user_sql = "SELECT * FROM str_like WHERE board_id=" + str(board_id) + " AND user_id='" + user_id + "';"
     like_user_data = len(read_db(like_user_sql))
 
-    return {'board_data': board_data, 'like_count': like_count, 'comment_data': comment_data, 'like_user_data': like_user_data}
+    return {'board_data': board_data, 'user_data': user_data, 'like_count': like_count, 'comment_data': comment_data, 'like_user_data': like_user_data}
 
 def like_insert(board_id: int, user_id: str):
     """str_like table에 데이터를 추가하여 좋아요를 추가하는 함수
