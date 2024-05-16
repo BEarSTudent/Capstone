@@ -8,15 +8,16 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    user_data = ["user_id", "사용자", "../static/images/sample_image.png"]
+    return render_template("index.html", user_data=user_data)
 
 @app.route('/transfer')
 def transfer_page():
-    return render_template("/transfer/transfer.html")    
+    return render_template("/transfer/transfer.html", user_data=["user_id", "사용자", "../static/images/sample_image.png"])
 
 @app.route('/transfer/wait')
 def wait():
-    return render_template("/transfer/wait.html")
+    return render_template("/transfer/wait.html", user_data=["user_id", "사용자", "../static/images/sample_image.png"])
 
 @app.route('/transfer/result', methods=["GET", "POST"])
 def result():
@@ -32,7 +33,7 @@ def result():
         image = Image.open(BytesIO(base64.b64encode(image)))
         image.save(image_path)
         
-    return render_template('/transfer/result.html', image = image_path)
+    return render_template('/transfer/result.html', user_data=["user_id", "사용자", "../static/images/sample_image.png"], image = image_path)
 
 @app.route('/transfer/download/<path:filename>')
 def download(filename):
