@@ -88,7 +88,7 @@ def board_select_all():
     """str_board table의 모든 게시물 데이터를 반환하는 함수
 
     Returns:
-        tuple: 모든 게시물 데이터. ((board_id, user_id, board_date, board_image, contents), ...)
+        tuple: 모든 게시물 데이터. ((board_id, user_id, board_date, board_image, board_title, contents), ...)
     """
     db = connect_str_db()
     sql = "SELECT * FROM str_board"
@@ -99,32 +99,34 @@ def board_select_all():
     
     return data
 
-def board_insert(user_id: str, board_date: str, board_image: str, contents: str):
+def board_insert(user_id: str, board_date: str, board_image: str, board_title: str, contents: str):
     """str_board table에 게시물 데이터를 추가하는 함수
 
     Args:
         user_id (str): 작성자 id
         board_date (str): 작성일자. "YY-MM-DD HH:MM:SS"
         board_image (str): 사진 경로
+        board_title (str): 게시물 제목
         contents (str): 게시물 본문 내용
     """
     db = connect_str_db()
-    sql = "INSERT INTO str_board(user_id, board_date, board_image, contents) VALUES('" + user_id + "', '" + board_date + "', '" + board_image + "', '" + contents + "');"
+    sql = "INSERT INTO str_board(user_id, board_date, board_image, board_title, contents) VALUES('" + user_id + "', '" + board_date + "', '" + board_image + "', '" + board_title + "', '" + contents + "');"
     
     write_db(db, sql)
     
     db.close()
 
-def board_update(board_id: int, board_image: str, contents: str):
+def board_update(board_id: int, board_image: str, board_title: str, contents: str):
     """str_board table의 데이터를 업데이트하는 함수
 
     Args:
         board_id (int): 업데이트할 게시물의 id
         board_image (str): 사진 경로
+        board_title (str): 사진 제목
         contents (str): 게시물 본문 내용
     """
     db = connect_str_db()
-    sql = "UPDATE str_board SET board_image='" + board_image + "', contents='" + contents + "' WHERE board_id='" + str(board_id) + "';"
+    sql = "UPDATE str_board SET board_image='" + board_image + "', board_title='" + board_title + "', contents='" + contents + "' WHERE board_id='" + str(board_id) + "';"
     
     write_db(db, sql)
     
