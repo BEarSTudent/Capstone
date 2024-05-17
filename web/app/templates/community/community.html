@@ -3,6 +3,7 @@
     <head>
         <title>STR - Style Transfer for Recollection</title>
         <link href="{{url_for('static', filename='css/vanner_style.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='css/community_style.css')}}" rel="stylesheet">
     </head>
 
     <body>
@@ -12,19 +13,20 @@
         </header>
 
         <!--page contents-->
-
-        <form method="get">
-            <input type="text" value="">
-            <input type="submit" value="">
-        </form>
-        
-        <form method="get">
-            <select onchange="this.form.submit()">
-                <option value="recent">최신순</option>
-                <option value="like">인기순</option>
-                <option value="comment">댓글순</option>
-            </select>
-        </form>
+        <section class="search_and_sort">
+            <form class="board_search_form" method="get">
+                <input class="search_text" type="text" value="">
+                <input class="search_submit" type="image" src="../../static/images/community/vector_search.png" alt="Submit">
+            </form>
+            
+            <form class="board_sort_form" method="get">
+                <select onchange="this.form.submit()">
+                    <option value="recent">최신순</option>
+                    <option value="like">인기순</option>
+                    <option value="comment">댓글순</option>
+                </select>
+            </form>
+        </section>
         
         <hr>
         
