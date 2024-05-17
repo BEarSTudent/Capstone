@@ -1,0 +1,18 @@
+<!--BANNER contents for <header>-->
+<a id="str_title" href="/">STR()</a>
+<nav>
+    <ul>
+        <li><a href="/transfer">Transfer</a></li>
+        <li><a href="">Coummunity</a></li>
+        {% if session["id"] %}
+        <li><a href="">My page</a></li>
+        {% endif %}
+    </ul>
+</nav>
+<div>
+    {% if session["id"] %}
+    <a href=""><span>{{user_data[1]}}</span> <img src={{user_data[2]}}></a>
+    {% else %}
+    <a href="">로그인 | 회원가입</a>
+    {% endif %}
+</div>

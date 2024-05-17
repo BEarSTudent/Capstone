@@ -4,19 +4,38 @@ from PIL import Image
 from io import BytesIO
 import base64
 import os
+import xml.etree.ElementTree as elemTree
+from ops import strdb
 app = Flask(__name__)
 
+# secret_key를 관리하기 위해 xml 파일 사용
+tree = elemTree.parse('web/keys.xml') # 사용 환경에 맞춰 절대 경로 적용 후 사용
+app.secret_key = tree.find('string[@name="secret_key"]').text
+
+# database 연결
+db_pw = tree.find('string[@name="db_web_pw"]').text
+db = strdb.StrDatabase(db_pw)
+
+def render_template_with_banner(template_name: str, **context):
+    """banner에 필요한 사용자 데이터를 함께 render_template()하기 위한 함수"""
+    if 'id' in session:
+        user_tuple = db.user_select(session['id'])
+        user_data = (user_tuple[0], user_tuple[2], user_tuple[3])
+        return render_template(template_name, user_data=user_data, **context)
+    else:
+        return render_template(template_name, **context)
+
 @app.route('/')
-def hello():
-    return render_template("index.html")
+def index():
+    return render_template_with_banner("index.html")
 
 @app.route('/transfer')
 def transfer_page():
-    return render_template("/transfer/transfer.html")    
+    return render_template_with_banner("/transfer/transfer.html")
 
 @app.route('/transfer/wait')
 def wait():
-    return render_template("/transfer/wait.html")
+    return render_template_with_banner("/transfer/wait.html")
 
 @app.route('/transfer/result', methods=["GET", "POST"])
 def result():
@@ -31,8 +50,8 @@ def result():
         image = dict_data['img']
         image = Image.open(BytesIO(base64.b64encode(image)))
         image.save(image_path)
-        
-    return render_template('/transfer/result.html', image = image_path)
+    
+    return render_template_with_banner('/transfer/result.html', image = image_path)
 
 @app.route('/transfer/download/<path:filename>')
 def download(filename):

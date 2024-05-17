@@ -1,3 +1,3 @@
-from clientsocket import clientsocket
+from ops.clientsocket import clientsocket
 
 __all__ = ['clientsocket']
