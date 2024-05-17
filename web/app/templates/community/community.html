@@ -13,5 +13,21 @@
 
         <!--page contents-->
 
+        <form method="get">
+            <input type="text" value="">
+            <input type="submit" value="">
+        </form>
+        
+        <form method="get">
+            <select onchange="this.form.submit()">
+                <option value="recent">최신순</option>
+                <option value="like">인기순</option>
+                <option value="comment">댓글순</option>
+            </select>
+        </form>
+        
+        <hr>
+        
+        <div class="boards"></div>
     </body>
 </html>
