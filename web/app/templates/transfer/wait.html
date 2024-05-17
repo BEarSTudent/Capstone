@@ -2,15 +2,15 @@
 <html>
     <head>
         <title>STR - Style Transfer for Recollection</title>
-        <link href="{{url_for('static', filename='css/vanner_style.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='css/banner_style.css')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/transfer_style.css')}}" rel="stylesheet">
         <script src="{{ url_for('static',filename='js/transfer.js') }}"></script>
         <link href="{{url_for('static', filename='css/wait.css')}}" rel="stylesheet">
     </head>
     <body>
         <header>
-            <!--VANNER-->
-            {% include 'vanner.html' %}
+            <!--BANNER-->
+            {% include 'banner.html' %}
         </header>
         {% include 'transfer/process_bar.html' %}
         <CENTER>
