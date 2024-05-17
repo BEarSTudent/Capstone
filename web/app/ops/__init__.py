@@ -1,3 +1,4 @@
-from clientsocket import clientsocket
+from .form import *
+from .strdb import *
 
-__all__ = ['clientsocket']
+__all__ = ['RegistrationForm', 'StrDatabase']
