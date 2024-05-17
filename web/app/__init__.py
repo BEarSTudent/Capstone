@@ -1,9 +1,12 @@
-from flask import Flask, render_template, url_for, request, session, current_app, redirect, send_file
+from flask import Flask, render_template, url_for, request, session, current_app, redirect, send_file, jsonify
 import json
 from PIL import Image
 from io import BytesIO
 import base64
-import os
+import hashlib
+# from ops import RegistrationForm
+from ops import StrDatabase, RegistrationForm
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -40,9 +43,30 @@ def download(filename):
     return send_file(filename,
                      as_attachment=True)
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+    form = RegistrationForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        pass
     return render_template("/member/register.html")
 
+@app.route('/check_id', methods=['POST'])
+def check_id():
+    try:
+        data = request.get_json()
+        user_id = data['user_id']
+
+        result = db.user_select(user_id)
+    except:
+        result = True
+        pass
+    
+    print(result)
+    if result:
+        return jsonify({'exists': True})
+    else:
+        return jsonify({'exists': False})
+    
 if __name__ == "__main__":
     app.run(debug=True)
+    db = StrDatabase()
