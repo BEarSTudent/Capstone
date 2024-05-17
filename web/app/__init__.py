@@ -61,7 +61,7 @@ def download(filename):
 
 @app.route('/community')
 def community():
-    return render_template("/community/community.html")
+    return render_template_with_banner("/community/community.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
