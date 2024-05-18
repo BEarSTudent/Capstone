@@ -1,3 +1,3 @@
 from .strdb import *
 
-__all__ = ['RegistrationForm', 'StrDatabase']
+__all__ = ['StrDatabase']
