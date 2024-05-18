@@ -3,7 +3,7 @@ import pymysql
 class StrDatabase:
     def __init__(self, pw: str):
         self.__db = pymysql.connect(host='127.0.0.1', user='web', password=pw, db='str_capstone')
-    
+
     def __del__(self):
         self.__db.close()
     
