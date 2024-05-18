@@ -59,22 +59,21 @@ def download(filename):
     return send_file(filename,
                      as_attachment=True)
 
-@app.route('/community')
+@app.route('/community', methods=["GET"])
 def community():
-    boards = list(db.board_select_all())
-    for i in range(len(boards)):
-        boards[i] = list(boards[i])
-    
-    return render_template_with_banner("/community/community.html", board_data=boards)
-
-@app.route('/community/search', methods=["GET"])
-def search_board():
     search_text = request.args.get('search_text')
-    search_result = list(db.board_select_search(search_text))
-    for i in range(len(search_result)):
-        search_result[i] = list(search_result[i])
+    sort_by = request.args.get('select_order')
     
-    return render_template_with_banner("/community/community.html", search_text=search_text, board_data=search_result)
+    if (search_text == None):
+        boards = list(db.board_select_all())
+        for i in range(len(boards)):
+            boards[i] = list(boards[i])
+        return render_template_with_banner("/community/community.html", board_data=boards)
+    else:
+        search_result = list(db.board_select_search(search_text))
+        for i in range(len(search_result)):
+            search_result[i] = list(search_result[i])
+        return render_template_with_banner("/community/community.html", search_text=search_text, board_data=search_result)
 
 if __name__ == "__main__":
     app.run(debug=True)
