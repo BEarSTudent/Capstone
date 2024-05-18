@@ -22,9 +22,9 @@
             
             <form class="board_sort_form" action="/community" method="get">
                 <select onchange="this.form.submit()" name="select_order">
-                    <option value="recent" selected>최신순</option>
-                    <option value="like">인기순</option>
-                    <option value="comment">댓글순</option>
+                    <option value="recent" {% if sort_by=='recent' %}selected{% endif %}>최신순</option>
+                    <option value="like" {% if sort_by=='like' %}selected{% endif %}>인기순</option>
+                    <option value="comment" {% if sort_by=='comment' %}selected{% endif %}>댓글순</option>
                 </select>
             </form>
         </section>

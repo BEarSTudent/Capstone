@@ -64,16 +64,14 @@ def community():
     search_text = request.args.get('search_text')
     sort_by = request.args.get('select_order')
     
-    if (search_text == None):
-        boards = list(db.board_select_all())
-        for i in range(len(boards)):
-            boards[i] = list(boards[i])
-        return render_template_with_banner("/community/community.html", board_data=boards)
-    else:
-        search_result = list(db.board_select_search(search_text))
-        for i in range(len(search_result)):
-            search_result[i] = list(search_result[i])
-        return render_template_with_banner("/community/community.html", search_text=search_text, board_data=search_result)
+    if search_text == None:
+        search_text = ""
+    
+    boards = list(db.board_select(search_text, sort_by))
+    for i in range(len(boards)):
+        boards[i] = list(boards[i])
+    
+    return render_template_with_banner("/community/community.html", search_text=search_text, sort_by=sort_by, board_data=boards)
 
 if __name__ == "__main__":
     app.run(debug=True)
