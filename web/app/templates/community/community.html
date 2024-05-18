@@ -4,6 +4,7 @@
         <title>STR - Style Transfer for Recollection</title>
         <link href="{{url_for('static', filename='css/banner_style.css')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/community_style.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='css/new_post_button_style.css')}}" rel="stylesheet">
         <script src="{{url_for('static', filename='js/community.js')}}"></script>
     </head>
 
@@ -38,6 +39,9 @@
         <footer>
             <div class="to_top" onclick="to_the_top()">Top</div>
         </footer>
+
+        <!--floating button to write new post-->
+        {% include '/member/new_post_button.html' %}
 
         <script>
             board_data = {{ board_data|safe }}
