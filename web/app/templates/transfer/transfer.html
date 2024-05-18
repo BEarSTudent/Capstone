@@ -13,7 +13,7 @@
         {% include 'transfer/process_bar.html' %}
         
         <!--page contents-->
-        <div class="form uploadtype-container hidden">
+        <div class="form uploadtype-container">
             <div class = "singleupload">
                 <div class="uploadimg_ex">
                     <div class="uploadimg_ex_one">
@@ -53,32 +53,33 @@
             </div>
         </div>
 
-        <div class="form uploadform">
-            <div class="uploadsingle-container">
-                <div class="image-upload" id="image-upload">
+        <div class="form uploadform hidden">
+            <div class="upload uploadsingle-container hidden">
+                <div id="image-upload">
                     <form method="post" enctype="multipart/form-data">
                         <div class="uploadfilebutton">
-                            <div for="chooseFile">
+                            <div class="image-show" id="image-show_1">
+                                <!--이미지 띄울 공간-->
+                            </div>
+                            <div class="choose">
                                 <img class="uploadex" src="../../static/images/vector_upload.png">
+                                <div>이곳을 눌러 파일을 업로드하세요</div>
                             </div>
                         </div>
-                        <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
+                        <input type="file"  id="chooseFile_1" name="chooseFile" accept="image/*" required multiple style="display: none;" onclick="loadfile(this, 0)">
                     </form>
-
-                    <div class="fileContainer">
-                        <div class="fileInput">
-                            <p>FILE NAME: </p>
-                            <p id="fileName"></p>
-                        </div>
-                    </div>
-
-                    <div><input type="checkbox" name="color" value="blue">인물 제외하고 화풍 변경하기</div>
-
-                    <button type="button" class="next btn" id="singlefileupload">다음</button>
-
                 </div>    
+                <div class="fileContainer">
+                    <div class="fileInput">
+                        <p id="fileName_1">example.jpg</p>
+                    </div>
+                </div>
+
+                <div class="ckeckbox1"><input type="checkbox" name="segmentation" value="0">인물 제외하고 화풍 변경하기</div>
+
+                <button type="button" class="next_btn" id="singlefileupload">다음</button>
             </div>
-            <div class="uploaddouble-conntainer">
+            <div class="upload uploaddouble-conntainer hidden">
 
             </div>
         </div>

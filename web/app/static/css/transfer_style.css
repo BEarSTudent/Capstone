@@ -1,6 +1,5 @@
 .process-container{
-    max-width: 1280px;
-    width: 90%;
+    width: 1280px;
     margin:2rem auto;
     background: #FCF8E8;
     border-radius: 45px;
@@ -96,6 +95,38 @@
     height: 68px;
     border: 0;
     border-radius: 35px;
+    padding: 1rem;
+    background: #DF7861;
+    color: #fff;
+}
+
+.uploadform{
+    margin: 40px;
+    width: 1280px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+#image-upload{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 680px;
+    height: 380px;
+    background: #EEEEEE;
+}
+
+.uploadex{
+    width: 64px;
+    height: 64px;
+}
+
+.next_btn{
+    margin-top: 10px;
+    width: 680px;
+    height: 45px;
+    border: 0;
     padding: 1rem;
     background: #DF7861;
     color: #fff;
