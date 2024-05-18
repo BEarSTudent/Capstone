@@ -18,11 +18,13 @@ async function load_more() {
 function show_boards(board_data) {
     let boards = document.getElementsByClassName("boards")[0];
     
-    if (board_data.length == 0 && lastNum == 0) {
+    if (board_data.length + lastNum <= 3) {
         let top_button = document.getElementsByClassName("to_top")[0];
         let footer = top_button.parentElement;
         footer.removeChild(top_button);
-
+    }
+    
+    if (board_data.length + lastNum == 0) {
         let empty_text = document.createElement("div");
         empty_text.setAttribute("class", "empty_text")
         empty_text.innerHTML = "아직 게시물이 없습니다.";
@@ -53,7 +55,7 @@ function show_boards(board_data) {
 }
 
 window.addEventListener("scroll", function () {
-    const IS_END = (window.innerHeight + window.scrollY >= document.body.offsetHeight);
+    const IS_END = (window.innerHeight + window.scrollY > document.body.offsetHeight);
     
     if (IS_END && !isFetching) {
         load_more();
