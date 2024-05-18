@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, session, current_app, redirect, send_file
+from flask import Flask, render_template, url_for, request, session, current_app, redirect, send_file, jsonify
 import json
 from PIL import Image
 from io import BytesIO
@@ -62,6 +62,19 @@ def download(filename):
 @app.route('/community')
 def community():
     return render_template_with_banner("/community/community.html")
+
+@app.route('/community/load', methods=["POST"])
+def load_boards():
+    lastNum = request.get_json()['last']
+    
+    boards = list(db.board_select_all())
+    for i in range(len(boards)):
+        boards[i] = list(boards[i])
+    
+    if len(boards) <= (lastNum + 9):
+        return jsonify({'boards': boards[lastNum:]})
+    else:
+        return jsonify({'boards': boards[lastNum:(lastNum + 9)]})
 
 if __name__ == "__main__":
     app.run(debug=True)

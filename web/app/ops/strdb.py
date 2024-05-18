@@ -76,9 +76,9 @@ class StrDatabase:
         """str_board table의 모든 게시물 데이터를 반환하는 함수
         
         Returns:
-            tuple: 모든 게시물 데이터. ((board_id, user_id, board_date, board_image, board_title, contents), ...)
+            tuple: 모든 게시물 데이터. ((board_id, board_image, board_title), ...)
         """
-        sql = "SELECT * FROM str_board"
+        sql = "SELECT board_id, board_image, board_title FROM str_board"
         
         return self.__read_db(sql)
     

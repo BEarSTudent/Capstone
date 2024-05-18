@@ -4,6 +4,7 @@
         <title>STR - Style Transfer for Recollection</title>
         <link href="{{url_for('static', filename='css/banner_style.css')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/community_style.css')}}" rel="stylesheet">
+        <script src="{{url_for('static', filename='js/community.js')}}"></script>
     </head>
 
     <body>
@@ -32,10 +33,9 @@
         
         <section>
             <div class="boards">
-                <div class="board_block">
-                    <img class="board_image" src="../../static/images/sample_image.png">
-                    <div class="board_title">제목제목제목제목제목제목제목제목제목</div>
-                </div>
+                <script>
+                    load_more();
+                </script>
             </div>
         </section>
     </body>
