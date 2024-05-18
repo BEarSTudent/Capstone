@@ -78,7 +78,7 @@ class StrDatabase:
         Returns:
             tuple: 모든 게시물 데이터. ((board_id, board_image, board_title), ...)
         """
-        sql = "SELECT board_id, board_image, board_title FROM str_board"
+        sql = "SELECT board_id, board_image, board_title FROM str_board ORDER BY board_id DESC"
         
         return self.__read_db(sql)
     
