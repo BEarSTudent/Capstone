@@ -18,6 +18,14 @@ async function load_more() {
 function show_boards(board_data) {
     let boards = document.getElementsByClassName("boards")[0];
     
+    if (board_data.length == 0 && lastNum == 0) {
+        let empty_text = document.createElement("div");
+        empty_text.setAttribute("class", "empty_text")
+        empty_text.innerHTML = "아직 게시물이 없습니다.";
+        boards.appendChild(empty_text);
+        return
+    }
+    
     for(let i = 0; i < board_data.length; i++) {
         let board_block = document.createElement("div");
         board_block.setAttribute("class", "board_block");

@@ -74,3 +74,10 @@ hr{
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.empty_text{
+    text-align: center;
+    margin: 0 auto;
+    width: 400px;
+    padding: 200px;
+}
