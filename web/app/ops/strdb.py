@@ -82,6 +82,19 @@ class StrDatabase:
         
         return self.__read_db(sql)
     
+    def board_select_search(self, search_text: str):
+        """search_text 검색어를 기반으로 str_board table의 board_title과 contents의 내용을 검색하여 결과를 반환하는 함수
+
+        Args:
+            search_text (str): 검색어
+
+        Returns:
+            tuple: 검색된 데이터. ((board_id, board_image, board_title), ...)
+        """
+        sql = "SELECT board_id, board_image, board_title FROM str_board WHERE board_title LIKE '%" + search_text + "%' OR contents LIKE '%" + search_text + "%' ORDER BY board_id DESC"
+        
+        return self.__read_db(sql)
+    
     def board_insert(self, user_id: str, board_date: str, board_image: str, board_title: str, contents: str):
         """str_board table에 게시물 데이터를 추가하는 함수
         

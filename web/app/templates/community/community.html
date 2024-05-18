@@ -15,8 +15,8 @@
 
         <!--page contents-->
         <section class="search_and_sort">
-            <form class="board_search_form" method="get">
-                <input class="search_text" type="text" value="">
+            <form class="board_search_form" action="/community/search" method="get">
+                <input class="search_text" type="search" name="search_text" value={{search_text}}>
                 <input class="search_submit" type="image" src="../../static/images/community/vector_search.png" alt="Submit">
             </form>
             
@@ -40,7 +40,8 @@
         </footer>
 
         <script>
-            load_more();
+            board_data = {{ board_data|safe }}
+            load_boards();
         </script>
     </body>
 </html>

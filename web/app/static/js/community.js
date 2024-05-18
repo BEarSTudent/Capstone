@@ -1,38 +1,32 @@
-let lastNum = 0;
-let isFetching = false;
+let last_num = 0;
+let board_data;
 
-async function load_more() {
-    isFetching = true;
-    const response_data = await fetch("/community/load", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({'last': lastNum})
-    })
-    .then(res => res.json())
-    
-    show_boards(response_data.boards);
-}
-
-function show_boards(board_data) {
+function load_boards() {
     let boards = document.getElementsByClassName("boards")[0];
     
-    if (board_data.length + lastNum <= 3) {
+    if (board_data.length <= 3) {
         let top_button = document.getElementsByClassName("to_top")[0];
         let footer = top_button.parentElement;
         footer.removeChild(top_button);
     }
     
-    if (board_data.length + lastNum == 0) {
+    if (board_data.length <= 0) {
         let empty_text = document.createElement("div");
         empty_text.setAttribute("class", "empty_text")
         empty_text.innerHTML = "아직 게시물이 없습니다.";
         boards.appendChild(empty_text);
         return
     }
-    
-    for(let i = 0; i < board_data.length; i++) {
+
+    let start_num = last_num;
+
+    if (last_num + 9 <= board_data.length) {
+        last_num += 9;
+    } else {
+        last_num = board_data.length;
+    }
+
+    for(i = start_num; i < last_num; i++) {
         let board_block = document.createElement("div");
         board_block.setAttribute("class", "board_block");
         
@@ -49,8 +43,6 @@ function show_boards(board_data) {
         
         boards.appendChild(board_block);
     }
-
-    lastNum += board_data.length;
     isFetching = false;
 }
 
@@ -58,7 +50,7 @@ window.addEventListener("scroll", function () {
     const IS_END = (window.innerHeight + window.scrollY > document.body.offsetHeight);
     
     if (IS_END && !isFetching) {
-        load_more();
+        load_boards();
     }
 });
 
