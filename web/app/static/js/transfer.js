@@ -3,7 +3,6 @@ const formTargets = document.querySelectorAll('.form');
 const uploadTargets = document.querySelectorAll('.upload');
 const stepprev = document.querySelectorAll('.step-status');
 const choose_ex = document.querySelectorAll('.choose');
-const imgShow = document.querySelectorAll('.img-show');
 
 const uptp_single_Button = document.querySelector('#singleuploadbtn');
 const uptp_double_Button = document.querySelector('#doubleuploadbtn');
@@ -59,23 +58,25 @@ function stepBack(step){
     }
 }
 
-function loadfile(input, step){
+function loadcontent_target(input){
     request_data.content_target_image = input.files[0];
+    request_data.content_target_name = request_data.content_target_image.name;
 
-    var name = document.getElementById('fileName_1');
-    name.textContent = request_data.content_target_image.name;
+    let name = document.getElementById('fileName_1');
+    name.textContent = request_data.content_target_name;
 
-    var newImage = document.createElement("img");
+    let newImage = document.createElement("img");
 
     newImage.src = URL.createObjectURL(request_data.content_target_image);      
 
-    newImage.style.width = "680px";
-    newImage.style.height = "380px";
-    newImage.style.objectFit = "contain";
+    newImage.style.width = "100%";
+    newImage.style.height = "100%";
+    newImage.style.objectFit = "cover";
 
-    var container = imgShow[step];
+    let container = document.getElementById('image-show_1');
+    container.replaceChildren();
     container.appendChild(newImage);
-    choose_ex[step].classList.add('hidden');
+    choose_ex[0].classList.add('hidden');
 }
 
 window.onload = function(){
