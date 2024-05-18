@@ -4,7 +4,7 @@ from PIL import Image
 from io import BytesIO
 import base64
 import hashlib
-from ops import StrDatabase, RegistrationForm
+from ops import StrDatabase
 import xml.etree.ElementTree as elemTree
 
 app = Flask(__name__)
