@@ -89,7 +89,6 @@ def register():
 
 @app.route('/check_id', methods=['POST'])
 def check_id():
-    print("try 문")
     data = request.get_json()
     user_id = data['user_id']
     try:
@@ -99,11 +98,33 @@ def check_id():
         result = False
 
     if result:
-            return jsonify({'exists': True})
+        return jsonify({'exists': True})
     else:
         return jsonify({'exists': False}) 
     
+@app.route('/login', methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        data = request.get_json()
+        user_id = data['user_id']
+        user_pw = data['pw']
+        user_pw = hash_password(user_pw)
+        try:
+            result = db.user_select(user_id)
+        except Exception as e:
+            print(e)
+            result = False
 
+        if result:
+            if result[1] == user_pw:
+                return jsonify({'exists': True, 'pw_match': True})
+            else:
+                return jsonify({'exists': True, 'pw_match': False})
+        else:
+            return jsonify({'exists': False, 'pw_match': False}) 
+    else:
+        return render_template_with_banner("/member/login.html")
+    
 def hash_password(password):
     """SHA-256으로 비밀번호를 해시합니다."""
     sha_signature = hashlib.sha256(password.encode('utf-8')).hexdigest()
