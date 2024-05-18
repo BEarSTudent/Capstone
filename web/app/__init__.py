@@ -92,7 +92,7 @@ def register():
                 return jsonify({'exists': False, 'db_error': True})
                 
     else:
-        return render_template_with_banner("/member/register.html")
+        return render_template_with_banner("/auth/register.html")
 
 @app.route('/check_id', methods=['POST'])
 def check_id():
@@ -143,7 +143,7 @@ def login():
         else:
             return jsonify({'exists': False, 'pw_match': False}) 
     else:
-        return render_template_with_banner("/member/login.html")
+        return render_template_with_banner("/auth/login.html")
 
 @app.route('/logout')
 @login_required
