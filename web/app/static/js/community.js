@@ -55,3 +55,13 @@ window.addEventListener("scroll", function () {
         load_more();
     }
 });
+
+function to_the_top(){
+    const position = document.documentElement.scrollTop || document.body.scrollTop;
+    if (position) {
+        window.requestAnimationFrame(() => {
+            window.scrollTo(0, position - position / 10);
+            to_the_top();
+        });
+    }
+}

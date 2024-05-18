@@ -81,3 +81,12 @@ hr{
     width: 400px;
     padding: 200px;
 }
+
+.to_top{
+    text-align: center;
+    margin:40px auto;
+    padding: 8px;
+    width: 1040px;
+    cursor: pointer;
+    background-color: #ECB390;
+}
