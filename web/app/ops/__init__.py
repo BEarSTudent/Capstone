@@ -1,3 +1,3 @@
-from ops.clientsocket import clientsocket
+from .strdb import *
 
-__all__ = ['clientsocket']
+__all__ = ['StrDatabase']
