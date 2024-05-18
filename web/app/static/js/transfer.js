@@ -3,11 +3,12 @@ const formTargets = document.querySelectorAll('.form');
 const uploadTargets = document.querySelectorAll('.upload');
 const stepprev = document.querySelectorAll('.step-status');
 const choose_ex = document.querySelectorAll('.choose');
+const targetName = document.querySelectorAll('.targetname');
 
 const uptp_single_Button = document.querySelector('#singleuploadbtn');
 const uptp_double_Button = document.querySelector('#doubleuploadbtn');
 const up_single_Button = document.querySelector('#singlefileupload');
-const upload = document.querySelector('#image-upload');
+const upload = document.querySelector('#imageone-upload');
 const realUpload = document.querySelector('#chooseFile_1');
 
 let currentStep = 0;
@@ -53,6 +54,8 @@ function stepBack(step){
     formTargets[currentStep].classList.remove('hidden');
     if(currentStep == 1){
         uploadTargets[uploadtype].classList.remove('hidden');
+        choose_ex[uploadtype].classList.remove('hidden');
++       document.getElementById('image-show_1').replaceChildren();
     } else{
         uploadTargets[uploadtype].classList.add('hidden');
     }
@@ -62,7 +65,7 @@ function loadcontent_target(input){
     request_data.content_target_image = input.files[0];
     request_data.content_target_name = request_data.content_target_image.name;
 
-    let name = document.getElementById('fileName_1');
+    let name = targetName[uploadtype];
     name.textContent = request_data.content_target_name;
 
     let newImage = document.createElement("img");
@@ -73,10 +76,14 @@ function loadcontent_target(input){
     newImage.style.height = "100%";
     newImage.style.objectFit = "cover";
 
-    let container = document.getElementById('image-show_1');
+    let container;
+    if(uploadtype == 0){
+        container = document.getElementById('image-show_1');
+    }
+    
     container.replaceChildren();
     container.appendChild(newImage);
-    choose_ex[0].classList.add('hidden');
+    choose_ex[uploadtype].classList.add('hidden');
 }
 
 window.onload = function(){

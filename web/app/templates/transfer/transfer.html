@@ -55,7 +55,7 @@
 
         <div class="form uploadform hidden">
             <div class="upload uploadsingle-container hidden">
-                <div id="image-upload">
+                <div id="imageone-upload">
                     <form method="post" enctype="multipart/form-data">
                         <div class="uploadfilebutton">
                             <div class="image-show" id="image-show_1">
@@ -66,13 +66,11 @@
                                 <div>이곳을 눌러 파일을 업로드하세요</div>
                             </div>
                         </div>
-                        <input type="file"  id="chooseFile_1" name="chooseFile" accept="image/*" required multiple style="display: none;" onclick="loadcontent_target(this)">
+                        <input type="file"  id="chooseFile_1" name="chooseFile" accept="image/*" required multiple style="display: none;" onclick="loadcontent_target(this);">
                     </form>
                 </div>    
                 <div class="fileContainer">
-                    <div class="fileInput">
-                        <p id="fileName_1">example.jpg</p>
-                    </div>
+                        <p class="targetname" id="fileName_1">example.jpg</p>
                 </div>
 
                 <div class="ckeckbox1"><input type="checkbox" name="segmentation" value="0">인물 제외하고 화풍 변경하기</div>
