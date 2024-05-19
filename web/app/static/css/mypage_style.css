@@ -6,14 +6,14 @@ section{
     min-width: 1220px;
 }
 
-.profile{
+#profile{
     background-color: #FCF8E8;
     width: 1000px;
     height: 200px;
     margin: 40px auto;
 }
 
-.user_image{
+#user_image{
     float: left;
     width: 160px;
     height: 160px;
@@ -22,26 +22,26 @@ section{
     margin: 20px 32px;
 }
 
-.user_text{
+#user_text{
     float: left;
     width: 600px;
     height: 120px;
     margin-top: 32px;
 }
 
-.user_name_id_block{
+#user_name_id_block{
     margin: 24px 0 40px 0;
 }
 
-.user_name{
+#user_name{
     font-size: 20px;
 }
 
-.user_id{
+#user_id{
     font-size: 16px;
 }
 
-.user_number_block{
+#user_number_block{
     margin: 0;
 }
 
@@ -54,7 +54,7 @@ section{
     margin-right: 20px;
 }
 
-.profile_edit{
+#profile_edit{
     background-color: #ECB390;
     border-radius: 30px;
     float: right;
@@ -76,7 +76,7 @@ hr{
     margin: 0 auto;
 }
 
-.select_board_block{
+#select_board_block{
     text-align: center;
     padding: 20px;
 }
@@ -92,7 +92,7 @@ hr{
     text-decoration: underline;
 }
 
-.boards{
+#boards{
     width: 1100px;
     margin: 0 auto;
 }
