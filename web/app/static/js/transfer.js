@@ -47,6 +47,20 @@ function stepNext(){
     currentStep = currentStep + 1;
 }
 
+function hide(){
+    uploadTargets[uploadtype].classList.remove('hidden');
+    choose_ex[uploadtype].classList.remove('hidden');
+    choose_back[0].classList.remove('hidden');
++       document.getElementById('image-show_1').replaceChildren();
+    document.getElementById('image-show_2').replaceChildren();
+    document.getElementById('image-show_3').replaceChildren();
+    targetName[uploadtype].textContent = "example.jpg";
+    document.getElementById('fileName_3').textContent = "example.jpg";
+    if(currentStep == 0){
+        uploadTargets[uploadtype].classList.add('hidden');
+    }
+}
+
 function stepBack(step){
     stepTargets[currentStep].classList.remove('active');
     currentStep --;
@@ -58,19 +72,10 @@ function stepBack(step){
     stepTargets[currentStep].classList.remove('prev');
     stepTargets[currentStep].classList.add('active');
     formTargets[currentStep].classList.remove('hidden');
-    if(currentStep <= 1){
-        uploadTargets[uploadtype].classList.remove('hidden');
-        choose_ex[uploadtype].classList.remove('hidden');
-        choose_back[0].classList.remove('hidden');
-+       document.getElementById('image-show_1').replaceChildren();
-        document.getElementById('image-show_2').replaceChildren();
-        document.getElementById('image-show_3').replaceChildren();
-        targetName[uploadtype].textContent = "example.jpg";
-        document.getElementById('fileName_3').textContent = "example.jpg";
-        if(currentStep == 0){
-            uploadTargets[uploadtype].classList.add('hidden');
-        }
-
+    if(step <= 1){ 
+        hide();
+        document.getElementById("check_1").checked = false;
+        document.getElementById("check_2").checked = false;
     } else{
         uploadTargets[uploadtype].classList.add('hidden');
     }
