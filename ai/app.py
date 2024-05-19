@@ -12,7 +12,7 @@ parent_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 app = Flask(__name__)
 
 
-@app.route('/fileupload', methods=['GET', 'POST'])
+@app.route('/upload', methods=['POST'])
 def save_image():
     if request.method == 'POST':
         # json 형식으로 요청해야한다.
@@ -20,17 +20,20 @@ def save_image():
         dict_data = json.loads(json.dumps(json_data))
         
         '''
-        user_id             : 요청한 유저의 id. 나중에 이 id를 통해 변환된 이미지를 전송
-        person_transfer_bool: 인물 포함 이미지 변환을 요청했는지 유무. True = 인물포함 변환. False = 인물 제외 변환.
-        encoding_type       : 이미지 encoding 형식. ex).jpg, .png
-        content_target_name : 최종적으로 유저가 이미지 변환을 요구하는 이미지
-        content_target_image: 위의 이미지 데이터
-        content_source_name : 유저가 배경화면과 content_target_image와의 합성을 원했을 경우. None에서 이미지 이름을 받아온다
-        content_source_image: 위의 이미지 데이터
-        style_name          : 변환할 스타일 이미지 이름
-        style_image         : 위의 이미지 데이터
+        ==========================================
+                        json info
+        ==========================================
+        person_transfer_bool *  : 인물 포함 이미지 변환을 요청했는지 유무. True = 인물포함 변환. False = 인물 제외 변환.
+        encoding_type *         : 이미지 encoding 형식. ex).jpg, .png
+        content_target_name *   : 최종적으로 유저가 이미지 변환을 요구하는 이미지
+        content_target_image *  : 위의 이미지 데이터
+        content_source_name     : 유저가 배경화면과 content_target_image와의 합성을 원했을 경우. None에서 이미지 이름을 받아온다
+        content_source_image    : 위의 이미지 데이터
+        style_name *            : 변환할 스타일 이미지 이름
+        style_image *           : 위의 이미지 데이터
+        
+            * : 값이 항상 존재해야한다는 의미
         '''
-        user_id = dict_data['user_id']
         person_transfer_bool = dict_data['segmentation']
         encoding_type = dict_data['encoding_type']
         content_target_name = dict_data['content_target_name']
@@ -75,16 +78,16 @@ def save_image():
         style_image = style_image.resize(((width, height)))
         # 배경이미지을 넣지 않은 경우
         if content_source_image is None:
-            processing(user_id, encoding_type, person_transfer_bool, 
-                    content_target_image, content_target_name, style_image)
+            return processing(encoding_type, person_transfer_bool, 
+                              content_target_image, content_target_name, style_image)
         # 배경이미지을 넣은 경우
         else:
-            processing(user_id, encoding_type, person_transfer_bool, 
-                    content_target_image, content_target_name, style_image, 
-                    content_source_image, content_source_name)
+            return processing(encoding_type, person_transfer_bool, 
+                              content_target_image, content_target_name, style_image, 
+                              content_source_image, content_source_name)
 
 # 이미지 변환 작업
-def processing(user_id:str, encoding_type:str, person_transfer_bool:bool, 
+def processing(encoding_type:str, person_transfer_bool:bool, 
                content_target_image:Image, content_target_name:str, 
                style_image:Image, content_source_image=None,content_source_name=None):
     '''
@@ -142,42 +145,15 @@ def processing(user_id:str, encoding_type:str, person_transfer_bool:bool,
     # result = Image.fromarray(result.astype(np.uint8))
     # result.save(f"./data/result/result_{content_target_name}")
     
-    result = cv2.imencode(encoding_type, result)
-    b64_string = base64.b64decode(result[1]).decode('utf-8')
+    _, result = cv2.imencode(encoding_type, result)
+    b64_string = base64.b64decode(result).decode('utf-8')
     file = {"img:": b64_string}
-    request.post(f"juyeolweb.site:23480/{user_id}", json=file)
+    return file
     
 if __name__ == "__main__":
     content_path = parent_path + "/data/content/"
     style_path = parent_path + "/data/style/"
     transfer = Transfer()
     segmenter = Segmenter()
-    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
-    # print("========== processing start ===========")
-    # content_target_name = "image_5_small.jpeg"
-    # content_target_image = Image.open(f"./data/content/{content_target_name}")
-    # encoding_type = ".jpeg"
-    # style_name = "dall_e.jpeg"
-    # style_image = Image.open(f"./data/style/{style_name}")
-    
-    # hd_width = 1280
-    # # 타겟 이미지 크기 추출
-    # width, height = content_target_image.size
-    # if width < height:
-    #     decay_rate = round(hd_width/height, 2)
-    # else:
-    #     decay_rate = round(hd_width/width, 2)
-    
-    # # FHD보다 이미지가 작거나 같은 경우
-    # if decay_rate >= 1 :
-    #     decay_rate = 1    
-    # width, height = int(width * decay_rate), int(height * decay_rate)
-    # content_target_image = content_target_image.resize((width, height))
-    # style_image = style_image.resize((width, height))
-    # processing(user_id="01", person_transfer_bool=False, encoding_type=encoding_type, content_target_image=content_target_image, content_target_name= content_target_name,
-    #            style_image=style_image)
     app.run(host='0.0.0.0', port=2120, debug=True)
-    
-    
-    
