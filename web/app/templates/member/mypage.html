@@ -3,6 +3,7 @@
     <head>
         <title>STR - Style Transfer for Recollection</title>
         <link href="{{url_for('static', filename='css/banner_style.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='css/mypage_style.css')}}" rel="stylesheet">
     </head>
     <body>
         <header>
@@ -11,6 +12,31 @@
         </header>
 
         <!--page contents-->
+        <section>
+            <!--profile-->
+            <div class="profile">
+                <img class="user_image" src="../../static/images/sample_image.png" width="80px">
+                <div class="user_text">
+                    <div class="user_name_id_block">
+                        <span class="user_name">사용자</span>
+                        <span class="user_id">@ididid</span>
+                    </div>
+                    <div class="user_number_block">
+                        <span class="number_text">게시물</span>
+                        <span class="number_num">00개</span>
+                        <span class="number_text">보관함</span>
+                        <span class="number_num">00개</span>
+                    </div>
+                </div>
+                <div class="profile_edit">프로필 편집</div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <!--board-->
+        </section>
         
     </body>
 </html>
