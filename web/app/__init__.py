@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, send_file, jsonify
+from flask import Flask, render_template, url_for, request, redirect, jsonify, send_from_directory
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 import json
 from PIL import Image
@@ -7,6 +7,11 @@ import base64
 import hashlib
 from ops import StrDatabase, User
 import xml.etree.ElementTree as elemTree
+import os
+# 부모 디렉토리
+parent_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# 현재 디렉토리
+current_path = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__)
 
@@ -46,25 +51,30 @@ def wait():
 
 @app.route('/transfer/result', methods=["GET", "POST"])
 def result():
-    image_path = "images/sample_image.png"
+    # 테스트용으로 작성한 코드
+    # 아래 두줄은 배포할 때 삭제해야함
+    image_name = "sample_image.png"
+    path_type = "temp"
     if request.method == "POST":
         json_data = request.get_json()
         dict_data = json.loads(json.dumps(json_data))
         
         image_name = dict_data['name']
-        image_path = "images/transfer/" + str(image_name)
-
-        image = dict_data['img']
-        image = Image.open(BytesIO(base64.b64encode(image)))
+        if current_user.is_authenticated:
+            path_type = current_user.id
+        else:
+            path_type = "temp"
+            
+        image_path = parent_path + f"/user/{path_type}/" + str(image_name)
+        image_name = dict_data['img']
+        image = Image.open(BytesIO(base64.b64encode(image_name)))
         image.save(image_path)
     
-    return render_template_with_banner('/transfer/result.html', image = image_path)
+    return render_template_with_banner('/transfer/result.html', type=path_type, image = image_name)
 
-@app.route('/transfer/download/<path:filename>')
-def download(filename):
-    filename = "static/" + filename
-    return send_file(filename,
-                     as_attachment=True)
+@app.route('/<path_type>/<filename>')
+def image_path(path_type, filename):
+    return send_from_directory(parent_path + "/user/" + path_type, filename)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
