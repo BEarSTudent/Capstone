@@ -71,14 +71,32 @@ class StrDatabase:
         sql = "UPDATE str_user SET pw='" + pw + "', user_name='" + user_name + "', user_image='" + user_image + "' WHERE user_id='" + user_id + "';"
         
         self.__write_db(sql)
-    
-    def board_select_all(self):
-        """str_board table의 모든 게시물 데이터를 반환하는 함수
+
+    def board_select(self, search_text:str, sort_by: str):
+        """게시판 로드를 위해 str_board의 데이터를 search_text 기반 검색, sort_by 기준 정렬
+
+        Args:
+            search_text (str): 검색할 키워드
+            sort_by (str): 정렬 기준
         
         Returns:
-            tuple: 모든 게시물 데이터. ((board_id, user_id, board_date, board_image, board_title, contents), ...)
+            tuple: 검색, 정렬된 데이터. recent: ((board_id, board_image, board_title), ...), like/comment: ((board_id, board_image, board_title, count), ...)
         """
-        sql = "SELECT * FROM str_board"
+        if sort_by == "like":
+            sql = "SELECT b.board_id, b.board_image, b.board_title, COUNT(l.user_id) AS count FROM str_board b LEFT OUTER JOIN str_like l ON b.board_id = l.board_id "
+            if search_text != "":
+                sql += "WHERE b.board_title LIKE '%" + search_text + "%' OR b.contents LIKE '%" + search_text + "%' "
+            sql += "GROUP BY b.board_id ORDER BY count DESC, b.board_id DESC;"
+        elif sort_by == "comment":
+            sql = "SELECT b.board_id, b.board_image, b.board_title, COUNT(c.comment_id) AS count FROM str_board b LEFT OUTER JOIN str_comment c ON b.board_id = c.board_id "
+            if search_text != "":
+                sql += "WHERE b.board_title LIKE '%" + search_text + "%' OR b.contents LIKE '%" + search_text + "%' "
+            sql += "GROUP BY b.board_id ORDER BY count DESC, b.board_id DESC;"
+        else: # recent
+            sql = "SELECT board_id, board_image, board_title FROM str_board "
+            if search_text != "":
+                sql += "WHERE board_title LIKE '%" + search_text + "%' OR contents LIKE '%" + search_text + "%' "
+            sql += "ORDER BY board_id DESC"
         
         return self.__read_db(sql)
     

@@ -1,6 +1,5 @@
 from flask import Flask, render_template, url_for, request, redirect, send_file, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-
 import json
 from PIL import Image
 from io import BytesIO
@@ -155,6 +154,20 @@ def hash_password(password):
     """SHA-256으로 비밀번호를 해시합니다."""
     sha_signature = hashlib.sha256(password.encode('utf-8')).hexdigest()
     return sha_signature
+
+@app.route('/community', methods=["GET"])
+def community():
+    search_text = request.args.get('search_text')
+    sort_by = request.args.get('select_order')
+    
+    if search_text == None:
+        search_text = ""
+    
+    boards = list(db.board_select(search_text, sort_by))
+    for i in range(len(boards)):
+        boards[i] = list(boards[i])
+    
+    return render_template_with_banner("/community/community.html", search_text=search_text, sort_by=sort_by, board_data=boards)
 
 @app.route('/mypage')
 def mypage():

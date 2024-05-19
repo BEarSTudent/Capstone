@@ -52,6 +52,82 @@
                 <button type="button" class="next minrabtn" id="doubleuploadbtn">선택하기</button>
             </div>
         </div>
+
+        <div class="form uploadform hidden">
+            <div class="upload uploadsingle-container hidden">
+                <div id="imageone-upload">
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="uploadfilebutton">
+                            <div class="image-show" id="image-show_1">
+                                <!--이미지 띄울 공간-->
+                            </div>
+                            <div class="choose">
+                                <img class="uploadex" src="../../static/images/vector_upload.png">
+                                <div>이곳을 눌러 파일을 업로드하세요</div>
+                            </div>
+                        </div>
+                        <input type="file"  id="chooseFile_1" name="chooseFile" accept="image/*" required multiple style="display: none;" onclick="loadcontent_target(this);">
+                    </form>
+                </div>    
+                <div class="fileContainer">
+                        <p class="targetname" id="fileName_1">example.jpg</p>
+                </div>
+
+                <div class="ckeckbox1"><input type="checkbox" name="segmentation" id="check_1" value="0">인물 제외하고 화풍 변경하기</div>
+
+                <button type="button" class="next_btn" id="singlefileupload">다음</button>
+            </div>
+            <div class="upload uploaddouble-conntainer hidden">
+                <div id="imagetwo-upload">
+                    <div class="background_human">
+                        <div>배경사진</div>
+                        <div class='upbackground_human' id="image-upload_3">
+                            <form method="post" enctype="multipart/form-data">
+                                <div class="uploadfilebutton">
+                                    <div class="image_show" id="image-show_3">
+                                        <!--이미지 띄울 공간-->
+                                    </div>
+                                    <div class="choose_back">
+                                        <img class="uploadex" src="../../static/images/vector_upload.png">
+                                        <div>이곳을 눌러 파일을 업로드하세요</div>
+                                    </div>
+                                </div>
+                                <input type="file"  id="chooseFile_3" name="chooseFile" accept="image/*" required multiple style="display: none;" onclick="loadsource_target(this)">
+                            </form>
+                        </div>
+                        <div>
+                            <p id="fileName_3">example.jpg</p>
+                        </div>
+                    </div>
+
+                    <div class="background_human">
+                        <div>인물사진</div>
+                        <div class='upbackground_human' id="image-upload_2">
+                            <form method="post" enctype="multipart/form-data">
+                                <div class="uploadfilebutton">
+                                    <div class="image_show" id="image-show_2">
+                                        <!--이미지 띄울 공간-->
+                                    </div>
+                                    <div class="choose">
+                                        <img class="uploadex" src="../../static/images/vector_upload.png">
+                                        <div>이곳을 눌러 파일을 업로드하세요</div>
+                                    </div>
+                                </div>
+                                <input type="file"  id="chooseFile_2" name="chooseFile" accept="image/*" required multiple style="display: none;" onclick="loadcontent_target(this)">
+                            </form>
+                        </div>
+                        <div>
+                            <p class="targetname" id="fileName_2">example.jpg</p>
+                        </div>
+                    </div>
+                </div>    
+
+                <div class="ckeckbox1"><input type="checkbox" name="segmentation" id="check_2" value="0">인물 제외하고 화풍 변경하기</div>
+
+                <button type="button" class="next_btn" id="doublefileupload">다음</button>
+            </div>
+        </div>
+
         <script type="text/javascript" src="{{url_for('static',filename='js/transfer.js')}}"></script>
     </body>
 </html>
