@@ -156,5 +156,9 @@ def hash_password(password):
     sha_signature = hashlib.sha256(password.encode('utf-8')).hexdigest()
     return sha_signature
 
+@app.route('/mypage')
+def mypage():
+    return render_template_with_banner("/member/mypage.html")
+
 if __name__ == "__main__":
     app.run(debug=True)
