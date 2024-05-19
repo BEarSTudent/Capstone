@@ -16,17 +16,19 @@
 
         <!--page contents-->
         <section class="search_and_sort">
-            <form class="board_search_form" action="/community" method="get">
-                <input class="search_text" type="search" name="search_text" value={{search_text}}>
-                <input class="search_submit" type="image" src="../../static/images/community/vector_search.png" alt="Submit">
-            </form>
-            
-            <form class="board_sort_form" action="/community" method="get">
-                <select onchange="this.form.submit()" name="select_order">
-                    <option value="recent" {% if sort_by=='recent' %}selected{% endif %}>최신순</option>
-                    <option value="like" {% if sort_by=='like' %}selected{% endif %}>인기순</option>
-                    <option value="comment" {% if sort_by=='comment' %}selected{% endif %}>댓글순</option>
-                </select>
+            <form action="/community" method="get">
+                <div class="board_search_form">
+                    <input class="search_text" type="search" name="search_text" value={{search_text}}>
+                    <input class="search_submit" type="image" src="../../static/images/community/vector_search.png" alt="Submit">
+                </div>
+
+                <div class="board_sort_form">
+                    <select onchange="this.form.submit()" name="select_order">
+                        <option value="recent" {% if sort_by=='recent' %}selected{% endif %}>최신순</option>
+                        <option value="like" {% if sort_by=='like' %}selected{% endif %}>인기순</option>
+                        <option value="comment" {% if sort_by=='comment' %}selected{% endif %}>댓글순</option>
+                    </select>
+                </div>
             </form>
         </section>
         
