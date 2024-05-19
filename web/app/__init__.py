@@ -1,10 +1,12 @@
-from flask import Flask, render_template, url_for, request, session, current_app, redirect, send_file, jsonify
+from flask import Flask, render_template, url_for, request, redirect, send_file, jsonify
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+
 import json
 from PIL import Image
 from io import BytesIO
 import base64
 import hashlib
-from ops import StrDatabase
+from ops import StrDatabase, User
 import xml.etree.ElementTree as elemTree
 
 app = Flask(__name__)
@@ -13,14 +15,19 @@ app = Flask(__name__)
 tree = elemTree.parse('keys.xml') # 사용 환경에 맞춰 절대 경로 적용 후 사용
 app.secret_key = tree.find('string[@name="secret_key"]').text
 
+# 로그인 관리
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'  # 로그인 페이지의 엔드포인트 설정
+
 # database 연결
 db_pw = tree.find('string[@name="db_web_pw"]').text
 db = StrDatabase(db_pw)
 
 def render_template_with_banner(template_name: str, **context):
     """banner에 필요한 사용자 데이터를 함께 render_template()하기 위한 함수"""
-    if 'id' in session:
-        user_tuple = db.user_select(session['id'])
+    if current_user.is_authenticated:
+        user_tuple = db.user_select(current_user.id)
         user_data = (user_tuple[0], user_tuple[2], user_tuple[3])
         return render_template(template_name, user_data=user_data, **context)
     else:
@@ -85,11 +92,10 @@ def register():
                 return jsonify({'exists': False, 'db_error': True})
                 
     else:
-        return render_template_with_banner("/member/register.html")
+        return render_template_with_banner("/auth/register.html")
 
 @app.route('/check_id', methods=['POST'])
 def check_id():
-    print("try 문")
     data = request.get_json()
     user_id = data['user_id']
     try:
@@ -99,10 +105,51 @@ def check_id():
         result = False
 
     if result:
-            return jsonify({'exists': True})
+        return jsonify({'exists': True})
     else:
         return jsonify({'exists': False}) 
-    
+
+@login_manager.user_loader
+def load_user(user_id):
+    try:
+        result = db.user_select(user_id)
+    except Exception as e:
+        print(e)
+        result = False
+    if result:
+        return User(user_id)
+    return None
+
+@app.route('/login', methods=['GET','POST'])
+def login():
+    if request.method == 'POST':
+        data = request.get_json()
+        user_id = data['user_id']
+        user_pw = data['pw']
+        user_pw = hash_password(user_pw)
+        try:
+            result = db.user_select(user_id)
+        except Exception as e:
+            print(e)
+            result = False
+
+        if result:
+            if result[1] == user_pw:
+                user = User(user_id)
+                login_user(user)
+                return jsonify({'exists': True, 'pw_match': True})
+            else:
+                return jsonify({'exists': True, 'pw_match': False})
+        else:
+            return jsonify({'exists': False, 'pw_match': False}) 
+    else:
+        return render_template_with_banner("/auth/login.html")
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 def hash_password(password):
     """SHA-256으로 비밀번호를 해시합니다."""
