@@ -139,8 +139,7 @@ async function postdata(event) {
             if (!result.db_error) {
                 document.getElementById('state_message').innerHTML = '<font color=blue>회원가입 성공</font>';
                 setTimeout(() => {
-                    // login 페이지로 변경
-                    window.location.href = '/';
+                    window.location.href = '/login';
                 }, 2000);
             } else {
                 document.getElementById('state_message').innerHTML = 'DB 에러';
