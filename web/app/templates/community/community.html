@@ -48,7 +48,8 @@
 
         <script>
             let boards = document.getElementsByClassName("boards")[0];
-            let board_data = {{ board_data|safe }}
+            let board_data = {{ board_data|safe }};
+            let last_num = 0;
 
             if (board_data.length == 0) {
                 delete_top_button();

@@ -4,6 +4,7 @@
         <title>STR - Style Transfer for Recollection</title>
         <link href="{{url_for('static', filename='css/banner_style.css')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/mypage_style.css')}}" rel="stylesheet">
+        <script src="{{url_for('static', filename='js/mypage.js')}}"></script>
         <script src="{{url_for('static', filename='js/load_board.js')}}"></script>
     </head>
     <body>
@@ -16,17 +17,17 @@
         <section>
             <!--profile-->
             <div class="profile">
-                <img class="user_image" src="../../static/images/sample_image.png" width="80px">
+                <img class="user_image" src={{user_data[2]}} width="80px">
                 <div class="user_text">
                     <div class="user_name_id_block">
-                        <span class="user_name">사용자</span>
-                        <span class="user_id">@ididid</span>
+                        <span class="user_name">{{user_data[1]}}</span>
+                        <span class="user_id">@{{user_data[0]}}</span>
                     </div>
                     <div class="user_number_block">
                         <span class="number_text">게시물</span>
-                        <span class="number_num">00개</span>
+                        <span class="number_num" id="board_num">00개</span>
                         <span class="number_text">보관함</span>
-                        <span class="number_num">00개</span>
+                        <span class="number_num" id="savebox_num">00개</span>
                     </div>
                 </div>
                 <div class="profile_edit">프로필 편집</div>
@@ -37,19 +38,24 @@
 
         <section>
             <!--board-->
-            <form action="/mypage" method="get">
-                <input class="board_select {% if selected!='보관함' %}selected{% endif %}" type="submit" name="board" value="게시물">
-                <input class="board_select {% if selected=='보관함' %}selected{% endif %}" type="submit" name="board" value="보관함">
-            </form>
+            <div class="select_board_block">
+                <span class="board_select selected" onclick="user_board()">게시물</span>
+                <span class="board_select" onclick="user_savebox()">보관함</span>
+            </div>
 
             <div class="boards"></div>
         </section>
         
         <script>
             let boards = document.getElementsByClassName("boards")[0];
-            let board_data = {{ board_data|safe }}
+            let select = document.getElementsByClassName("board_select");
+            let board_data;
+            let last_num = 0;
 
-            load_boards();
+            let user_board_data = {{ board_data|safe }};
+            let user_savebox_data = {{ savebox_data|safe }};
+
+            mypage();
         </script>
 
     </body>

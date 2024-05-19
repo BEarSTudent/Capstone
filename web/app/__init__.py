@@ -169,20 +169,17 @@ def community():
     
     return render_template_with_banner("/community/community.html", search_text=search_text, sort_by=sort_by, board_data=boards)
 
-@app.route('/mypage', methods=["GET"])
+@app.route('/mypage')
 def mypage():
-    selected = request.args.get('board')
+    board_data = list(db.board_select_user(current_user.id))
+    for i in range(len(board_data)):
+        board_data[i] = list(board_data[i])
     
-    if selected != "보관함":
-        boards = list(db.board_select_user(current_user.id))
-        for i in range(len(boards)):
-            boards[i] = list(boards[i])
-    else:
-        boards = list(db.savebox_select(current_user.id))
-        for i in range(len(boards)):
-            boards[i] = list(boards[i])
+    savebox_data = list(db.savebox_select(current_user.id))
+    for i in range(len(savebox_data)):
+        savebox_data[i] = list(savebox_data[i])
     
-    return render_template_with_banner("/member/mypage.html", selected=selected, board_data=boards)
+    return render_template_with_banner("/member/mypage.html", board_data=board_data, savebox_data=savebox_data)
 
 if __name__ == "__main__":
     app.run(debug=True)

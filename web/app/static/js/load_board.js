@@ -1,5 +1,3 @@
-let last_num = 0;
-
 function load_boards() {
     if (board_data.length <= 0) {
         let empty_text = document.createElement("div");
