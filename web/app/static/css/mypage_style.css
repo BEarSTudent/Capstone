@@ -75,3 +75,50 @@ hr{
     width: 1040px;
     margin: 0 auto;
 }
+
+form{
+    text-align: center;
+}
+
+.board_select{
+    background-color: transparent;
+    border-style: none;
+    cursor: pointer;
+    margin: 20px 100px;
+    font-size: 16px;
+}
+
+.selected{
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.boards{
+    width: 1100px;
+    margin: 0 auto;
+}
+
+.board_block{
+    display: inline-block;
+    margin: 20px 40px 20px 40px;
+}
+
+.board_image{
+    width: 280px;
+    height: 180px;
+    object-fit: cover;
+}
+
+.board_title{
+    width: 280px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.empty_text{
+    text-align: center;
+    margin: 0 auto;
+    width: 400px;
+    padding: 200px;
+}

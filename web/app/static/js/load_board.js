@@ -4,7 +4,7 @@ function load_boards() {
     if (board_data.length <= 0) {
         let empty_text = document.createElement("div");
         empty_text.setAttribute("class", "empty_text")
-        empty_text.innerHTML = "아직 게시물이 없습니다.";
+        empty_text.innerHTML = "아직 사진이 없습니다.";
         boards.appendChild(empty_text);
         return
     }
@@ -25,12 +25,15 @@ function load_boards() {
         board_image.setAttribute("class", "board_image");
         board_image.setAttribute("src", board_data[i][1]);
         
-        let board_title = document.createElement("div");
-        board_title.setAttribute("class", "board_title");
-        board_title.innerHTML = board_data[i][2];
-        
         board_block.appendChild(board_image);
-        board_block.appendChild(board_title);
+
+        if(board_data[i][2] != undefined) {
+            let board_title = document.createElement("div");
+            board_title.setAttribute("class", "board_title");
+            board_title.innerHTML = board_data[i][2];
+            
+            board_block.appendChild(board_title);
+        }
         
         boards.appendChild(board_block);
     }
