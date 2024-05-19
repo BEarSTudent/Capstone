@@ -8,8 +8,10 @@ const targetName = document.querySelectorAll('.targetname');
 const uptp_single_Button = document.querySelector('#singleuploadbtn');
 const uptp_double_Button = document.querySelector('#doubleuploadbtn');
 const up_single_Button = document.querySelector('#singlefileupload');
-const upload = document.querySelector('#imageone-upload');
-const realUpload = document.querySelector('#chooseFile_1');
+const upload_0 = document.querySelector('#imageone-upload');
+const realUpload_0 = document.querySelector('#chooseFile_1');
+const upload_1 = document.querySelector('#image-upload_2');
+const realUpload_1 = document.querySelector('#chooseFile_2');
 
 let currentStep = 0;
 let uploadtype = 0;
@@ -56,6 +58,7 @@ function stepBack(step){
         uploadTargets[uploadtype].classList.remove('hidden');
         choose_ex[uploadtype].classList.remove('hidden');
 +       document.getElementById('image-show_1').replaceChildren();
+        targetName[uploadtype].textContent = "example.jpg"
     } else{
         uploadTargets[uploadtype].classList.add('hidden');
     }
@@ -79,6 +82,8 @@ function loadcontent_target(input){
     let container;
     if(uploadtype == 0){
         container = document.getElementById('image-show_1');
+    }else{
+        container = document.getElementById('image-show_2');
     }
     
     container.replaceChildren();
@@ -101,7 +106,11 @@ window.onload = function(){
         stepNext();
     });
 
-    upload.addEventListener('click', () =>{
-        realUpload.click()
+    upload_0.addEventListener('click', () =>{
+        realUpload_0.click()
+    });
+
+    upload_1.addEventListener('click', () =>{
+        realUpload_1.click()
     });
 }
