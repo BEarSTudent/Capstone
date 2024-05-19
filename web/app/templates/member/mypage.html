@@ -4,6 +4,7 @@
         <title>STR - Style Transfer for Recollection</title>
         <link href="{{url_for('static', filename='css/banner_style.css')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/mypage_style.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='css/new_post_button_style.css')}}" rel="stylesheet">
         <script src="{{url_for('static', filename='js/mypage.js')}}"></script>
         <script src="{{url_for('static', filename='js/load_board.js')}}"></script>
     </head>
@@ -45,6 +46,9 @@
 
             <div class="boards"></div>
         </section>
+
+        <!--floating button to write new post-->
+        {% include '/member/new_post_button.html' %}
         
         <script>
             let boards = document.getElementsByClassName("boards")[0];
