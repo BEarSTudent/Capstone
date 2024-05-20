@@ -64,7 +64,7 @@ function hide(){
     uploadTargets[uploadtype].classList.remove('hidden');
     choose_ex[uploadtype].classList.remove('hidden');
     choose_back[0].classList.remove('hidden');
-+       document.getElementById('image-show_1').replaceChildren();
++   document.getElementById('image-show_1').replaceChildren();
     document.getElementById('image-show_2').replaceChildren();
     document.getElementById('image-show_3').replaceChildren();
     targetName[uploadtype].textContent = "example.jpg";
@@ -80,6 +80,11 @@ function stepBack(step){
 
     if(currentStep ==3){
         styleTargets[styletype].classList.add('hidden');
+        if(styletype == 2){
+            choose_style[0].classList.remove('hidden');
+            document.getElementById('image-show_4').replaceChildren();
+            document.getElementById('fileName_4').textContent = "example.jpg";
+        }
     }
     currentStep --;
 
