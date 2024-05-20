@@ -92,6 +92,9 @@ function edit_profile(user_data) {
 
     // profile form
     let profile_form = document.createElement("form");
+    profile_form.setAttribute("action", "/mypage/editprofile");
+    profile_form.setAttribute("method", "POST");
+    profile_form.setAttribute("enctype", "multipart/form-data");
 
     let form_name_label = document.createElement("label");
     form_name_label.setAttribute("id", "form_name_label")
@@ -99,32 +102,34 @@ function edit_profile(user_data) {
 
     let form_name_text = document.createElement("input");
     form_name_text.setAttribute("id", "form_name_text");
+    form_name_text.setAttribute("name", "user_name");
     form_name_text.setAttribute("type", "text");
     form_name_text.setAttribute("value", user_data[1]);
+
+    let image_upload_button = document.createElement("input");
+    image_upload_button.setAttribute("id", "image_upload_button");
+    image_upload_button.setAttribute("type", "file");
+    image_upload_button.setAttribute("name", "file")
+    image_upload_button.setAttribute("accept", "image/*");
+    image_upload_button.setAttribute("onchange", "image_upload(this)");
 
     let profile_submit = document.createElement("input");
     profile_submit.setAttribute("id", "profile_submit");
     profile_submit.setAttribute("type", "submit");
     profile_submit.value = "저장";
-    profile_submit.setAttribute("onclick", "save_profile()");
 
     form_name_label.appendChild(form_name_text);
     profile_form.appendChild(form_name_label);
+    profile_form.appendChild(image_upload_button);
     profile_form.appendChild(profile_submit);
 
     block.appendChild(profile_form);
 }
 
-function save_profile() {
-    let input_user_name = document.getElementById("user_name_text").value;
+function image_upload(input) {
+    let file = input.files[0];
 
-    fetch("/mypage/editprofile", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({'user_name': input_user_name})
-    })
+    let user_image = document.getElementById("user_image");
 
-    location.href = '/mypage';
+    user_image.src = URL.createObjectURL(file);
 }

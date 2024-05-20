@@ -197,14 +197,20 @@ def check_pw():
 
 @app.route('/mypage/editprofile', methods=["POST"])
 def edit_profile():
-    input_user_name = request.get_json()['user_name']
+    input_user_name = request.form['user_name']
+    print(input_user_name)
     
-    # 임시 pw
-    user_pw = db.user_select(current_user.id)[1]
+    user_data = db.user_select(current_user.id)
+    user_image = user_data[3]
     
-    db.user_update(current_user.id, user_pw, input_user_name, "../../static/images/sample_image.png")
+    if(request.files['file'] != None):
+        f = request.files['file']
+        f.save("../../static/images/" + f.filename) # 경로 수정 필요
+        user_image = "../../static/images/" + f.filename
     
-    return
+    db.user_update(current_user.id, user_data[1], str(input_user_name), user_image)
+    
+    return mypage()
 
 if __name__ == "__main__":
     app.run(debug=True)
