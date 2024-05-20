@@ -103,11 +103,7 @@ def sendfile():
         # 반환 값은 변환된 이미지임
         response = requests.post(server_url, json=data, headers=headers)
         response = response.json()
-        for key, value in response.items():
-            if type(value) is str:
-                print(f"{key}: {value[:20]}")
-            else:
-                print(f"{key}: {value}")
+        
         # 이미지 형식으로 변환
         image = Image.open(BytesIO(base64.b64decode(response['img'])))
         path = parent_path + "/user/"
