@@ -39,7 +39,7 @@ def render_template_with_banner(template_name: str, **context):
 
 @app.route('/')
 def index():
-    return render_template_with_banner("test.html")
+    return render_template_with_banner("index.html")
 
 @app.route('/transfer')
 def transfer_page():
