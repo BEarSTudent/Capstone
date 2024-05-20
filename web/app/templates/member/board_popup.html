@@ -40,8 +40,11 @@
         </div>
 
         {% if current_user.is_authenticated %}
-        <div>
+        <div id="popup_new_comment">
             <!--new comment-->
+            <img id="new_comment_user_image" src="{{user_data[2]}}">
+            <input id="new_comment_text" type="text" placeholder="댓글 작성" onkeypress="enter_submit_check(event)">
+            <input id="new_comment_submit" type="submit" value="작성" onclick="new_comment_submit()">
         </div>
         {% endif %}
     </div>
@@ -73,6 +76,8 @@
             body: JSON.stringify({'board_id': board_id})
         })
         .then(res => res.json())
+
+        board_popup.setAttribute("id", board_id);
 
         let popup_board_image = document.getElementById("popup_board_image");
         popup_board_image.setAttribute("src", response_data.board_data[3]);
@@ -134,5 +139,30 @@
             comment_block.appendChild(comment_contents);
             popup_board_comments_block.appendChild(comment_block);
         }
+    }
+
+    function enter_submit_check(e) {
+        if (e.keyCode == 13) {
+            new_comment_submit();
+        }
+    }
+
+    async function new_comment_submit() {
+        let new_comment_text = document.getElementById("new_comment_text");
+        let input_contents = new_comment_text.value;
+        let board_id = board_popup.id;
+
+        new_comment_text.value = "";
+        new_comment_text.blur();
+
+        const response_data = await fetch("/board/popup/newcomment", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'board_id': board_id, 'contents': input_contents})
+        })
+
+        popup_data(board_id);
     }
 </script>

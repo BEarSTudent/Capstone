@@ -110,7 +110,7 @@
 }
 
 #popup_board_comments_block{
-    height: 200px;
+    height: 160px;
     overflow-y: auto;
 }
 
@@ -146,4 +146,39 @@
 
 .comment_contents{
     margin: 28px 4px 4px 4px;
+}
+
+#popup_new_comment{
+    background-color: #FCF8E8;
+    height: 36px;
+    margin-top: 12px;
+    border-radius: 30px;
+}
+
+#new_comment_user_image{
+    float: left;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #EEEEEE;
+    margin: 8px;
+}
+
+#new_comment_text{
+    float: left;
+    margin: 8px 0;
+    height: 20px;
+    width: 264px;
+    border-style: none;
+    background-color: transparent;
+}
+
+#new_comment_submit{
+    float: right;
+    margin: 8px;
+    height: 20px;
+    border-style: none;
+    border-radius: 20px;
+    background-color: #ECB390;
 }

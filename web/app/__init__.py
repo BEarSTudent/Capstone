@@ -192,6 +192,15 @@ def show_popup():
     
     return jsonify(board_one_data)
 
+@app.route('/board/popup/newcomment', methods=["POST"])
+def add_comment():
+    board_id = request.get_json()['board_id']
+    input_contents = request.get_json()['contents']
+    
+    db.comment_insert(board_id, current_user.id, input_contents)
+    
+    return
+
 @app.route('/mypage')
 def mypage():
     board_data = list(db.board_select_user(current_user.id))
