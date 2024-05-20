@@ -181,5 +181,30 @@ def mypage():
     
     return render_template_with_banner("/member/mypage.html", board_data=board_data, savebox_data=savebox_data)
 
+@app.route('/mypage/pwcheck', methods=["POST"])
+def check_pw():
+    if request.method == "POST":
+        input_pw_data = request.get_json()['check_pw']
+        hashed_input_pw = hash_password(input_pw_data)
+        
+        exist_user_data = db.user_select(current_user.id)
+        user_profile_data = [exist_user_data[0], exist_user_data[2], exist_user_data[3]]
+        
+        if hashed_input_pw == exist_user_data[1]:
+            return jsonify({'pw_match': True, 'user_data': user_profile_data})
+        else:
+            return jsonify({'pw_match': False, 'user_data': user_profile_data})
+
+@app.route('/mypage/editprofile', methods=["POST"])
+def edit_profile():
+    input_user_name = request.get_json()['user_name']
+    
+    # 임시 pw
+    user_pw = db.user_select(current_user.id)[1]
+    
+    db.user_update(current_user.id, user_pw, input_user_name, "../../static/images/sample_image.png")
+    
+    return
+
 if __name__ == "__main__":
     app.run(debug=True)
