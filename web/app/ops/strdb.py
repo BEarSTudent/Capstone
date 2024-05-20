@@ -197,13 +197,13 @@ class StrDatabase:
         board_sql = "SELECT * FROM str_board WHERE board_id=" + str(board_id) + ";"
         board_data = self.__read_db(board_sql)[0]
         
-        user_sql = "SELECT * FROM str_user WHERE user_id = '" + board_data[1] + "';"
+        user_sql = "SELECT user_id, user_name, user_image FROM str_user WHERE user_id = '" + board_data[1] + "';"
         user_data = self.__read_db(user_sql)[0]
         
         like_sql = "SELECT COUNT(*) FROM str_like WHERE board_id=" + str(board_id) + ";"
         like_count = int(self.__read_db(like_sql)[0][0])
         
-        comment_sql = "SELECT * FROM str_comment WHERE board_id=" + str(board_id) + ";"
+        comment_sql = "SELECT c.comment_id, c.user_id, u.user_name, u.user_image, c.contents FROM str_comment c, str_user u WHERE c.user_id=u.user_id AND board_id=" + str(board_id) + ";"
         comment_data = self.__read_db(comment_sql)
         
         like_user_sql = "SELECT * FROM str_like WHERE board_id=" + str(board_id) + " AND user_id='" + user_id + "';"
