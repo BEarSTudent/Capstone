@@ -44,6 +44,11 @@ function check_pw() {
     profile_box.removeChild(edit_button);
 
     // check pw form
+    let check_pw_explain = document.createElement("div");
+    check_pw_explain.setAttribute("id", "check_pw_explain");
+    check_pw_explain.innerHTML = "비밀번호 확인이 필요합니다.";
+    block.appendChild(check_pw_explain);
+
     let pw_input = document.createElement("input");
     pw_input.setAttribute("id", "pw_input")
     pw_input.setAttribute("type", "password");
@@ -52,7 +57,7 @@ function check_pw() {
     pw_input.focus();
 
     let password_check_text = document.createElement("div");
-    password_check_text.setAttribute("id", "password_check_text")
+    password_check_text.setAttribute("id", "password_check_text");
     block.appendChild(password_check_text);
 }
 
@@ -88,17 +93,23 @@ function edit_profile(user_data) {
     // profile form
     let profile_form = document.createElement("form");
 
-    let form_name = document.createElement("input");
-    form_name.setAttribute("id", "user_name_text");
-    form_name.setAttribute("type", "text");
-    form_name.setAttribute("value", user_data[1]);
+    let form_name_label = document.createElement("label");
+    form_name_label.setAttribute("id", "form_name_label")
+    form_name_label.innerHTML = "이름: ";
+
+    let form_name_text = document.createElement("input");
+    form_name_text.setAttribute("id", "form_name_text");
+    form_name_text.setAttribute("type", "text");
+    form_name_text.setAttribute("value", user_data[1]);
 
     let profile_submit = document.createElement("input");
+    profile_submit.setAttribute("id", "profile_submit");
     profile_submit.setAttribute("type", "submit");
     profile_submit.value = "저장";
     profile_submit.setAttribute("onclick", "save_profile()");
 
-    profile_form.appendChild(form_name);
+    form_name_label.appendChild(form_name_text);
+    profile_form.appendChild(form_name_label);
     profile_form.appendChild(profile_submit);
 
     block.appendChild(profile_form);
