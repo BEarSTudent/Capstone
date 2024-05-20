@@ -1,18 +1,23 @@
-from flask import Flask, render_template, url_for, request, redirect, send_file, jsonify
+from flask import Flask, render_template, url_for, request, redirect, jsonify, send_from_directory
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-import json
 from PIL import Image
 from io import BytesIO
-import base64
-import hashlib
 from ops import StrDatabase, User
 import xml.etree.ElementTree as elemTree
+import os, cv2, requests, json, base64, hashlib
+import numpy as np
+
+# 부모 디렉토리
+parent_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# 현재 디렉토리
+current_path = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__)
 
 # secret_key를 관리하기 위해 xml 파일 사용
 tree = elemTree.parse('keys.xml') # 사용 환경에 맞춰 절대 경로 적용 후 사용
 app.secret_key = tree.find('string[@name="secret_key"]').text
+server_url = tree.find('string[@name="server_url"]').text
 
 # 로그인 관리
 login_manager = LoginManager()
@@ -46,25 +51,71 @@ def wait():
 
 @app.route('/transfer/result', methods=["GET", "POST"])
 def result():
-    image_path = "images/sample_image.png"
+    # 테스트용으로 작성한 코드
+    # 아래 두줄은 배포할 때 삭제해야함
+    image_name = "sample_image.png"
+    path_type = "temp"
     if request.method == "POST":
         json_data = request.get_json()
         dict_data = json.loads(json.dumps(json_data))
         
         image_name = dict_data['name']
-        image_path = "images/transfer/" + str(image_name)
-
-        image = dict_data['img']
-        image = Image.open(BytesIO(base64.b64encode(image)))
+        if current_user.is_authenticated:
+            path_type = current_user.id
+        else:
+            path_type = "temp"
+            
+        image_path = parent_path + f"/user/{path_type}/" + str(image_name)
+        image_name = dict_data['img']
+        image = Image.open(BytesIO(base64.b64encode(image_name)))
         image.save(image_path)
     
-    return render_template_with_banner('/transfer/result.html', image = image_path)
+    return render_template_with_banner('/transfer/result.html', type=path_type, image = image_name)
 
-@app.route('/transfer/download/<path:filename>')
-def download(filename):
-    filename = "static/" + filename
-    return send_file(filename,
-                     as_attachment=True)
+@app.route('/<path_type>/<filename>')
+def image_path(path_type, filename):
+    return send_from_directory(parent_path + "/user/" + path_type, filename)
+
+@app.route('/sendfile', methods=['POST'])
+def sendfile():
+    if request.method == 'POST':
+        '''
+        ==========================================
+                        json info
+        ==========================================
+        person_transfer_bool *  : 인물 포함 이미지 변환을 요청했는지 유무. True = 인물포함 변환. False = 인물 제외 변환.
+        encoding_type *         : 이미지 encoding 형식. ex).jpg, .png
+        content_target_name *   : 최종적으로 유저가 이미지 변환을 요구하는 이미지
+        content_target_image *  : 위의 이미지 데이터
+        content_source_name     : 유저가 배경화면과 content_target_image와의 합성을 원했을 경우. None에서 이미지 이름을 받아온다
+        content_source_image    : 위의 이미지 데이터
+        style_name *            : 변환할 스타일 이미지 이름
+        style_image *           : 위의 이미지 데이터
+        
+            * : 값이 항상 존재해야한다는 의미
+        '''
+        # 웹에서 데이터를 받아옴
+        data = request.get_json()
+        content_target_name = data['content_target_name']
+        headers = {'Content-Type': 'application/json'}  # JSON 형식의 데이터를 전송함을 명시
+            
+        # AI server에 데이터 전송
+        # 반환 값은 변환된 이미지임
+        response = requests.post(server_url, json=data, headers=headers)
+        response = response.json()
+        
+        # 이미지 형식으로 변환
+        image = Image.open(BytesIO(base64.b64decode(response['img'])))
+        path = parent_path + "/user/"
+        if current_user.is_authenticated:
+            path += current_user.id
+        else:
+            path += "temp"
+        # 이미지 저장
+        image.save(path + f"/{content_target_name}")
+        
+        # 반환 타입 지정
+        return 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -213,4 +264,4 @@ def edit_profile():
     return mypage()
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=12380)
