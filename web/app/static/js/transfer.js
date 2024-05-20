@@ -1,9 +1,11 @@
 const stepTargets = document.querySelectorAll('.step');
 const formTargets = document.querySelectorAll('.form');
 const uploadTargets = document.querySelectorAll('.upload');
+const styleTargets = document.querySelectorAll('.style');
 const stepprev = document.querySelectorAll('.step-status');
 const choose_ex = document.querySelectorAll('.choose');
 const choose_back = document.querySelectorAll('.choose_back');
+const choose_style = document.querySelectorAll('.choose_style');
 const targetName = document.querySelectorAll('.targetname');
 
 const uptp_single_Button = document.querySelector('#singleuploadbtn');
@@ -19,6 +21,8 @@ const upload_1 = document.querySelector('#image-upload_2');
 const realUpload_1 = document.querySelector('#chooseFile_2');
 const upload_2 = document.querySelector('#image-upload_3');
 const realUpload_2 = document.querySelector('#chooseFile_3');
+const upload_3 = document.querySelector('#style-upload');
+const realUpload_3 = document.querySelector('#chooseFile_4');
 
 let currentStep = 0;
 let uploadtype = 0;
@@ -49,6 +53,10 @@ function stepNext(){
     }else{
         uploadTargets[uploadtype].classList.add('hidden');
     }
+
+    if(currentStep == 2){
+        styleTargets[styletype].classList.remove('hidden');
+    }
     currentStep = currentStep + 1;
 }
 
@@ -69,6 +77,10 @@ function hide(){
 function stepBack(step){
     stepTargets[currentStep].classList.remove('active');
     formTargets[currentStep].classList.add('hidden');
+
+    if(currentStep ==3){
+        styleTargets[styletype].classList.add('hidden');
+    }
     currentStep --;
 
     while(currentStep > step){
@@ -137,6 +149,28 @@ function loadsource_target(input){
     choose_back[0].classList.add('hidden');
 }
 
+function loadstyle(input){
+    request_data.style_image = input.files[0];
+    request_data.style_name = request_data.style_image.name;
+
+    let name = document.getElementById('fileName_4');
+    name.textContent = request_data.style_name;
+
+    let newImage = document.createElement("img");
+
+    newImage.src = URL.createObjectURL(request_data.style_image);      
+
+    newImage.style.width = "100%";
+    newImage.style.height = "100%";
+    newImage.style.objectFit = "cover";
+
+    let container = document.getElementById('image-show_4');
+    
+    container.replaceChildren();
+    container.appendChild(newImage);
+    choose_style[0].classList.add('hidden');
+}
+
 window.onload = function(){
     uptp_single_Button.addEventListener('click', ()=>{
         uploadtype = 0;
@@ -181,6 +215,10 @@ window.onload = function(){
 
     upload_2.addEventListener('click', () =>{
         realUpload_2.click()
+    });
+
+    upload_3.addEventListener('click', () =>{
+        realUpload_3.click()
     });
 
 }

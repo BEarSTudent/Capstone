@@ -222,3 +222,21 @@
     width: 0.1px;
     float: left;
 }
+
+.styleform{
+    margin: 40px;
+    width: 1280px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#style-upload{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 680px;
+    height: 380px;
+    background: #EEEEEE;
+}
