@@ -18,6 +18,7 @@ function load_boards() {
     for(i = start_num; i < last_num; i++) {
         let board_block = document.createElement("div");
         board_block.setAttribute("class", "board_block");
+        board_block.setAttribute("id", board_data[i][0]);
         
         let board_image = document.createElement("img");
         board_image.setAttribute("class", "board_image");

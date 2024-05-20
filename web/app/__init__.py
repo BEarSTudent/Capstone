@@ -179,6 +179,19 @@ def community():
     
     return render_template_with_banner("/community/community.html", search_text=search_text, sort_by=sort_by, board_data=boards)
 
+@app.route('/board/popup', methods=["POST"])
+def show_popup():
+    board_id = request.get_json()['board_id']
+    
+    if current_user.is_authenticated:
+        board_one_data = db.board_one(board_id, current_user.id)
+    else:
+        board_one_data = db.board_one(board_id, "")
+    
+    print(board_one_data)
+    
+    return jsonify(board_one_data)
+
 @app.route('/mypage')
 def mypage():
     board_data = list(db.board_select_user(current_user.id))
