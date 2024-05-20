@@ -17,7 +17,7 @@ app = Flask(__name__)
 # secret_key를 관리하기 위해 xml 파일 사용
 tree = elemTree.parse('keys.xml') # 사용 환경에 맞춰 절대 경로 적용 후 사용
 app.secret_key = tree.find('string[@name="secret_key"]').text
-server_url = tree.find('string[@name="server_url"]')
+server_url = tree.find('string[@name="server_url"]').text
 
 # 로그인 관리
 login_manager = LoginManager()
@@ -39,7 +39,7 @@ def render_template_with_banner(template_name: str, **context):
 
 @app.route('/')
 def index():
-    return render_template_with_banner("index.html")
+    return render_template_with_banner("test.html")
 
 @app.route('/transfer')
 def transfer_page():
@@ -96,60 +96,30 @@ def sendfile():
         '''
         # 웹에서 데이터를 받아옴
         data = request.get_json()
-        
-        # 이미지 전처리
-        encoding_type = data['encoding_type']
         content_target_name = data['content_target_name']
-        
-        image = data['content_target_image'].read()
-        content_target_image = encoding_image(image, encoding_type)
-        
-        # style_image이 None일 경우 str에서 제공하는 화풍을 선택한 경우이다.
-        if data['style_image'] is not None:
-            image = data['style_image'].read()
-            style_image = encoding_image(image, encoding_type)
-        else:
-            style_image = None
-        
-        # AI server에 보낼 json 파일
-        file = {"person_transfer_bool": data['person_transfer_bool'],
-                "encoding_type": encoding_type,
-                "content_target_name": content_target_name,
-                "content_target_image": content_target_image,
-                "style_name": data['style_name'],
-                "style_image": style_image,
-                "content_source_name": None,
-                "content_source_image": None}
-        
-        if data['content_source_name'] is not None:
-            image = data['content_source_image'].read()
-            content_source_image = encoding_image(image, encoding_type)
-            file['content_source_name'] = data['content_source_name']
-            file['content_source_image'] = content_source_image
+        headers = {'Content-Type': 'application/json'}  # JSON 형식의 데이터를 전송함을 명시
             
         # AI server에 데이터 전송
         # 반환 값은 변환된 이미지임
-        response = requests.post(server_url, files=file)
+        response = requests.post(server_url, json=data, headers=headers)
+        response = response.json()
+        for key, value in response.items():
+            if type(value) is str:
+                print(f"{key}: {value[:20]}")
+            else:
+                print(f"{key}: {value}")
         # 이미지 형식으로 변환
-        image = Image.open(BytesIO(base64.b64encode(response['img'])))
+        image = Image.open(BytesIO(base64.b64decode(response['img'])))
         path = parent_path + "/user/"
         if current_user.is_authenticated:
             path += current_user.id
         else:
-            path += "/temp"
+            path += "temp"
         # 이미지 저장
         image.save(path + f"/{content_target_name}")
         
-        return True
-        
-def encoding_image(image, encoding_type):
-    # OpenCV로 이미지 읽기
-    nparr = np.frombuffer(image, np.uint8)
-    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    _, img = cv2.imencode(encoding_type, img)
-    encoded_image = base64.b64encode(img).decode('utf-8')
-    
-    return encoded_image
+        # 반환 타입 지정
+        return 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -255,4 +225,4 @@ def community():
     return render_template_with_banner("/community/community.html", search_text=search_text, sort_by=sort_by, board_data=boards)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=12380)
