@@ -179,5 +179,17 @@ def community():
     
     return render_template_with_banner("/community/community.html", search_text=search_text, sort_by=sort_by, board_data=boards)
 
+@app.route('/mypage')
+def mypage():
+    board_data = list(db.board_select_user(current_user.id))
+    for i in range(len(board_data)):
+        board_data[i] = list(board_data[i])
+    
+    savebox_data = list(db.savebox_select(current_user.id))
+    for i in range(len(savebox_data)):
+        savebox_data[i] = list(savebox_data[i])
+    
+    return render_template_with_banner("/member/mypage.html", board_data=board_data, savebox_data=savebox_data)
+
 if __name__ == "__main__":
     app.run(debug=True)

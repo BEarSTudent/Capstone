@@ -72,7 +72,7 @@ class StrDatabase:
         
         self.__write_db(sql)
 
-    def board_select(self, search_text:str, sort_by: str):
+    def board_select(self, search_text: str, sort_by: str):
         """게시판 로드를 위해 str_board의 데이터를 search_text 기반 검색, sort_by 기준 정렬
 
         Args:
@@ -96,7 +96,20 @@ class StrDatabase:
             sql = "SELECT board_id, board_image, board_title FROM str_board "
             if search_text != "":
                 sql += "WHERE board_title LIKE '%" + search_text + "%' OR contents LIKE '%" + search_text + "%' "
-            sql += "ORDER BY board_id DESC"
+            sql += "ORDER BY board_id DESC;"
+        
+        return self.__read_db(sql)
+    
+    def board_select_user(self, user_id: str):
+        """str_board table에서 user_id를 기반으로 검색한 결과를 반환하는 함수
+
+        Args:
+            user_id (str): 검색할 사용자 id
+
+        Returns:
+            tuple: 사용자 기반 검색 결과. ((board_id, board_image, board title), ...)
+        """
+        sql = "SELECT board_id, board_image, board_title FROM str_board WHERE user_id = '" + user_id + "' ORDER BY board_id DESC;"
         
         return self.__read_db(sql)
     
@@ -144,9 +157,9 @@ class StrDatabase:
             user_id (str): 사용자의 id
         
         Returns:
-            tuple: 사용자의 보관함 데이터. ((savebox_id, user_id, savebox_image), ...)
+            tuple: 사용자의 보관함 데이터. ((savebox_id, savebox_image), ...)
         """
-        sql = "SELECT * FROM str_savebox WHERE user_id='" + user_id + "';"
+        sql = "SELECT savebox_id, savebox_image FROM str_savebox WHERE user_id='" + user_id + "';"
         
         return self.__read_db(sql)
     
