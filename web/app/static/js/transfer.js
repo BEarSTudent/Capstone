@@ -10,6 +10,9 @@ const uptp_single_Button = document.querySelector('#singleuploadbtn');
 const uptp_double_Button = document.querySelector('#doubleuploadbtn');
 const up_single_Button = document.querySelector('#singlefileupload');
 const up_double_Button = document.querySelector('#doublefileupload');
+const sttp_s_Button = document.querySelector('#severgiftbtn');
+const sttp_d_Button = document.querySelector('#dallebtn');
+const sttp_u_Button = document.querySelector('#useruploadbtn');
 const upload_0 = document.querySelector('#imageone-upload');
 const realUpload_0 = document.querySelector('#chooseFile_1');
 const upload_1 = document.querySelector('#image-upload_2');
@@ -19,6 +22,7 @@ const realUpload_2 = document.querySelector('#chooseFile_3');
 
 let currentStep = 0;
 let uploadtype = 0;
+let styletype = 0;
 
 let request_data = {
     user_id : 0,
@@ -38,6 +42,7 @@ function stepNext(){
     formTargets[currentStep].classList.add('hidden');
 
     stepTargets[currentStep + 1].classList.add('active');
+    formTargets[currentStep + 1].classList.remove('hidden');
 
     if(currentStep == 0){
         uploadTargets[uploadtype].classList.remove('hidden');
@@ -63,10 +68,12 @@ function hide(){
 
 function stepBack(step){
     stepTargets[currentStep].classList.remove('active');
+    formTargets[currentStep].classList.add('hidden');
     currentStep --;
 
     while(currentStep > step){
         stepTargets[currentStep].classList.remove('prev');
+        formTargets[currentStep].classList.add('hidden');
         currentStep --;
     }
     stepTargets[currentStep].classList.remove('prev');
@@ -149,6 +156,21 @@ window.onload = function(){
         stepNext();
     });
 
+    sttp_s_Button.addEventListener('click', ()=>{
+        styletype = 0;
+        stepNext();
+    });
+
+    sttp_d_Button.addEventListener('click', ()=>{
+        styletype = 1;
+        stepNext();
+    });
+
+    sttp_u_Button.addEventListener('click', ()=>{
+        styletype = 2;
+        stepNext();
+    });
+
     upload_0.addEventListener('click', () =>{
         realUpload_0.click()
     });
@@ -160,4 +182,5 @@ window.onload = function(){
     upload_2.addEventListener('click', () =>{
         realUpload_2.click()
     });
+
 }
