@@ -115,7 +115,7 @@ def sendfile():
         image.save(path + f"/{content_target_name}")
         
         # 반환 타입 지정
-        return 
+        return jsonify({'name': content_target_name})
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
