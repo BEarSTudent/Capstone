@@ -58,7 +58,6 @@ def save_image():
             decay_rate = 1    
         width, height = int(width * decay_rate), int(height * decay_rate)
         
-        print(width, height)
         # 이미지 크기 변환
         content_target_image = content_target_image.resize((width, height))
         content_target_image.save(f"{content_path}{content_target_name}")
