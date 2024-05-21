@@ -12,7 +12,6 @@
 
     <div class="savebox_image_background">
         <div class="savebox_image_block">
-            <button type="button" class="savebox_select_close_btn"></button>
         </div>
     </div>
 </div>
@@ -33,18 +32,23 @@
     let savebox_image_background = document.querySelector(".savebox_image_background");
     let savebox_image_block = document.querySelector(".savebox_image_block");
     let select_image_button = document.getElementById("select_image_button");
-    let savebox_select_close_btn = document.querySelector(".savebox_select_close_btn");
 
     select_image_button.addEventListener('click', function() {
         savebox_image_background.classList.add('on');
         select_savebox();
     })
 
-    savebox_select_close_btn.addEventListener('click', function() {
-        savebox_image_background.classList.remove('on');
-    })
-
     async function select_savebox() {
+        savebox_image_block.innerHTML = "";
+        
+        let savebox_select_close_btn = document.createElement("button");
+        savebox_select_close_btn.setAttribute("type", "button");
+        savebox_select_close_btn.setAttribute("class", "savebox_select_close_btn");
+        savebox_image_block.appendChild(savebox_select_close_btn);
+        savebox_select_close_btn.addEventListener('click', function() {
+            savebox_image_background.classList.remove('on');
+        })
+
         const response_data = await fetch("/selectsavebox", {
             method: "POST",
             headers: {
@@ -64,6 +68,8 @@
             return
         }
 
+        let select_board_image = document.getElementById("select_board_image");
+
         for (let i = 0; i < savebox_data.length; i++) {
             let savebox_block = document.createElement("div");
             savebox_block.setAttribute("class", "savebox_block");
@@ -75,6 +81,11 @@
             savebox_block.appendChild(savebox_image);
         
             savebox_image_block.appendChild(savebox_block);
+
+            savebox_block.addEventListener('click', function() {
+                select_board_image.src = savebox_image.src;
+                savebox_block.style.border = "solid";
+            })
         }
     }
 </script>
