@@ -172,10 +172,10 @@ async function laststep(){
         },
         body: JSON.stringify(request_data)
     })
-    .then(response => response.json())
-    .then(request_data => {
-        console.log(request_data);
-        // Handle response from Flask here
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+        }
     })
     .catch(error => {
         console.error('Error:', error);
