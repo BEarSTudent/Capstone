@@ -6,6 +6,7 @@
         <link href="{{url_for('static', filename='css/mypage_style.css')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/new_post_button_style.css')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/board_popup_style.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='css/new_board_popup_style.css')}}" rel="stylesheet">
         <script src="{{url_for('static', filename='js/mypage.js')}}"></script>
         <script src="{{url_for('static', filename='js/load_board.js')}}"></script>
     </head>
@@ -47,9 +48,6 @@
 
             <div id="boards"></div>
         </section>
-
-        <!--floating button to write new post-->
-        {% include '/member/new_post_button.html' %}
         
         <script>
             let boards = document.getElementById("boards");
@@ -67,5 +65,15 @@
         <div class="popup_block">
             {% include '/member/board_popup.html' %}
         </div>
+
+        <!--floating button to write new post-->
+        {% if current_user.is_authenticated %}
+            {% include '/member/new_post_button.html' %}
+
+            <!--new board popup-->
+            <div class="new_board_popup_block">
+                {% include '/member/new_board_popup.html' %}
+            </div>
+        {% endif %}
     </body>
 </html>

@@ -6,6 +6,7 @@ from ops import StrDatabase, User
 import xml.etree.ElementTree as elemTree
 import os, cv2, requests, json, base64, hashlib
 import numpy as np
+from datetime import datetime
 
 # 부모 디렉토리
 parent_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -302,6 +303,25 @@ def edit_profile():
     db.user_update(current_user.id, user_data[1], str(input_user_name), f.filename)
     
     return mypage()
+
+@app.route("/newboard", methods=["POST"])
+def new_board():
+    new_board_data = request.get_json()
+    
+    now = datetime.now()
+    board_date = now.strftime("%Y-%m-%d %H:%M:%S")
+    
+    db.board_insert(current_user.id, board_date, new_board_data['select_image'], new_board_data['title_text'], new_board_data['contents_text'])
+    
+    return mypage()
+
+@app.route("/selectsavebox", methods=["POST"])
+def select_savebox():
+    savebox_data = list(db.savebox_select(current_user.id))
+    for i in range(len(savebox_data)):
+        savebox_data[i] = list(savebox_data[i])
+    
+    return jsonify({'savebox_data': savebox_data, 'image_path': url_for('image_path', path_type=current_user.id, filename="")})
 
 if __name__ == "__main__":
     app.run(debug=True, port=12380)
