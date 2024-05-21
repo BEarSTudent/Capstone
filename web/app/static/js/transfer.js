@@ -157,7 +157,10 @@ async function laststep(){
     if(document.getElementById("check_1").checked || document.getElementById("check_2").checked){
         request_data.person_transfer_bool = true;
     } 
-    request_data.encoding_type = request_data.content_target_image.type; 
+
+    let parsing = request_data.content_target_image.type;
+    let replaced_parsing = parsing.replace('image/', '.');
+    request_data.encoding_type = replaced_parsing;
     request_data.content_target_image = await toBase64(request_data.content_target_image);
     request_data.style_image = request_data.style_image ? await toBase64(request_data.style_image) : null;
     request_data.content_source_image =  request_data.content_source_image ? await toBase64( request_data.content_source_image) : null;
