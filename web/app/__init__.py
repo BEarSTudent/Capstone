@@ -314,7 +314,7 @@ def select_savebox():
     for i in range(len(savebox_data)):
         savebox_data[i] = list(savebox_data[i])
     
-    return jsonify({'savebox_data': savebox_data})
+    return jsonify({'savebox_data': savebox_data, 'image_path': url_for('image_path', path_type=current_user.id, filename="")})
 
 if __name__ == "__main__":
     app.run(debug=True, port=12380)

@@ -78,7 +78,7 @@
             
             let savebox_image = document.createElement("img");
             savebox_image.setAttribute("class", "savebox_image");
-            savebox_image.setAttribute("src", savebox_data[i][1]);
+            savebox_image.setAttribute("src", response_data.image_path + savebox_data[i][1]);
             savebox_block.appendChild(savebox_image);
         
             savebox_image_block.appendChild(savebox_block);
