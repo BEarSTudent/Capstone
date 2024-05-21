@@ -1,20 +1,25 @@
 <div class="new_board_popup">
-    <form>
+    <form action="/newboard" method="POST">
         <img id="select_board_image">
-        <input type="file" onchange="image_upload(this)">
+        <button id="select_image_button" type="button">이미지 선택</button>
 
         <input type="text" placeholder="제목 입력">
         <textarea placeholder="내용 입력"></textarea>
+        <input type="submit" value="업로드">
     </form>
     
     <button type="button" class="new_board_close_btn"></button>
+
+    <div class="savebox_image_background">
+        <div class="savebox_image_block">
+            <button type="button" class="savebox_select_close_btn"></button>
+        </div>
+    </div>
 </div>
 
 <script>
     let new_board_popup_block = document.querySelector(".new_board_popup_block");
-
     let new_post_button = document.getElementById("new_post_button");
-
     let new_board_close_btn = document.querySelector(".new_board_close_btn");
 
     new_post_button.addEventListener('click', function(){
@@ -25,11 +30,51 @@
         new_board_popup_block.classList.remove('on');
     })
 
-    function image_upload(input) {
-        let file = input.files[0];
-    
-        let select_board_image = document.getElementById("select_board_image");
-    
-        select_board_image.src = URL.createObjectURL(file);
+    let savebox_image_background = document.querySelector(".savebox_image_background");
+    let savebox_image_block = document.querySelector(".savebox_image_block");
+    let select_image_button = document.getElementById("select_image_button");
+    let savebox_select_close_btn = document.querySelector(".savebox_select_close_btn");
+
+    select_image_button.addEventListener('click', function() {
+        savebox_image_background.classList.add('on');
+        select_savebox();
+    })
+
+    savebox_select_close_btn.addEventListener('click', function() {
+        savebox_image_background.classList.remove('on');
+    })
+
+    async function select_savebox() {
+        const response_data = await fetch("/selectsavebox", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        })
+        .then(res => res.json())
+
+        let savebox_data = response_data.savebox_data;
+
+        if (savebox_data.length <= 0) {
+            let empty_text = document.createElement("div");
+            empty_text.setAttribute("class", "empty_text")
+            empty_text.innerHTML = "아직 사진이 없습니다.";
+            savebox_image_block.appendChild(empty_text);
+            return
+        }
+
+        for (let i = 0; i < savebox_data.length; i++) {
+            let savebox_block = document.createElement("div");
+            savebox_block.setAttribute("class", "savebox_block");
+            savebox_block.setAttribute("id", savebox_data[i][0]);
+            
+            let savebox_image = document.createElement("img");
+            savebox_image.setAttribute("class", "savebox_image");
+            savebox_image.setAttribute("src", savebox_data[i][1]);
+            savebox_block.appendChild(savebox_image);
+        
+            savebox_image_block.appendChild(savebox_block);
+        }
     }
 </script>

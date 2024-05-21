@@ -296,5 +296,17 @@ def edit_profile():
     
     return mypage()
 
+@app.route("/newboard", methods=["POST"])
+def new_board():
+    new_request = request.get_json()
+
+@app.route("/selectsavebox", methods=["POST"])
+def select_savebox():
+    savebox_data = list(db.savebox_select(current_user.id))
+    for i in range(len(savebox_data)):
+        savebox_data[i] = list(savebox_data[i])
+    
+    return jsonify({'savebox_data': savebox_data})
+
 if __name__ == "__main__":
     app.run(debug=True, port=12380)
