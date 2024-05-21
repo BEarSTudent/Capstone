@@ -71,7 +71,7 @@ section{
     cursor: pointer;
 }
 
-hr{
+#top_line_board{
     width: 1040px;
     margin: 0 auto;
 }
