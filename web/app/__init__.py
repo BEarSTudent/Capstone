@@ -33,7 +33,11 @@ def render_template_with_banner(template_name: str, **context):
     """banner에 필요한 사용자 데이터를 함께 render_template()하기 위한 함수"""
     if current_user.is_authenticated:
         user_tuple = db.user_select(current_user.id)
-        user_data = (user_tuple[0], user_tuple[2], user_tuple[3])
+        # 프로필을 한 번도 변경하지 않은 경우
+        if user_tuple[3] is None:
+            user_data = (user_tuple[0], user_tuple[2], "None")
+        else:
+            user_data = (user_tuple[0], user_tuple[2], user_tuple[3])
         return render_template(template_name, user_data=user_data, **context)
     else:
         return render_template(template_name, **context)
@@ -52,37 +56,22 @@ def wait():
 
 @app.route('/transfer/result', methods=["GET", "POST"])
 def result():
-    # 테스트용으로 작성한 코드
-    # 아래 두줄은 배포할 때 삭제해야함
-    # image_name = "sample_image.png"
-    # path_type = "temp"
-    # if request.method == "POST":
-    #     json_data = request.get_json()
-    #     dict_data = json.loads(json.dumps(json_data))
-        
-    #     image_name = dict_data['name']
-    #     if current_user.is_authenticated:
-    #         path_type = current_user.id
-    #     else:
-    #         path_type = "temp"
-            
-    #     image_path = parent_path + f"/user/{path_type}/" + str(image_name)
-    #     image_name = dict_data['img']
-    #     image = Image.open(BytesIO(base64.b64encode(image_name)))
-    #     image.save(image_path)
-    
-    
     image_name = request.args.get('name')
     if current_user.is_authenticated:
             path_type = current_user.id
     else:
         path_type = "temp"
-
+    
+    db.savebox_insert(current_user.id, image_name)
     return render_template_with_banner('/transfer/result.html', type=path_type, image = image_name)
 
 @app.route('/<path_type>/<filename>')
 def image_path(path_type, filename):
-    return send_from_directory(parent_path + "/user/" + path_type, filename)
+    profileImage = parent_path + "/user/" + path_type + "/" +filename
+    if filename == "None" or not os.path.exists(profileImage):
+        return send_from_directory(parent_path + "/app/static/images", "basic_user_image.png")
+    else:
+        return send_from_directory(parent_path + "/user/" + path_type, filename)
 
 @app.route('/sendfile', methods=['POST'])
 def sendfile():
@@ -140,6 +129,12 @@ def register():
             user_pw = data['pw']
             user_pw = hash_password(user_pw)
             user_name = data['user_name']
+            user_id_path = f"{current_path}/user/{user_id}"
+            print(user_id_path)
+            
+            if not os.path.exists(user_id_path):
+                os.makedirs(user_id_path)
+                
             try:
                 db.user_insert(user_id, user_pw, user_name)
                 print("redirect")
@@ -297,12 +292,12 @@ def edit_profile():
     
     if(request.files['file'] != None):
         f = request.files['file']
-        file_path = parent_path + "/user/user_image/"
+        file_path = parent_path + f"/user/{current_user.id}/"
         f.save(file_path + f.filename)
     
     db.user_update(current_user.id, user_data[1], str(input_user_name), f.filename)
     
-    return mypage()
+    return redirect(url_for('mypage'))
 
 @app.route("/newboard", methods=["POST"])
 def new_board():
@@ -313,7 +308,7 @@ def new_board():
     
     db.board_insert(current_user.id, board_date, new_board_data['select_image'], new_board_data['title_text'], new_board_data['contents_text'])
     
-    return mypage()
+    return redirect(url_for('mypage'))
 
 @app.route("/selectsavebox", methods=["POST"])
 def select_savebox():

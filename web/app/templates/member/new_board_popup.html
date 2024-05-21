@@ -103,11 +103,17 @@
                 },
                 body: JSON.stringify({'select_image': select_image, 'title_text': title_text, 'contents_text': contents_text})
             })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
+            })
+           
         }
         else {
             alert("사진을 선택해주세요.")
         }
 
-        location.href = "/mypage";
+
     }
 </script>

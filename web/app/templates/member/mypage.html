@@ -20,7 +20,7 @@
         <section>
             <!--profile-->
             <div id="profile">
-                <img id="user_image" src="{{url_for('image_path', path_type='user_image', filename=user_data[2])}}" width="80px">
+                <img id="user_image" src="{{url_for('image_path', path_type=user_data[0], filename=user_data[2])}}" width="80px">
                 <div id="user_text">
                     <div id="user_name_id_block">
                         <span id="user_name">{{user_data[1]}}</span>
