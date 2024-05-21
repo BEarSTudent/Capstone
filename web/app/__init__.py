@@ -243,7 +243,7 @@ def press_like():
     elif pressed == 1:
         db.like_delete(board_id, current_user.id)
     
-    return
+    return jsonify({})
 
 @app.route('/board/popup/newcomment', methods=["POST"])
 def add_comment():
@@ -252,7 +252,7 @@ def add_comment():
     
     db.comment_insert(board_id, current_user.id, input_contents)
     
-    return
+    return jsonify({})
 
 @app.route('/mypage')
 def mypage():
