@@ -17,21 +17,21 @@
         <!--page contents-->
         <section>
             <!--profile-->
-            <div class="profile">
-                <img class="user_image" src={{user_data[2]}} width="80px">
-                <div class="user_text">
-                    <div class="user_name_id_block">
-                        <span class="user_name">{{user_data[1]}}</span>
-                        <span class="user_id">@{{user_data[0]}}</span>
+            <div id="profile">
+                <img id="user_image" src="{{url_for('image_path', path_type='user_image', filename=user_data[2])}}" width="80px">
+                <div id="user_text">
+                    <div id="user_name_id_block">
+                        <span id="user_name">{{user_data[1]}}</span>
+                        <span id="user_id">@{{user_data[0]}}</span>
                     </div>
-                    <div class="user_number_block">
+                    <div id="user_number_block">
                         <span class="number_text">게시물</span>
                         <span class="number_num" id="board_num">00개</span>
                         <span class="number_text">보관함</span>
                         <span class="number_num" id="savebox_num">00개</span>
                     </div>
                 </div>
-                <div class="profile_edit">프로필 편집</div>
+                <div id="profile_edit" onclick="check_pw()">프로필 편집</div>
             </div>
         </section>
 
@@ -39,19 +39,19 @@
 
         <section>
             <!--board-->
-            <div class="select_board_block">
+            <div id="select_board_block">
                 <span class="board_select selected" onclick="user_board()">게시물</span>
                 <span class="board_select" onclick="user_savebox()">보관함</span>
             </div>
 
-            <div class="boards"></div>
+            <div id="boards"></div>
         </section>
 
         <!--floating button to write new post-->
         {% include '/member/new_post_button.html' %}
         
         <script>
-            let boards = document.getElementsByClassName("boards")[0];
+            let boards = document.getElementById("boards");
             let select = document.getElementsByClassName("board_select");
             let board_data;
             let last_num = 0;

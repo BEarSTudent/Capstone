@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload Test</title>
+</head>
+<body>
+    <h1>Upload Image and Data</h1>
+    <form id="uploadForm">
+        <label for="encodingType">Encoding Type:</label>
+        <input type="text" id="encodingType" name="encoding_type" value=".jpeg" required><br><br>
+
+        <label for="contentTargetName">Content Target Name:</label>
+        <input type="text" id="contentTargetName" name="content_target_name" value="test.jpeg" required><br><br>
+
+        <label for="contentTargetImage">Content Target Image:</label>
+        <input type="file" id="contentTargetImage" name="content_target_image" accept="image/*" required><br><br>
+
+        <label for="styleName">Style Name:</label>
+        <input type="text" id="styleName" name="style_name" value="starry_night.png" required><br><br>
+
+        <label for="styleImage">Style Image (optional):</label>
+        <input type="file" id="styleImage" name="style_image" accept="image/*"><br><br>
+
+        <label for="personTransferBool">Person Transfer Bool:</label>
+        <input type="checkbox" id="personTransferBool" name="person_transfer_bool"><br><br>
+
+        <label for="contentSourceName">Content Source Name (optional):</label>
+        <input type="text" id="contentSourceName" name="content_source_name"><br><br>
+
+        <label for="contentSourceImage">Content Source Image (optional):</label>
+        <input type="file" id="contentSourceImage" name="content_source_image" accept="image/*"><br><br>
+
+        <button type="button" onclick="uploadData()">Upload</button>
+    </form>
+
+    <script>
+        function toBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function uploadData() {
+            const form = document.getElementById('uploadForm');
+            const encodingType = document.getElementById('encodingType').value;
+            const contentTargetName = document.getElementById('contentTargetName').value;
+            const contentTargetImage = document.getElementById('contentTargetImage').files[0];
+            const styleName = document.getElementById('styleName').value;
+            const styleImage = document.getElementById('styleImage').files[0];
+            const personTransferBool = document.getElementById('personTransferBool').checked;
+            const contentSourceName = document.getElementById('contentSourceName').value;
+            const contentSourceImage = document.getElementById('contentSourceImage').files[0];
+
+            const contentTargetImageBase64 = await toBase64(contentTargetImage);
+            const styleImageBase64 = styleImage ? await toBase64(styleImage) : null;
+            const contentSourceImageBase64 = contentSourceImage ? await toBase64(contentSourceImage) : null;
+
+            const data = {
+                encoding_type: encodingType,
+                content_target_name: contentTargetName,
+                content_target_image: contentTargetImageBase64,
+                style_name: styleName,
+                style_image: styleImageBase64,
+                person_transfer_bool: personTransferBool,
+                content_source_name: contentSourceName,
+                content_source_image: contentSourceImageBase64
+            };
+
+            fetch('/sendfile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // Handle response from Flask here
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
