@@ -220,6 +220,40 @@ def community():
     
     return render_template_with_banner("/community/community.html", search_text=search_text, sort_by=sort_by, board_data=boards)
 
+@app.route('/board/popup', methods=["POST"])
+def show_popup():
+    board_id = request.get_json()['board_id']
+    
+    if current_user.is_authenticated:
+        board_one_data = db.board_one(board_id, current_user.id)
+    else:
+        board_one_data = db.board_one(board_id, "")
+        
+    board_one_data['image_path'] = url_for('image_path', path_type='user_image', filename="")
+    
+    return jsonify(board_one_data)
+
+@app.route('/board/popup/presslike', methods=["POST"])
+def press_like():
+    board_id = request.get_json()['board_id']
+    pressed = request.get_json()['pressed']
+    
+    if pressed == 0:
+        db.like_insert(board_id, current_user.id)
+    elif pressed == 1:
+        db.like_delete(board_id, current_user.id)
+    
+    return jsonify({})
+
+@app.route('/board/popup/newcomment', methods=["POST"])
+def add_comment():
+    board_id = request.get_json()['board_id']
+    input_contents = request.get_json()['contents']
+    
+    db.comment_insert(board_id, current_user.id, input_contents)
+    
+    return jsonify({})
+
 @app.route('/mypage')
 def mypage():
     board_data = list(db.board_select_user(current_user.id))

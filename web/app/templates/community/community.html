@@ -5,6 +5,7 @@
         <link href="{{url_for('static', filename='css/banner_style.css')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/community_style.css')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/new_post_button_style.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='css/board_popup_style.css')}}" rel="stylesheet">
         <script src="{{url_for('static', filename='js/community.js')}}"></script>
         <script src="{{url_for('static', filename='js/load_board.js')}}"></script>
     </head>
@@ -33,7 +34,7 @@
             </form>
         </section>
         
-        <hr>
+        <hr id="top_line_board">
         
         <section>
             <div class="boards"></div>
@@ -57,5 +58,10 @@
 
             load_boards();
         </script>
+
+        <!--board popup-->
+        <div class="popup_block">
+            {% include '/member/board_popup.html' %}
+        </div>
     </body>
 </html>
