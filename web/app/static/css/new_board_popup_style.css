@@ -29,6 +29,9 @@
     height: 20px;
     object-fit: cover;
     cursor: pointer;
+    float: right;
+    margin-top: 12px;
+    margin-right: 12px;
 }
 
 #select_board_image{
@@ -37,6 +40,46 @@
     height: 500px;
     object-fit: contain;
     background-color: #EEEEEE;
+}
+
+#select_image_button{
+    background-color: rgba(0,0,0,0.4);
+    border-style: none;
+    border-radius: 20px;
+    width: 100px;
+    height: 32px;
+    position: relative;
+    top: 456px;
+    right: 112px;
+}
+
+#title_text{
+    font-size: 16px;
+    float: left;
+    margin: 32px 20px 20px 20px;
+    height: 24px;
+    width: 340px;
+}
+
+#contents_text{
+    font-size: 16px;
+    resize: none;
+
+    float: left;
+    margin: 0 20px;
+    width: 340px;
+    height: 316px;
+}
+
+#new_board_submit_button{
+    float: left;
+    background-color: #DF7861;
+    color: white;
+    width: 344px;
+    height: 32px;
+    margin: 20px;
+    border-style: none;
+    border-radius: 20px;
 }
 
 /* select image block */
@@ -71,11 +114,15 @@
     height: 20px;
     object-fit: cover;
     cursor: pointer;
+
+    float: right;
+    margin-top: 12px;
+    margin-right: 12px;
 }
 
 .savebox_block{
     display: inline-block;
-    margin: 32px;
+    margin: 20px;
 }
 
 .savebox_image{
