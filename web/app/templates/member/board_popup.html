@@ -42,7 +42,7 @@
         {% if current_user.is_authenticated %}
         <div id="popup_new_comment">
             <!--new comment-->
-            <img id="new_comment_user_image" src="{{user_data[2]}}">
+            <img id="new_comment_user_image" src="{{url_for('image_path', path_type='user_image', filename=user_data[2])}}">
             <input id="new_comment_text" type="text" placeholder="댓글 작성" onkeypress="enter_submit_check(event)">
             <input id="new_comment_submit" type="submit" value="작성" onclick="new_comment_submit()">
         </div>
@@ -83,7 +83,7 @@
         popup_board_image.setAttribute("src", response_data.board_data[3]);
 
         let popup_user_image = document.getElementById("popup_user_image");
-        popup_user_image.setAttribute("src", response_data.user_data[2]);
+        popup_user_image.setAttribute("src", response_data.image_path + response_data.user_data[2]);
         let popup_user_name = document.getElementById("popup_user_name");
         popup_user_name.innerHTML = response_data.user_data[1];
         let popup_user_id = document.getElementById("popup_user_id");
@@ -106,6 +106,7 @@
             popup_board_like_image.setAttribute("src", "../../static/images/popup/vector_like_outline.png")
         }
 
+        // comments
         let popup_board_like_num = document.getElementById("popup_board_like_num");
         popup_board_like_num.innerHTML = response_data.like_count;
         let popup_board_comment_num = document.getElementById("popup_board_comment_num");
@@ -119,7 +120,7 @@
 
             let comment_user_image = document.createElement("img");
             comment_user_image.setAttribute("class", "comment_user_image");
-            comment_user_image.setAttribute("src", response_data.comment_data[i][3]);
+            comment_user_image.setAttribute("src", response_data.image_path + response_data.comment_data[i][3]);
 
             let comment_user_name = document.createElement("div");
             comment_user_name.setAttribute("class", "comment_user_name");

@@ -228,8 +228,8 @@ def show_popup():
         board_one_data = db.board_one(board_id, current_user.id)
     else:
         board_one_data = db.board_one(board_id, "")
-    
-    print(board_one_data)
+        
+    board_one_data['image_path'] = url_for('image_path', path_type='user_image', filename="")
     
     return jsonify(board_one_data)
 
