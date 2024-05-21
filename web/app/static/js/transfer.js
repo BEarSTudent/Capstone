@@ -7,6 +7,7 @@ const choose_ex = document.querySelectorAll('.choose');
 const choose_back = document.querySelectorAll('.choose_back');
 const choose_style = document.querySelectorAll('.choose_style');
 const targetName = document.querySelectorAll('.targetname');
+const stBox = document.querySelectorAll('.stnoimgbox');
 
 const uptp_single_Button = document.querySelector('#singleuploadbtn');
 const uptp_double_Button = document.querySelector('#doubleuploadbtn');
@@ -27,6 +28,7 @@ const realUpload_3 = document.querySelector('#chooseFile_4');
 let currentStep = 0;
 let uploadtype = 0;
 let styletype = 0;
+let normtype = 0;
 
 let request_data = {
     user_id : 0,
@@ -84,6 +86,8 @@ function stepBack(step){
             choose_style[0].classList.remove('hidden');
             document.getElementById('image-show_4').replaceChildren();
             document.getElementById('fileName_4').textContent = "example.jpg";
+        }else if(styletype == 0){
+            stBox[normtype].classList.remove('select');
         }
     }
     currentStep --;
@@ -102,6 +106,34 @@ function stepBack(step){
         document.getElementById("check_2").checked = false;
     } else{
         uploadTargets[uploadtype].classList.add('hidden');
+    }
+}
+
+function select_norm(input){
+    stBox[normtype].classList.remove('select');
+    stBox[input].classList.add('select');
+    normtype = input;
+
+    request_data.style_image = null;
+    switch(input){
+        case 0 :
+            request_data.style_name = "0"
+            break;
+        case 1 :
+            request_data.style_name = "1"
+            break; 
+        case 2 :
+            request_data.style_name = "2"
+            break;
+        case 3 :
+            request_data.style_name = "3"
+            break;
+        case 4 :
+            request_data.style_name = "4"
+            break;
+        case 5 :
+            request_data.style_name = "5"
+            break;               
     }
 }
 
