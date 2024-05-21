@@ -233,6 +233,18 @@ def show_popup():
     
     return jsonify(board_one_data)
 
+@app.route('/board/popup/presslike', methods=["POST"])
+def press_like():
+    board_id = request.get_json()['board_id']
+    pressed = request.get_json()['pressed']
+    
+    if pressed == 0:
+        db.like_insert(board_id, current_user.id)
+    elif pressed == 1:
+        db.like_delete(board_id, current_user.id)
+    
+    return
+
 @app.route('/board/popup/newcomment', methods=["POST"])
 def add_comment():
     board_id = request.get_json()['board_id']
