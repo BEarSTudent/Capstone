@@ -68,9 +68,11 @@ header div a span{
 
 header div a img{
     height: 32px;
+    width: 32px;
     position: relative;
     bottom: 4px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 header a:hover{

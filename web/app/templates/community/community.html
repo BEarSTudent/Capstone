@@ -6,6 +6,7 @@
         <link href="{{url_for('static', filename='css/community_style.css')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/new_post_button_style.css')}}" rel="stylesheet">
         <script src="{{url_for('static', filename='js/community.js')}}"></script>
+        <script src="{{url_for('static', filename='js/load_board.js')}}"></script>
     </head>
 
     <body>
@@ -46,7 +47,14 @@
         {% include '/member/new_post_button.html' %}
 
         <script>
-            board_data = {{ board_data|safe }}
+            let boards = document.getElementsByClassName("boards")[0];
+            let board_data = {{ board_data|safe }};
+            let last_num = 0;
+
+            if (board_data.length == 0) {
+                delete_top_button();
+            }
+
             load_boards();
         </script>
     </body>

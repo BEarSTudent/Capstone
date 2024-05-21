@@ -220,5 +220,47 @@ def community():
     
     return render_template_with_banner("/community/community.html", search_text=search_text, sort_by=sort_by, board_data=boards)
 
+@app.route('/mypage')
+def mypage():
+    board_data = list(db.board_select_user(current_user.id))
+    for i in range(len(board_data)):
+        board_data[i] = list(board_data[i])
+    
+    savebox_data = list(db.savebox_select(current_user.id))
+    for i in range(len(savebox_data)):
+        savebox_data[i] = list(savebox_data[i])
+    
+    return render_template_with_banner("/member/mypage.html", board_data=board_data, savebox_data=savebox_data)
+
+@app.route('/mypage/pwcheck', methods=["POST"])
+def check_pw():
+    if request.method == "POST":
+        input_pw_data = request.get_json()['check_pw']
+        hashed_input_pw = hash_password(input_pw_data)
+        
+        exist_user_data = db.user_select(current_user.id)
+        user_profile_data = [exist_user_data[0], exist_user_data[2], exist_user_data[3]]
+        
+        if hashed_input_pw == exist_user_data[1]:
+            return jsonify({'pw_match': True, 'user_data': user_profile_data})
+        else:
+            return jsonify({'pw_match': False, 'user_data': user_profile_data})
+
+@app.route('/mypage/editprofile', methods=["POST"])
+def edit_profile():
+    input_user_name = request.form['user_name']
+    
+    user_data = db.user_select(current_user.id)
+    user_image = user_data[3]
+    
+    if(request.files['file'] != None):
+        f = request.files['file']
+        file_path = parent_path + "/user/user_image/"
+        f.save(file_path + f.filename)
+    
+    db.user_update(current_user.id, user_data[1], str(input_user_name), f.filename)
+    
+    return mypage()
+
 if __name__ == "__main__":
     app.run(debug=True, port=12380)
