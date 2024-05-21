@@ -8,4 +8,8 @@ https://github.com/czczup/ViT-Adapter/tree/main/segmentation
 
 1. Ubuntu 20.04 설치
 
-최신 버전인 
+최신 버전인 22.04는 ViT-Adapter 호환성에 문제가 있어 20.04 버전에서 진행합니다.
+
+2. CUDA 11.1 설치
+
+3. 
