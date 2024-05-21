@@ -12,7 +12,7 @@
 백엔드
 
 ![FLASK](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
-![Nginx](https://img.shields.io/badge/Nginx-107C10?style=for-the-badge&logo=nginx&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)
 ![](https://img.shields.io/badge/uWSGI-4EA94B?style=for-the-badge&logo=&logoColor=white)
 ![Ubuntu](https://img.shields.io/badge/Ubuntu_22.04-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
 
@@ -20,10 +20,12 @@ AI server
 
 ![nvida](https://img.shields.io/badge/NVIDIA-RTX2070-76B900?style=for-the-badge&logo=nvidia&logoColor=white)
 ![Ubuntu](https://img.shields.io/badge/Ubuntu_20.04-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
-![pytorch](https://img.shields.io/badge/pytorch-FF2D20?style=for-the-badge&logo=pytorch&logoColor=white)
+![pytorch](https://img.shields.io/badge/pytorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
 ![](https://img.shields.io/badge/mmcv-4285F4?style=for-the-badge&logo=mmcv&logoColor=white)
 
 ## 프로젝트 개요
-STR(Style Transfer for Recollection)팀에서 style transfer 기법을 이용하여 웹서비스를 제공하는 것을 목표로 하고 있다.
+STR(Style Transfer for Recollection)팀은 style transfer 기법을 이용하여 웹서비스를 제공하는 프로그램을 제작하는 프로젝트를 진행하였습니다. 
+
+크게 Web과 AI로 나누어 환경을 구성하였습니다. Web에서는 사용자가 이용하는 웹페이지가 구동되는 환경이 구축되어 있고 AI는 Style Transfer, Segmentation 모델 환경이 구축되어 있습니다.
 
 ## 기능
