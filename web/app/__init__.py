@@ -256,7 +256,7 @@ def edit_profile():
     
     if(request.files['file'] != None):
         f = request.files['file']
-        f.save("../../static/images/" + f.filename) # 경로 수정 필요
+        f.save(current_path + "/static/images/" + f.filename)
         user_image = "../../static/images/" + f.filename
     
     db.user_update(current_user.id, user_data[1], str(input_user_name), user_image)
