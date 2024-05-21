@@ -29,6 +29,10 @@
     pointer-events: all;
 }
 
+.step-status span.last{
+    pointer-events: none;
+}
+
 .hidden{
     display: none;
 }

@@ -16,6 +16,8 @@ const up_double_Button = document.querySelector('#doublefileupload');
 const sttp_s_Button = document.querySelector('#severgiftbtn');
 const sttp_d_Button = document.querySelector('#dallebtn');
 const sttp_u_Button = document.querySelector('#useruploadbtn');
+const st_s_Button = document.querySelector('#stylenorm');
+const st_u_Button = document.querySelector('#stylefileupload');
 const upload_0 = document.querySelector('#imageone-upload');
 const realUpload_0 = document.querySelector('#chooseFile_1');
 const upload_1 = document.querySelector('#image-upload_2');
@@ -31,15 +33,14 @@ let styletype = 0;
 let normtype = 0;
 
 let request_data = {
-    user_id : 0,
-    person_transfer_bool : 1,
     encoding_type : "",
     content_target_name : "",
     content_target_image : null,
-    content_source_name : "",
-    content_source_image : null,
     style_name : "",
-    style_image : null
+    style_image : null,
+    person_transfer_bool : true,
+    content_source_name : "",
+    content_source_image : null
 }
 
 function stepNext(){
@@ -135,6 +136,57 @@ function select_norm(input){
             request_data.style_name = "5"
             break;               
     }
+}
+
+function toBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
+}
+
+async function laststep(){
+    styleTargets[styletype].classList.add('hidden');
+
+    for(let i =0; i<6; i++){
+        stepTargets[i].classList.add('last');
+    }
+
+    if(document.getElementById("check_1").checked || document.getElementById("check_2").checked){
+        request_data.person_transfer_bool = false;
+    } 
+
+    let parsing = request_data.content_target_image.type;
+    let replaced_parsing = parsing.replace('image/', '.');
+    request_data.encoding_type = replaced_parsing;
+    request_data.content_target_image = await toBase64(request_data.content_target_image);
+    request_data.style_image = request_data.style_image ? await toBase64(request_data.style_image) : null;
+    request_data.content_source_image =  request_data.content_source_image ? await toBase64( request_data.content_source_image) : null;
+
+    fetch('/sendfile', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(request_data)
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+            stepTargets[0].classList.remove('active');
+            for(let i =0; i<5; i++){
+                stepTargets[i].classList.add('prev');
+                stepTargets[i].classList.add('last');
+            }
+            stepTargets[5].classList.add('active');
+            stepTargets[5].classList.add('last');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }
 
 function loadcontent_target(input){
@@ -240,6 +292,16 @@ window.onload = function(){
     sttp_u_Button.addEventListener('click', ()=>{
         styletype = 2;
         stepNext();
+    });
+
+    st_s_Button.addEventListener('click', ()=>{
+        stepNext();
+        laststep();
+    });
+
+    st_u_Button.addEventListener('click', ()=>{
+        stepNext();
+        laststep();
     });
 
     upload_0.addEventListener('click', () =>{

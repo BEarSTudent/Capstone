@@ -72,14 +72,16 @@ def save_image():
             
         # select, dall_e, custom
         style_image = dict_data['style_image']
+        style_name = dict_data['style_name']
         # 제공하는 스타일을 적용하는 경우
         if style_image is None:
-            style_name = dict_data['style_name']
             style_image = Image.open(f'{style_path}{style_name}')
         # 커스텀 이미지(DALL-E, User Image)를 이용하는 경우
         else:
             style_image = Image.open(BytesIO(base64.b64decode(style_image)))
-        style_image = style_image.resize(((width, height)))
+            
+        style_image = style_image.resize((width, height))
+
         # 배경이미지을 넣지 않은 경우
         if content_source_image is None:
             return processing(encoding_type, person_transfer_bool, 
@@ -113,14 +115,15 @@ def processing(encoding_type:str, person_transfer_bool:bool,
         
         # 인물 변환
         if person_transfer_bool:
-            result = np.array(image)
-        else:
             mask = segmenter.run(content_target_name)
             reverse_mask = np.where(mask == 0, 1, 0).astype(np.uint8)
 
             image = image * reverse_mask
             content_mask = content_target_image * mask
             result = image + content_mask
+            
+        else:
+            result = np.array(image)
 
     # 배경 이미지를 선택한 경우
     else:

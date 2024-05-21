@@ -4,6 +4,7 @@
         <title>STR - Style Transfer for Recollection</title>
         <link href="{{url_for('static', filename='css/banner_style.css')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/transfer_style.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='css/wait.css')}}" rel="stylesheet">
     </head>
     <body>
         <header>
@@ -218,6 +219,13 @@
                 </div>
                 <button type="button" class="next_btn" id="stylefileupload">다음</button>
             </div>
+        </div>
+
+        <div class="form hidden">
+            <CENTER>
+            <img class="rotating-image-clockwise", src='../../static/images/Loading.png'>
+            </CENTER>
+            <p class="wait_text">잠시만 기다려주세요</p>
         </div>
 
         <script type="text/javascript" src="{{url_for('static',filename='js/transfer.js')}}"></script>
