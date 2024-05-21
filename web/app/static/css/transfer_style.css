@@ -230,11 +230,13 @@
     text-align: center;
     justify-content: center;
     align-items: center;
+    margin-bottom: 40px;
 }
 
 .stnobox{
     width: 1200px;
     height: 550px;
+    margin-bottom: 30px;
 }
 
 .stnoimgbox{
@@ -242,6 +244,11 @@
     height: 260px;
     float: left;
     background: #EEEEEE;
+}
+
+.stnoimgbox.select{
+    outline-style: solid;
+    outline-width: medium;
 }
 
 .stnoimgbox.left{
