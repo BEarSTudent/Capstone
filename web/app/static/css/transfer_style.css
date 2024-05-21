@@ -225,11 +225,36 @@
 
 .styleform{
     width: 1280px;
-    margin:2rem auto;
+    margin: 0 auto;
     display: flex;
     text-align: center;
     justify-content: center;
     align-items: center;
+}
+
+.stnobox{
+    width: 1200px;
+    height: 550px;
+}
+
+.stnoimgbox{
+    width: 380px;
+    height: 260px;
+    float: left;
+    background: #EEEEEE;
+}
+
+.stnoimgbox.left{
+    margin-right: 30px;
+}
+
+.stnoimgbox.bottom{
+    margin-top: 30px;
+}
+
+.stnoex{
+    width: 360px;
+    height: 260px;
 }
 
 #style-upload{

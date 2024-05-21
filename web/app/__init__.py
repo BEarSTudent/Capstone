@@ -17,7 +17,7 @@ app = Flask(__name__)
 # secret_key를 관리하기 위해 xml 파일 사용
 tree = elemTree.parse('keys.xml') # 사용 환경에 맞춰 절대 경로 적용 후 사용
 app.secret_key = tree.find('string[@name="secret_key"]').text
-server_url = tree.find('string[@name="server_url"]').text
+# server_url = tree.find('string[@name="server_url"]').text
 
 # 로그인 관리
 login_manager = LoginManager()
