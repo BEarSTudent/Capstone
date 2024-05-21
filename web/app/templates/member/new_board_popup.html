@@ -1,12 +1,10 @@
 <div class="new_board_popup">
-    <form action="/newboard" method="POST">
-        <img id="select_board_image">
-        <button id="select_image_button" type="button">이미지 선택</button>
+    <img id="select_board_image">
+    <button id="select_image_button" type="button">이미지 선택</button>
 
-        <input type="text" placeholder="제목 입력">
-        <textarea placeholder="내용 입력"></textarea>
-        <input type="submit" value="업로드">
-    </form>
+    <input id="title_text" type="text" placeholder="제목 입력">
+    <textarea id="contents_text" placeholder="내용 입력"></textarea>
+    <button type="button" onclick="submit_new_board()">업로드</button>
     
     <button type="button" class="new_board_close_btn"></button>
 
@@ -27,6 +25,9 @@
 
     new_board_close_btn.addEventListener('click', function() {
         new_board_popup_block.classList.remove('on');
+        document.getElementById("select_board_image").removeAttribute("src");
+        document.getElementById("title_text").value = "";
+        document.getElementById("contents_text").value = "";
     })
 
     let savebox_image_background = document.querySelector(".savebox_image_background");
@@ -87,5 +88,26 @@
                 savebox_block.style.border = "solid";
             })
         }
+    }
+
+    async function submit_new_board() {
+        let select_image = document.getElementById("select_board_image").src;
+        let title_text = document.getElementById("title_text").value;
+        let contents_text = document.getElementById("contents_text").value;
+
+        if (select_image != '') {
+            await fetch("/newboard", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({'select_image': select_image, 'title_text': title_text, 'contents_text': contents_text})
+            })
+        }
+        else {
+            alert("사진을 선택해주세요.")
+        }
+
+        location.href = "/mypage";
     }
 </script>

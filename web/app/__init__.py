@@ -6,6 +6,7 @@ from ops import StrDatabase, User
 import xml.etree.ElementTree as elemTree
 import os, cv2, requests, json, base64, hashlib
 import numpy as np
+from datetime import datetime
 
 # 부모 디렉토리
 parent_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -298,7 +299,14 @@ def edit_profile():
 
 @app.route("/newboard", methods=["POST"])
 def new_board():
-    new_request = request.get_json()
+    new_board_data = request.get_json()
+    
+    now = datetime.now()
+    board_date = now.strftime("%Y-%m-%d %H:%M:%S")
+    
+    db.board_insert(current_user.id, board_date, new_board_data['select_image'], new_board_data['title_text'], new_board_data['contents_text'])
+    
+    return mypage()
 
 @app.route("/selectsavebox", methods=["POST"])
 def select_savebox():
