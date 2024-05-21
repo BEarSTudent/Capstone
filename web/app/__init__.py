@@ -249,17 +249,16 @@ def check_pw():
 @app.route('/mypage/editprofile', methods=["POST"])
 def edit_profile():
     input_user_name = request.form['user_name']
-    print(input_user_name)
     
     user_data = db.user_select(current_user.id)
     user_image = user_data[3]
     
     if(request.files['file'] != None):
         f = request.files['file']
-        f.save(current_path + "/static/images/" + f.filename)
-        user_image = "../../static/images/" + f.filename
+        file_path = parent_path + "/user/user_image/"
+        f.save(file_path + f.filename)
     
-    db.user_update(current_user.id, user_data[1], str(input_user_name), user_image)
+    db.user_update(current_user.id, user_data[1], str(input_user_name), f.filename)
     
     return mypage()
 
