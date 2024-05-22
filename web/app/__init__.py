@@ -123,14 +123,14 @@ def register():
             result = db.user_select(user_id)
         except Exception as e:
             result = False
+
         if result:
             return jsonify({'exists': True, 'db_error': False})
         else:
             user_pw = data['pw']
             user_pw = hash_password(user_pw)
             user_name = data['user_name']
-            user_id_path = f"{current_path}/user/{user_id}"
-            print(user_id_path)
+            user_id_path = f"{parent_path}/user/{user_id}"
             
             if not os.path.exists(user_id_path):
                 os.makedirs(user_id_path)
@@ -319,4 +319,4 @@ def select_savebox():
     return jsonify({'savebox_data': savebox_data, 'image_path': url_for('image_path', path_type=current_user.id, filename="")})
 
 if __name__ == "__main__":
-    app.run(debug=True, port=12380)
+    app.run(host="0.0.0.0", debug=True, port=2190)
