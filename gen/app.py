@@ -1,0 +1,35 @@
+from flask import Flask, request
+import json, base64
+from diffusers import StableDiffusionPipeline
+import torch
+
+app = Flask(__name__)
+
+@app.route("/gen_image", methods=["POST"])
+def gen_image():
+    if request.method == 'POST':
+        # json 형식으로 요청해야한다.
+        print("request 받음")
+        json_data = request.get_json()
+        dict_data = json.loads(json.dumps(json_data))
+        for key, value in dict_data.items():
+            if type(value) is str:
+                print(f"{key}: {value[:20]}")
+            else:
+                print(f"{key}: {value}")
+        '''
+        ==========================================
+                        json info
+        ==========================================
+        prompt  : 생성할 이미지 요구조건
+        '''
+        prompt = dict_data['promp']
+        image = pipe(prompt).images[0]
+        image = base64.b64encode(image).decode('utf-8')
+        file = {"img": image}
+        return file
+        
+if __name__=="__main__":
+    model_id = "runwayml/stable-diffusion-v1-5"
+    pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+    pipe = pipe.to("cuda")
