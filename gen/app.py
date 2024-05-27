@@ -33,3 +33,5 @@ if __name__=="__main__":
     model_id = "runwayml/stable-diffusion-v1-5"
     pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
     pipe = pipe.to("cuda")
+    # 실행
+    app.run(host='0.0.0.0', port=21221, debug=True)
