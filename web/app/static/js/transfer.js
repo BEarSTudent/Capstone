@@ -38,7 +38,7 @@ let request_data = {
     content_target_image : null,
     style_name : null,
     style_image : null,
-    person_transfer_bool : true,
+    person_transfer_bool : false,
     content_source_name : null,
     content_source_image : null
 }
@@ -155,7 +155,7 @@ async function laststep(){
     }
 
     if(document.getElementById("check_1").checked || document.getElementById("check_2").checked){
-        request_data.person_transfer_bool = false;
+        request_data.person_transfer_bool = true;
     } 
 
     let parsing = request_data.content_target_image.type;
