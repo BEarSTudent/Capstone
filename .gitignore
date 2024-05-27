@@ -9,7 +9,7 @@ user/
 
 # 폴더 유지용
 !ai/release/empty.txt
-!ai/data/empty.txt
+!ai/data/style
 !user/temp
 !user/user_image
 # keys
