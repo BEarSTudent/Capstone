@@ -58,11 +58,11 @@ def wait():
 def result():
     image_name = request.args.get('name')
     if current_user.is_authenticated:
-            path_type = current_user.id
+        path_type = current_user.id
+        db.savebox_insert(current_user.id, image_name)
     else:
         path_type = "temp"
     
-    db.savebox_insert(current_user.id, image_name)
     return render_template_with_banner('/transfer/result.html', type=path_type, image = image_name)
 
 @app.route('/<path_type>/<filename>')
