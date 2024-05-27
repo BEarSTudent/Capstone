@@ -34,12 +34,12 @@ let normtype = 0;
 
 let request_data = {
     encoding_type : "",
-    content_target_name : "",
+    content_target_name : null,
     content_target_image : null,
-    style_name : "",
+    style_name : null,
     style_image : null,
     person_transfer_bool : true,
-    content_source_name : "",
+    content_source_name : null,
     content_source_image : null
 }
 
@@ -118,22 +118,22 @@ function select_norm(input){
     request_data.style_image = null;
     switch(input){
         case 0 :
-            request_data.style_name = "0"
+            request_data.style_name = "0.png"
             break;
         case 1 :
-            request_data.style_name = "1"
+            request_data.style_name = "1.png"
             break; 
         case 2 :
-            request_data.style_name = "2"
+            request_data.style_name = "2.png"
             break;
         case 3 :
-            request_data.style_name = "3"
+            request_data.style_name = "3.png"
             break;
         case 4 :
-            request_data.style_name = "4"
+            request_data.style_name = "4.png"
             break;
         case 5 :
-            request_data.style_name = "5"
+            request_data.style_name = "5.png"
             break;               
     }
 }
