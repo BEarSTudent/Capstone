@@ -163,6 +163,12 @@ async function delete_savebox() {
         },
         body: JSON.stringify({'savebox_id': savebox_popup_id})
     })
-
-    location.href = "/mypage";
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }
