@@ -46,18 +46,10 @@
                 <span class="board_select" onclick="user_savebox()">보관함</span>
             </div>
 
-            <div id="boards"></div>
+            <div class="boards"></div>
         </section>
         
         <script>
-            let boards = document.getElementById("boards");
-            let select = document.getElementsByClassName("board_select");
-            let board_data;
-            let last_num = 0;
-
-            let user_board_data = {{ board_data|safe }};
-            let user_savebox_data = {{ savebox_data|safe }};
-
             mypage();
         </script>
 
