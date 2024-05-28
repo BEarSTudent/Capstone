@@ -220,3 +220,19 @@ section{
     bottom: 492px;
     left: 868px;
 }
+
+#savebox_download{
+    width: 20px;
+    cursor: pointer;
+    position: relative;
+    bottom: 40px;
+    right: 12px;
+}
+
+#savebox_delete{
+    width: 20px;
+    cursor: pointer;
+    position: relative;
+    bottom: 40px;
+    left: 812px;
+}
