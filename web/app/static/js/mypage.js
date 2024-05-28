@@ -31,7 +31,7 @@ function user_savebox() {
     load_boards();
 
     let savebox_popup_background = document.querySelector(".savebox_popup_background");
-    let savebox_popup_image = document.getElementById("savebox_popup_image");
+    let savebox_popup_image = document.querySelector(".savebox_popup_image");
     let savebox_popup_close_button = document.querySelector(".savebox_popup_close_button");
 
     let board_boxes = document.getElementsByClassName("board_block");
@@ -39,7 +39,9 @@ function user_savebox() {
     for(let i = 0; i < board_boxes.length; i++){
         board_boxes[i].addEventListener('click', function(){
             savebox_popup_background.classList.add('on');
+            savebox_popup_image.setAttribute("id", board_boxes[i].id);
             savebox_popup_image.src = board_boxes[i].src;
+            document.getElementById("savebox_download_button").href += board_boxes[i].src.split('/')[-1];
         })
     }
 
@@ -149,4 +151,18 @@ function image_upload(input) {
     let user_image = document.getElementById("user_image");
 
     user_image.src = URL.createObjectURL(file);
+}
+
+async function delete_savebox() {
+    let savebox_popup_id = document.querySelector(".savebox_popup_image").id;
+
+    await fetch("/mypage/deletesavebox", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'savebox_id': savebox_popup_id})
+    })
+
+    location.href = "/mypage";
 }

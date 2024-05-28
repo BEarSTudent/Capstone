@@ -77,10 +77,10 @@
         <!--savebox popup-->
         <div class="savebox_popup_background">
             <div class="savebox_popup_block">
-                <img id="savebox_popup_image">
+                <img class="savebox_popup_image">
                 <button type="button" class="savebox_popup_close_button"></button>
-                <img id="savebox_download" src="../../static/images/mypage/vector_download.png">
-                <img id="savebox_delete" src="../../static/images/mypage/vector_delete.png">
+                <a id="savebox_download_button" href = "/{{user_data[0]}}/" download><img id="savebox_download" src="../../static/images/mypage/vector_download.png"></a>
+                <img id="savebox_delete" onclick="delete_savebox()" src="../../static/images/mypage/vector_delete.png">
             </div>
         </div>
     </body>

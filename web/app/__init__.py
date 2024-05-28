@@ -274,6 +274,14 @@ def mypage():
     
     return render_template_with_banner("/member/mypage.html", board_data=board_data, savebox_data=savebox_data)
 
+@app.route('/mypage/deletesavebox', methods=["POST"])
+def delete_savebox():
+    savebox_id = request.get_json()['savebox_id']
+    
+    db.savebox_delete(savebox_id)
+    
+    return redirect(url_for('mypage'))
+
 @app.route('/mypage/pwcheck', methods=["POST"])
 def check_pw():
     if request.method == "POST":
