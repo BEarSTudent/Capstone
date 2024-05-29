@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Image</title>
+    <script>
+        async function generateImage() {
+            const prompt = document.getElementById('prompt').value;
+
+            const response = await fetch('/gen_image', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ prompt: prompt })
+            });
+
+            const data = await response.json();
+            const imgElement = document.getElementById('generated-image');
+            imgElement.src = `data:image/png;base64,${data.image}`;
+        }
+    </script>
+</head>
+<body>
+    <h1>Image Generator</h1>
+    <input type="text" id="prompt" placeholder="Enter prompt">
+    <button onclick="generateImage()">Generate Image</button>
+    <br>
+    <img id="generated-image" alt="Generated Image">
+</body>
+</html>

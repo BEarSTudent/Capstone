@@ -323,5 +323,12 @@ def select_savebox():
     
     return jsonify({'savebox_data': savebox_data, 'image_path': url_for('image_path', path_type=current_user.id, filename="")})
 
+@app.route("/gen_image", methods=["POST"])
+def gen_image():
+    if request.method == "POST":
+        data = request.json
+        prompt = data.get('prompt', '')
+        
+    
 if __name__ == "__main__":
     app.run(debug=True, port=12380)
