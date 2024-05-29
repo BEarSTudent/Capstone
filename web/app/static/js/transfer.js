@@ -175,13 +175,6 @@ async function laststep(){
     .then(response => {
         if (response.redirected) {
             window.location.href = response.url;
-            stepTargets[0].classList.remove('active');
-            for(let i =0; i<5; i++){
-                stepTargets[i].classList.add('prev');
-                stepTargets[i].classList.add('last');
-            }
-            stepTargets[5].classList.add('active');
-            stepTargets[5].classList.add('last');
         }
     })
     .catch(error => {
