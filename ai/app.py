@@ -124,7 +124,7 @@ def processing(encoding_type:str, person_transfer_bool:bool,
     # 배경이미지를 선택하지 않은 경우
     if content_source_image is None:
         content_image = loader(content_target_image).unsqueeze(0)
-        image = transfer.run_style_transfer(content_img=content_image, style_img=style_image)
+        image = transfer.run_style_transfer(content_img=content_image, style_img=style_image, num_steps=400)
         image = unloader(image.squeeze(0))
         
         # 인물 변환
@@ -150,12 +150,12 @@ def processing(encoding_type:str, person_transfer_bool:bool,
             content_source_masked = content_source_image * mask
             content_image = content_target_masked + content_source_masked
             content_image = loader(Image.fromarray(content_image)).unsqueeze(0)
-            image = transfer.run_style_transfer(content_img=content_image, style_img=style_image)
+            image = transfer.run_style_transfer(content_img=content_image, style_img=style_image, num_steps=400)
             result = np.array(unloader(image.squeeze(0)))
             
         else:
             content_target_image = loader(content_target_image).unsqueeze(0)
-            image = transfer.run_style_transfer(content_img=content_target_image, style_img=style_image)
+            image = transfer.run_style_transfer(content_img=content_target_image, style_img=style_image, num_steps=400)
             image = unloader(image.squeeze(0))
             
             content_target_masked = image * reverse_mask
