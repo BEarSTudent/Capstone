@@ -59,13 +59,21 @@
         </div>
 
         <!--floating button to write new post-->
-        {% if current_user.is_authenticated %}
-            {% include '/member/new_post_button.html' %}
+        {% include '/member/new_post_button.html' %}
+        
+        <!--new board popup-->
+        <div class="new_board_popup_block">
+            {% include '/member/new_board_popup.html' %}
+        </div>
 
-            <!--new board popup-->
-            <div class="new_board_popup_block">
-                {% include '/member/new_board_popup.html' %}
+        <!--savebox popup-->
+        <div class="savebox_popup_background">
+            <div class="savebox_popup_block">
+                <img class="savebox_popup_image">
+                <button type="button" class="savebox_popup_close_button"></button>
+                <a id="savebox_download_button" href = "/{{user_data[0]}}/" download><img id="savebox_download" src="../../static/images/mypage/vector_download.png"></a>
+                <img id="savebox_delete" onclick="delete_savebox()" src="../../static/images/mypage/vector_delete.png">
             </div>
-        {% endif %}
+        </div>
     </body>
 </html>
