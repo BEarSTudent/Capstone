@@ -80,20 +80,20 @@ class StrDatabase:
             sort_by (str): 정렬 기준
         
         Returns:
-            tuple: 검색, 정렬된 데이터. recent: ((board_id, board_image, board_title), ...), like/comment: ((board_id, board_image, board_title, count), ...)
+            tuple: 검색, 정렬된 데이터. recent: ((board_id, user_id, board_image, board_title), ...), like/comment: ((board_id, user_id, board_image, board_title, count), ...)
         """
         if sort_by == "like":
-            sql = "SELECT b.board_id, b.board_image, b.board_title, COUNT(l.user_id) AS count FROM str_board b LEFT OUTER JOIN str_like l ON b.board_id = l.board_id "
+            sql = "SELECT b.board_id, b.user_id, b.board_image, b.board_title, COUNT(l.user_id) AS count FROM str_board b LEFT OUTER JOIN str_like l ON b.board_id = l.board_id "
             if search_text != "":
                 sql += "WHERE b.board_title LIKE '%" + search_text + "%' OR b.contents LIKE '%" + search_text + "%' "
             sql += "GROUP BY b.board_id ORDER BY count DESC, b.board_id DESC;"
         elif sort_by == "comment":
-            sql = "SELECT b.board_id, b.board_image, b.board_title, COUNT(c.comment_id) AS count FROM str_board b LEFT OUTER JOIN str_comment c ON b.board_id = c.board_id "
+            sql = "SELECT b.board_id, b.user_id, b.board_image, b.board_title, COUNT(c.comment_id) AS count FROM str_board b LEFT OUTER JOIN str_comment c ON b.board_id = c.board_id "
             if search_text != "":
                 sql += "WHERE b.board_title LIKE '%" + search_text + "%' OR b.contents LIKE '%" + search_text + "%' "
             sql += "GROUP BY b.board_id ORDER BY count DESC, b.board_id DESC;"
         else: # recent
-            sql = "SELECT board_id, board_image, board_title FROM str_board "
+            sql = "SELECT board_id, user_id, board_image, board_title FROM str_board "
             if search_text != "":
                 sql += "WHERE board_title LIKE '%" + search_text + "%' OR contents LIKE '%" + search_text + "%' "
             sql += "ORDER BY board_id DESC;"

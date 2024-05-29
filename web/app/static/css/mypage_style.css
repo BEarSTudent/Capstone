@@ -92,7 +92,7 @@ section{
     text-decoration: underline;
 }
 
-#boards{
+.boards{
     width: 1100px;
     margin: 0 auto;
 }

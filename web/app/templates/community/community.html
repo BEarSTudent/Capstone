@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="board_sort_form">
-                    <select onchange="this.form.submit()" name="select_order">
+                    <select id="select_sort_by" onchange="this.form.submit()" name="select_order">
                         <option value="recent" {% if sort_by=='recent' %}selected{% endif %}>최신순</option>
                         <option value="like" {% if sort_by=='like' %}selected{% endif %}>인기순</option>
                         <option value="comment" {% if sort_by=='comment' %}selected{% endif %}>댓글순</option>
@@ -46,15 +46,7 @@
         </footer>
 
         <script>
-            let boards = document.getElementsByClassName("boards")[0];
-            let board_data = {{ board_data|safe }};
-            let last_num = 0;
-
-            if (board_data.length == 0) {
-                delete_top_button();
-            }
-
-            load_boards();
+            load_community_page();
         </script>
 
         <!--board popup-->
@@ -62,8 +54,9 @@
             {% include '/member/board_popup.html' %}
         </div>
 
-        <!--floating button to write new post-->
+        <!--create new post-->
         {% if current_user.is_authenticated %}
+            <!--floating button to write new post-->
             {% include '/member/new_post_button.html' %}
 
             <!--new board popup-->

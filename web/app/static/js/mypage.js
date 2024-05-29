@@ -1,4 +1,22 @@
-function mypage() {
+let select = document.getElementsByClassName("board_select");
+
+let user_board_data;
+let user_savebox_data;
+
+async function mypage() {
+    // 게시물, 보관함 데이터 요청
+    const response_data = await fetch('mypage', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+    })
+    .then(res => res.json())
+
+    user_board_data = response_data.board_data;
+    user_savebox_data = response_data.savebox_data;
+
     let board_num = document.getElementById("board_num");
     board_num.innerHTML = user_board_data.length + "개";
     let savebox_num = document.getElementById("savebox_num");
@@ -32,7 +50,7 @@ function user_savebox() {
 }
 
 function clear_board() {
-    boards.innerHTML = ''
+    document.getElementsByClassName('boards')[0].innerHTML = ''
 }
 
 function check_pw() {

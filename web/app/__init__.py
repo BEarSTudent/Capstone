@@ -16,7 +16,7 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__)
 
 # secret_key를 관리하기 위해 xml 파일 사용
-tree = elemTree.parse('keys.xml') # 사용 환경에 맞춰 절대 경로 적용 후 사용
+tree = elemTree.parse('keys.xml') # 사용 환경에 맞춰 파일을 위치시킨 후 사용
 app.secret_key = tree.find('string[@name="secret_key"]').text
 server_url = tree.find('string[@name="server_url"]').text
 
@@ -58,16 +58,16 @@ def wait():
 def result():
     image_name = request.args.get('name')
     if current_user.is_authenticated:
-            path_type = current_user.id
+        path_type = current_user.id
+        db.savebox_insert(current_user.id, image_name)
     else:
         path_type = "temp"
     
-    db.savebox_insert(current_user.id, image_name)
     return render_template_with_banner('/transfer/result.html', type=path_type, image = image_name)
 
 @app.route('/<path_type>/<filename>')
 def image_path(path_type, filename):
-    profileImage = parent_path + "/user/" + path_type + "/" +filename
+    profileImage = parent_path + "/user/" + path_type + "/" + filename
     if filename == "None" or not os.path.exists(profileImage):
         return send_from_directory(parent_path + "/app/static/images", "basic_user_image.png")
     else:
@@ -209,19 +209,28 @@ def hash_password(password):
     sha_signature = hashlib.sha256(password.encode('utf-8')).hexdigest()
     return sha_signature
 
-@app.route('/community', methods=["GET"])
+@app.route('/community', methods=["GET", "POST"])
 def community():
-    search_text = request.args.get('search_text')
-    sort_by = request.args.get('select_order')
-    
-    if search_text == None:
-        search_text = ""
-    
-    boards = list(db.board_select(search_text, sort_by))
-    for i in range(len(boards)):
-        boards[i] = list(boards[i])
-    
-    return render_template_with_banner("/community/community.html", search_text=search_text, sort_by=sort_by, board_data=boards)
+    if request.method == "POST":
+        # 게시물 로드
+        request_data = request.get_json()
+        search_text = request_data['search_text']
+        sort_by = request_data['sort_by']
+                
+        boards = list(db.board_select(search_text, sort_by))
+        for i in range(len(boards)):
+            boards[i] = [boards[i][0], url_for('image_path', path_type=boards[i][1], filename=boards[i][2]), boards[i][3]]
+        
+        return jsonify({'board_data': boards})
+    else:
+        # 검색어, 정렬 데이터 포함 페이지 반환
+        search_text = request.args.get('search_text')
+        sort_by = request.args.get('select_order')
+        
+        if search_text == None:
+            search_text = ""
+        
+        return render_template_with_banner("/community/community.html", search_text=search_text, sort_by=sort_by)
 
 @app.route('/board/popup', methods=["POST"])
 def show_popup():
@@ -231,8 +240,16 @@ def show_popup():
         board_one_data = db.board_one(board_id, current_user.id)
     else:
         board_one_data = db.board_one(board_id, "")
-        
-    board_one_data['image_path'] = url_for('image_path', path_type='user_image', filename="")
+    
+    # 사진 경로 조정
+    board_one_data['board_data'] = list(board_one_data['board_data'])
+    board_one_data['board_data'][3] = url_for('image_path', path_type=board_one_data['board_data'][1], filename=board_one_data['board_data'][3])
+    board_one_data['user_data'] = list(board_one_data['user_data'])
+    board_one_data['user_data'][2] = url_for('image_path', path_type=board_one_data['user_data'][0], filename=str(board_one_data['user_data'][2]))
+    board_one_data['comment_data'] = list(board_one_data['comment_data'])
+    for i in range(len(board_one_data['comment_data'])):
+        board_one_data['comment_data'][i] = list(board_one_data['comment_data'][i])
+        board_one_data['comment_data'][i][3] = url_for('image_path', path_type=board_one_data['comment_data'][i][1], filename=str(board_one_data['comment_data'][i][3]))
     
     return jsonify(board_one_data)
 
@@ -257,17 +274,24 @@ def add_comment():
     
     return jsonify({})
 
-@app.route('/mypage')
+@app.route('/mypage', methods=["GET", "POST"])
 def mypage():
-    board_data = list(db.board_select_user(current_user.id))
-    for i in range(len(board_data)):
-        board_data[i] = list(board_data[i])
-    
-    savebox_data = list(db.savebox_select(current_user.id))
-    for i in range(len(savebox_data)):
-        savebox_data[i] = list(savebox_data[i])
-    
-    return render_template_with_banner("/member/mypage.html", board_data=board_data, savebox_data=savebox_data)
+    if request.method == "POST":
+        # 게시물, 보관함 데이터 반환
+        board_data = list(db.board_select_user(current_user.id))
+        for i in range(len(board_data)):
+            board_data[i] = list(board_data[i])
+            board_data[i][1] = url_for('image_path', path_type=current_user.id, filename=board_data[i][1])
+        
+        savebox_data = list(db.savebox_select(current_user.id))
+        for i in range(len(savebox_data)):
+            savebox_data[i] = list(savebox_data[i])
+            savebox_data[i][1] = url_for('image_path', path_type=current_user.id, filename=savebox_data[i][1])
+        
+        return jsonify({'board_data': board_data, 'savebox_data': savebox_data})
+    else:
+        # 마이페이지 반환
+        return render_template_with_banner("/member/mypage.html")
 
 @app.route('/mypage/pwcheck', methods=["POST"])
 def check_pw():
@@ -306,7 +330,9 @@ def new_board():
     now = datetime.now()
     board_date = now.strftime("%Y-%m-%d %H:%M:%S")
     
-    db.board_insert(current_user.id, board_date, new_board_data['select_image'], new_board_data['title_text'], new_board_data['contents_text'])
+    image_name = new_board_data['select_image'].split('/')[-1]
+    
+    db.board_insert(current_user.id, board_date, image_name, new_board_data['title_text'], new_board_data['contents_text'])
     
     return redirect(url_for('mypage'))
 
