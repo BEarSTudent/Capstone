@@ -46,6 +46,16 @@ function load_boards() {
         }
         else {
             // 보관함 팝업
+            board_block.addEventListener('click', function(){
+                document.querySelector(".savebox_popup_background").classList.add('on');
+
+                let savebox_popup_image = document.querySelector(".savebox_popup_image");
+                savebox_popup_image.setAttribute("id", board_block.id);
+                savebox_popup_image.src = board_image.src;
+                
+                let savebox_download_button = document.getElementById("savebox_download_button");
+                savebox_download_button.setAttribute("href", '/' + savebox_download_button.href.split('/').at(-2) + '/' + board_image.src.split('/').at(-1));
+            })
         }
         
         boards.appendChild(board_block);
