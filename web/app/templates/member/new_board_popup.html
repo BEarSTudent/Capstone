@@ -2,7 +2,7 @@
     <img id="select_board_image">
     <button id="select_image_button" type="button">이미지 선택</button>
 
-    <button type="button" class="new_board_close_btn"></button>
+    <button type="button" class="new_board_close_btn"><img src="{{url_for('static', filename='images/popup/vector_x.png')}}"></button>
 
     <input id="title_text" type="text" placeholder="제목 입력">
     <textarea id="contents_text" placeholder="내용 입력"></textarea>
@@ -45,6 +45,11 @@
         let savebox_select_close_btn = document.createElement("button");
         savebox_select_close_btn.setAttribute("type", "button");
         savebox_select_close_btn.setAttribute("class", "savebox_select_close_btn");
+        
+        let close_img = document.createElement("img");
+        close_img.setAttribute("src", "{{url_for('static', filename='images/popup/vector_x.png')}}");
+        savebox_select_close_btn.appendChild(close_img);
+
         savebox_image_block.appendChild(savebox_select_close_btn);
         savebox_select_close_btn.addEventListener('click', function() {
             savebox_image_background.classList.remove('on');

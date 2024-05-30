@@ -9,7 +9,7 @@
             <div id="popup_user_id">@ididid</div>
         </div>
         
-        <button type="button" class="close_btn"></button>
+        <button type="button" class="close_btn"><img src="{{url_for('static', filename='images/popup/vector_x.png')}}"></button>
 
         <div>
             <div id="popup_board_title">
@@ -29,9 +29,9 @@
         
         <div>
             <!--like and comment number-->
-            <img id="popup_board_like_image" src="../../static/images/popup/vector_like_outline.png">
+            <img id="popup_board_like_image" src="{{url_for('static', filename='images/popup/vector_like_outline.png')}}">
             <span id="popup_board_like_num">000</span>
-            <img id="popup_board_comment_image" src="../../static/images/popup/vector_comment.png" width="40px">
+            <img id="popup_board_comment_image" src="{{url_for('static', filename='images/popup/vector_comment.png')}}" width="40px">
             <span id="popup_board_comment_num">댓글 00개</span>
         </div>
 
@@ -93,11 +93,11 @@
 
         let popup_board_like_image = document.getElementById("popup_board_like_image");
         if (response_data.like_user_data) {
-            popup_board_like_image.setAttribute("src", "../../static/images/popup/vector_like_fill.png");
+            popup_board_like_image.setAttribute("src", "{{url_for('static', filename='images/popup/vector_like_fill.png')}}");
             popup_board_like_image.setAttribute("onclick", "press_like(1)");
         }
         else {
-            popup_board_like_image.setAttribute("src", "../../static/images/popup/vector_like_outline.png");
+            popup_board_like_image.setAttribute("src", "{{url_for('static', filename='images/popup/vector_like_outline.png')}}");
             popup_board_like_image.setAttribute("onclick", "press_like(0)");
         }
 

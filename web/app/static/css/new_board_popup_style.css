@@ -22,16 +22,19 @@
 }
 
 .new_board_close_btn{
-    background: url("../../static/images/popup/vector_x.png") no-repeat;
-    background-size: 100%;
+    background-color: transparent;
     border-style: none;
     width: 20px;
     height: 20px;
-    object-fit: cover;
     cursor: pointer;
     float: right;
     margin-top: 12px;
-    margin-right: 12px;
+    margin-right: 16px;
+}
+
+.new_board_close_btn img{
+    width: inherit;
+    height: inherit;
 }
 
 #select_board_image{
@@ -107,18 +110,21 @@
     display: block;
 }
 
-.savebox_select_close_btn{
-    background: url("../../static/images/popup/vector_x.png") no-repeat;
-    background-size: 100%;
+.savebox_select_close_btn {
+    background-color: transparent;
     border-style: none;
     width: 20px;
     height: 20px;
-    object-fit: cover;
     cursor: pointer;
 
     float: right;
     margin-top: 12px;
-    margin-right: 12px;
+    margin-right: 16px;
+}
+
+.savebox_select_close_btn img {
+    width: inherit;
+    height: inherit;
 }
 
 .savebox_block{

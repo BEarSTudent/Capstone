@@ -209,16 +209,19 @@ section{
 }
 
 .savebox_popup_close_button{
-    background: url("../../static/images/popup/vector_x.png") no-repeat;
-    background-size: 100%;
+    background-color: transparent;
     border-style: none;
     width: 20px;
     height: 20px;
-    object-fit: cover;
     cursor: pointer;
     position: relative;
     bottom: 492px;
-    left: 868px;
+    left: 860px;
+}
+
+.savebox_popup_close_button img{
+    width: inherit;
+    height: inherit;
 }
 
 #savebox_download{

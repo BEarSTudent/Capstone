@@ -78,6 +78,8 @@
 .upex{
     width: 240px;
     height: 160px;
+
+    object-fit: cover;
 }
 
 .righttri{
@@ -198,8 +200,8 @@
 }
 
 .stex{
-    width: 130px;
-    height: 130px;
+    width: inherit;
+    height: inherit;
 }
 
 .sttextbox{
