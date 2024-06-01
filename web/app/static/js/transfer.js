@@ -399,7 +399,7 @@ window.onload = function(){
         laststep();
     });
 
-    st_u_Button.addEventListener('click', ()=>{
+    st_g_Button.addEventListener('click', ()=>{
         stepNext();
         laststep();
     });
