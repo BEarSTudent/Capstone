@@ -103,7 +103,13 @@
         let title_text = document.getElementById("title_text").value;
         let contents_text = document.getElementById("contents_text").value;
 
-        if (select_image != '') {
+        if (select_image == '') {
+            alert("사진을 선택해주세요.");
+        }
+        else if (title_text == '') {
+            alert("제목을 입력해주세요.");
+        }
+        else {
             await fetch("/newboard", {
                 method: "POST",
                 headers: {
@@ -116,12 +122,6 @@
                     window.location.href = response.url;
                 }
             })
-           
         }
-        else {
-            alert("사진을 선택해주세요.")
-        }
-
-
     }
 </script>

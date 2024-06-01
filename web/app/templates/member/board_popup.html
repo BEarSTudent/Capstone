@@ -165,14 +165,19 @@
         new_comment_text.value = "";
         new_comment_text.blur();
 
-        await fetch("/board/popup/newcomment", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({'board_id': board_id, 'contents': input_contents})
-        })
-
+        if (input_contents == '') {
+            alert("댓글 내용을 입력해주세요.");
+        }
+        else {
+            await fetch("/board/popup/newcomment", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({'board_id': board_id, 'contents': input_contents})
+            })
+        }
+        
         popup_data(board_id);
     }
 </script>
