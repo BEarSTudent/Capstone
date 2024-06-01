@@ -265,10 +265,10 @@ function generative_send(){
     input.value = null;
 
     let generative_data = {
-        text : userchat
+        prompt : userchat
     }
-    
-    fetch('/generative', {
+
+    fetch('/gen_image', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
