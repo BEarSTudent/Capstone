@@ -92,13 +92,17 @@
         popup_board_date.innerHTML = response_data.board_data[2];
 
         let popup_board_like_image = document.getElementById("popup_board_like_image");
-        if (response_data.like_user_data) {
+        if (response_data.like_user_data) { // 좋아요를 눌렀던 경우
             popup_board_like_image.setAttribute("src", "{{url_for('static', filename='images/popup/vector_like_fill.png')}}");
-            popup_board_like_image.setAttribute("onclick", "press_like(1)");
+            {% if current_user.is_authenticated %} // 로그인 시 버튼 활성화
+                popup_board_like_image.setAttribute("onclick", "press_like(1)");
+            {% endif %}
         }
-        else {
+        else { // 좋아요를 누르지 않았던 경우
             popup_board_like_image.setAttribute("src", "{{url_for('static', filename='images/popup/vector_like_outline.png')}}");
-            popup_board_like_image.setAttribute("onclick", "press_like(0)");
+            {% if current_user.is_authenticated %} // 로그인 시 버튼 활성화
+                popup_board_like_image.setAttribute("onclick", "press_like(0)");
+            {% endif %}
         }
 
         // comments

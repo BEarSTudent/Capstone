@@ -259,9 +259,9 @@ def press_like():
     board_id = request.get_json()['board_id']
     pressed = request.get_json()['pressed']
     
-    if pressed == 0:
+    if pressed == 0: # 좋아요를 누르지 않았던 경우 -> 추가
         db.like_insert(board_id, current_user.id)
-    elif pressed == 1:
+    elif pressed == 1: # 좋아요를 눌렀던 경우 -> 삭제
         db.like_delete(board_id, current_user.id)
     
     return jsonify({})
