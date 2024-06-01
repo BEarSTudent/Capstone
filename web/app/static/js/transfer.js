@@ -17,6 +17,7 @@ const sttp_s_Button = document.querySelector('#severgiftbtn');
 const sttp_d_Button = document.querySelector('#dallebtn');
 const sttp_u_Button = document.querySelector('#useruploadbtn');
 const st_s_Button = document.querySelector('#stylenorm');
+const st_g_Button = document.querySelector('#stylegen');
 const st_u_Button = document.querySelector('#stylefileupload');
 const upload_0 = document.querySelector('#imageone-upload');
 const realUpload_0 = document.querySelector('#chooseFile_1');
@@ -26,6 +27,8 @@ const upload_2 = document.querySelector('#image-upload_3');
 const realUpload_2 = document.querySelector('#chooseFile_3');
 const upload_3 = document.querySelector('#style-upload');
 const realUpload_3 = document.querySelector('#chooseFile_4');
+const chat_Log = document.querySelector('#chat_log');
+const chat_Button = document.querySelector('#textsend')
 
 let currentStep = 0;
 let uploadtype = 0;
@@ -34,12 +37,12 @@ let normtype = 0;
 
 let request_data = {
     encoding_type : "",
-    content_target_name : "",
+    content_target_name : null,
     content_target_image : null,
-    style_name : "",
+    style_name : null,
     style_image : null,
     person_transfer_bool : true,
-    content_source_name : "",
+    content_source_name : null,
     content_source_image : null
 }
 
@@ -77,6 +80,35 @@ function hide(){
     }
 }
 
+function generative_clear(){
+    chat_Log.replaceChildren();
+
+    let gline = document.createElement('div');
+    gline.classList.add('chatline');
+
+    let gicon = document.createElement('div');
+    gicon.classList.add('icon');
+    gicon.classList.add('left');
+    let gicontext = document.createTextNode("G");
+    gicon.appendChild(gicontext);
+    gline.appendChild(gicon);
+
+    let gchat = document.createElement('div');
+    gchat.classList.add('chat-text');
+    gchat.classList.add('left');
+    let gchattext = document.createTextNode("원하는 그림을 말씀해주세요");
+    gchat.appendChild(gchattext);
+    gline.appendChild(gchat);
+
+    chat_Log.appendChild(gline);
+
+    let input = document.getElementById('chat');
+    input.value = null;
+
+    const imgElement = document.getElementById('gen-image');
+    imgElement.src = null;
+}
+
 function stepBack(step){
     stepTargets[currentStep].classList.remove('active');
     formTargets[currentStep].classList.add('hidden');
@@ -87,7 +119,9 @@ function stepBack(step){
             choose_style[0].classList.remove('hidden');
             document.getElementById('image-show_4').replaceChildren();
             document.getElementById('fileName_4').textContent = "example.jpg";
-        }else if(styletype == 0){
+        }else if(styletype == 1){
+            generative_clear();
+        }else{
             stBox[normtype].classList.remove('select');
         }
     }
@@ -183,6 +217,70 @@ async function laststep(){
             stepTargets[5].classList.add('active');
             stepTargets[5].classList.add('last');
         }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function generative_send(){
+    let uline = document.createElement('div');
+    uline.classList.add('chatline');
+
+    let uicon = document.createElement('div');
+    uicon.classList.add('icon');
+    uicon.classList.add('right');
+    let uicontext = document.createTextNode("I");
+    uicon.appendChild(uicontext);
+    uline.appendChild(uicon);
+
+    let uchat = document.createElement('div');
+    uchat.classList.add('chat-text');
+    uchat.classList.add('right');
+    let userchat = document.getElementById('chat').value;
+    let uchattext = document.createTextNode(userchat);
+    uchat.appendChild(uchattext);
+    uline.appendChild(uchat);
+
+    chat_Log.appendChild(uline);
+
+    let gline = document.createElement('div');
+    gline.classList.add('chatline');
+
+    let gicon = document.createElement('div');
+    gicon.classList.add('icon');
+    gicon.classList.add('left');
+    let gicontext = document.createTextNode("G");
+    gicon.appendChild(gicontext);
+    gline.appendChild(gicon);
+
+    let gchat = document.createElement('div');
+    gchat.classList.add('chat-text');
+    gchat.classList.add('left');
+    let gchattext = document.createTextNode("변환 중입니다...");
+    gchat.appendChild(gchattext);
+    gline.appendChild(gchat);
+
+    chat_Log.appendChild(gline);
+    chat_Log.scrollTop = chat_Log.scrollHeight;
+    const prompt = userchat;
+
+    let input = document.getElementById('chat');
+    input.value = null;
+
+    fetch('/gen_image', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({prompt: prompt})
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        request_data.style_image = blob;
+        const imgElement = document.getElementById('gen-image');
+        const imageUrl = URL.createObjectURL(request_data.style_image);
+        imgElement.src = imageUrl;
     })
     .catch(error => {
         console.error('Error:', error);
@@ -299,9 +397,19 @@ window.onload = function(){
         laststep();
     });
 
+    st_g_Button.addEventListener('click', ()=>{
+        stepNext();
+        laststep();
+    });
+
+
     st_u_Button.addEventListener('click', ()=>{
         stepNext();
         laststep();
+    });
+
+    chat_Button.addEventListener('click', ()=>{
+        generative_send();
     });
 
     upload_0.addEventListener('click', () =>{

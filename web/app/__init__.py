@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, jsonify, send_from_directory
+from flask import Flask, render_template, url_for, request, redirect, jsonify, send_from_directory, send_file
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from PIL import Image
 from io import BytesIO
@@ -19,6 +19,7 @@ app = Flask(__name__)
 tree = elemTree.parse('keys.xml') # 사용 환경에 맞춰 절대 경로 적용 후 사용
 app.secret_key = tree.find('string[@name="secret_key"]').text
 server_url = tree.find('string[@name="server_url"]').text
+gen_url = tree.find('string[@name="gen_url"]').text
 
 # 로그인 관리
 login_manager = LoginManager()
@@ -52,26 +53,6 @@ def wait():
 
 @app.route('/transfer/result', methods=["GET", "POST"])
 def result():
-    # 테스트용으로 작성한 코드
-    # 아래 두줄은 배포할 때 삭제해야함
-    # image_name = "sample_image.png"
-    # path_type = "temp"
-    # if request.method == "POST":
-    #     json_data = request.get_json()
-    #     dict_data = json.loads(json.dumps(json_data))
-        
-    #     image_name = dict_data['name']
-    #     if current_user.is_authenticated:
-    #         path_type = current_user.id
-    #     else:
-    #         path_type = "temp"
-            
-    #     image_path = parent_path + f"/user/{path_type}/" + str(image_name)
-    #     image_name = dict_data['img']
-    #     image = Image.open(BytesIO(base64.b64encode(image_name)))
-    #     image.save(image_path)
-    
-    
     image_name = request.args.get('name')
     if current_user.is_authenticated:
             path_type = current_user.id
@@ -331,5 +312,27 @@ def select_savebox():
     
     return jsonify({'savebox_data': savebox_data, 'image_path': url_for('image_path', path_type=current_user.id, filename="")})
 
+@app.route("/gen_image", methods=["POST"])
+def gen_image():
+    if request.method == "POST":
+        data = request.json
+        headers = {'Content-Type': 'application/json'}  # JSON 형식의 데이터를 전송함을 명시
+            
+        # Image Generation server에 데이터 전송
+        response = requests.post(gen_url, json=data, headers=headers)
+        response_data = response.json()
+
+        # 이미지를 base64에서 디코딩하여 PIL 이미지 객체로 변환
+        image_data = base64.b64decode(response_data['img'])
+        image = Image.open(BytesIO(image_data))
+
+        # BytesIO 객체에 이미지를 저장
+        img_io = BytesIO()
+        image.save(img_io, 'PNG')
+        img_io.seek(0)
+
+        return send_file(img_io, mimetype='image/png')
+        
+        
 if __name__ == "__main__":
-    app.run(debug=True, port=12380)
+    app.run(host="0.0.0.0", debug=True, port=2190)
