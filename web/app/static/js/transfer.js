@@ -201,7 +201,7 @@ async function laststep(){
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(text)
+        body: JSON.stringify(request_data)
     })
     .then(response => {
         if (response.redirected) {
