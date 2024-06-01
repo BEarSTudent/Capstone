@@ -366,6 +366,10 @@
     background:#EEEEEE;
 }
 
+#gen-image{
+    object-fit: contain;
+}
+
 .gnext_btn{
     width: 600px;
     height: 50px;

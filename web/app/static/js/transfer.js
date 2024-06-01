@@ -104,6 +104,9 @@ function generative_clear(){
 
     let input = document.getElementById('chat');
     input.value = null;
+
+    const imgElement = document.getElementById('gen-image');
+    imgElement.src = null;
 }
 
 function stepBack(step){
@@ -264,19 +267,21 @@ function generative_send(){
     let input = document.getElementById('chat');
     input.value = null;
 
-    let generative_data = {
-        prompt : userchat
-    }
+    const prompt = userchat;
 
     fetch('/gen_image', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(generative_data)
+        body: JSON.stringify({prompt: prompt})
     })
     .then(response => {
-        if (response.genimg) {
+        if (response.img) {
+            const imgElement = document.getElementById('gen-image');
+            imgElement.src = 'data:image/png;base64,${data.img}';
+            request_data.style_image = img;
+            request_data.style_name = img.name;
         }
     })
     .catch(error => {
