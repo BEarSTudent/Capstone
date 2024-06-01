@@ -263,11 +263,10 @@ function generative_send(){
 
     chat_Log.appendChild(gline);
     chat_Log.scrollTop = chat_Log.scrollHeight;
+    const prompt = userchat;
 
     let input = document.getElementById('chat');
     input.value = null;
-
-    const prompt = userchat;
 
     fetch('/gen_image', {
         method: 'POST',
@@ -277,11 +276,11 @@ function generative_send(){
         body: JSON.stringify({prompt: prompt})
     })
     .then(response => {
-        if (response.img) {
+        if (response.image) {
             const imgElement = document.getElementById('gen-image');
-            imgElement.src = 'data:image/png;base64,${data.img}';
-            request_data.style_image = img;
-            request_data.style_name = img.name;
+            imgElement.src = URL.createObjectURL(image);
+            request_data.style_image = image;
+            request_data.style_name = "generativeimg.png";
         }
     })
     .catch(error => {
@@ -399,7 +398,7 @@ window.onload = function(){
         laststep();
     });
 
-    st_u_Button.addEventListener('click', ()=>{
+    st_g_Button.addEventListener('click', ()=>{
         stepNext();
         laststep();
     });
