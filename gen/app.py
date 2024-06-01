@@ -2,6 +2,8 @@ from flask import Flask, request
 import json, base64
 from diffusers import StableDiffusionPipeline
 import torch
+from io import BytesIO
+
 
 app = Flask(__name__)
 
@@ -23,10 +25,15 @@ def gen_image():
         ==========================================
         prompt  : 생성할 이미지 요구조건
         '''
-        prompt = dict_data['promp']
+        prompt = dict_data['prompt']
         image = pipe(prompt).images[0]
-        image = base64.b64encode(image).decode('utf-8')
-        file = {"img": image}
+        
+        # 이미지를 byte stream으로 변환
+        buffered = BytesIO()
+        image.save(buffered, format="PNG")
+        img_str = base64.b64encode(buffered.getvalue()).decode('utf-8')
+        
+        file = {"img": img_str}
         return file
         
 if __name__=="__main__":
