@@ -41,11 +41,7 @@ let request_data = {
     content_target_image : null,
     style_name : null,
     style_image : null,
-<<<<<<< HEAD
     person_transfer_bool : false,
-=======
-    person_transfer_bool : true,
->>>>>>> develop
     content_source_name : null,
     content_source_image : null
 }

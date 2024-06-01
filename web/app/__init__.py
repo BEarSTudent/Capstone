@@ -376,8 +376,4 @@ def gen_image():
         
         
 if __name__ == "__main__":
-<<<<<<< HEAD
     app.run(host="0.0.0.0", debug=True, port=2190)
-=======
-    app.run(host="0.0.0.0", debug=True, port=2190)
->>>>>>> develop
