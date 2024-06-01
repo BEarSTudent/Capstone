@@ -37,12 +37,12 @@ let normtype = 0;
 
 let request_data = {
     encoding_type : "",
-    content_target_name : "",
+    content_target_name : null,
     content_target_image : null,
-    style_name : "",
+    style_name : null,
     style_image : null,
     person_transfer_bool : true,
-    content_source_name : "",
+    content_source_name : null,
     content_source_image : null
 }
 
