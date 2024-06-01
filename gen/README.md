@@ -1,7 +1,7 @@
 # # WorkSpace Install Guide
 Image Generation Server을 구동하기 위해서는 몇가지 환경세팅을 해주어야합니다.
 
-# ViT-Adapter
+# Diffusion
 자세한 설명은 이 사이트를 참고하시면 됩니다.
 
 diffusers: https://github.com/huggingface/diffusers
