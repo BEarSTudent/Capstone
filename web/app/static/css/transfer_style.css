@@ -278,3 +278,107 @@
     height: 380px;
     background: #EEEEEE;
 }
+
+.generative-chat{
+    width: 600px;
+    float: left;
+}
+
+.chatlog{
+    height: 400px;
+    margin-bottom: 20px;
+    background-color: #000000;
+    overflow-y: auto;
+}
+
+.chatline{
+    padding: 30px;
+}
+
+.icon{
+    width: 50px;
+    height: 50px;
+    padding-top: 5px;
+    border-radius: 50%;
+    font-size: 30px;
+    background-color: #fff;
+}
+
+.icon.left{
+    float: left;
+}
+
+.icon.right{
+    float: right;
+}
+
+.chat-text{
+    text-align: left;
+    margin-top: 7px;
+    max-width: 450px;
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 10px;
+    background-color: #EEEEEE;
+}
+
+.chat-text.left{
+    float: left;
+    margin-left: 10px;
+}
+
+.chat-text.right{
+    float: right;
+    margin-right: 10px;
+}
+
+.text_form{
+    margin-right: 10px;
+    border: 0;
+    outline: none;
+    padding-left: 10px;
+    width: 480px;
+    height: 50px;
+    float: left;
+    background-color: #000000;
+    color: #fff;
+}
+
+.text_form::placeholder{
+    color: #fff;
+}
+
+.text_btn{
+    width: 96px;
+    height: 52px;
+    float: left;
+    background-color: #000000;
+    color: #fff;
+}
+
+.generative-img{
+    margin-left: 30px;
+    width: 600px;
+    float: left;
+}
+
+.gen-img{
+    height: 400px;
+    margin-bottom: 20px;
+    background:#EEEEEE;
+}
+
+#gen-image{
+    width: 600px;
+    height: 400px;
+    object-fit: contain;
+}
+
+.gnext_btn{
+    width: 600px;
+    height: 50px;
+    border: 0;
+    padding: 1rem;
+    background: #DF7861;
+    color: #fff;
+}
