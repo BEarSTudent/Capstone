@@ -313,10 +313,6 @@ def gen_image():
         # Image Generation server에 데이터 전송
         response = requests.post(gen_url, json=data, headers=headers)
         response = response.json()
-
-        # 이미지 형식으로 변환
-        image = Image.open(BytesIO(base64.b64decode(response['img'])))
-        response['img'] = image
         
         return response
         
