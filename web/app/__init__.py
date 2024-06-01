@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, jsonify, send_from_directory
+from flask import Flask, render_template, url_for, request, redirect, jsonify, send_from_directory, send_file
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from PIL import Image
 from io import BytesIO
@@ -312,9 +312,18 @@ def gen_image():
             
         # Image Generation server에 데이터 전송
         response = requests.post(gen_url, json=data, headers=headers)
-        response = response.json()
-        
-        return response
+        response_data = response.json()
+
+        # 이미지를 base64에서 디코딩하여 PIL 이미지 객체로 변환
+        image_data = base64.b64decode(response_data['img'])
+        image = Image.open(BytesIO(image_data))
+
+        # BytesIO 객체에 이미지를 저장
+        img_io = BytesIO()
+        image.save(img_io, 'PNG')
+        img_io.seek(0)
+
+        return send_file(img_io, mimetype='image/png')
         
         
 if __name__ == "__main__":

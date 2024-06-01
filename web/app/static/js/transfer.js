@@ -275,13 +275,19 @@ function generative_send(){
         },
         body: JSON.stringify({prompt: prompt})
     })
-    .then(response => {
-        if (response.image) {
-            const imgElement = document.getElementById('gen-image');
-            imgElement.src = URL.createObjectURL(image);
-            request_data.style_image = image;
-            request_data.style_name = "generativeimg.png";
-        }
+    .then(response => response.blob())
+    .then(blob => {
+        const imgElement = document.getElementById('gen-image');
+        let newImage = document.createElement("img");
+        const imageUrl = URL.createObjectURL(blob);
+        newImage.src = imageUrl;
+        imgElement.src = imageUrl;
+        newImage.style.objectFit = "contain";
+        let container = document.getElementById('gen-imgbox');
+        container.replaceChildren();
+        container.appendChild(newImage);
+        request_data.style_image = blob;
+        request_data.style_name = "generativeimg.png";
     })
     .catch(error => {
         console.error('Error:', error);
