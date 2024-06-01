@@ -19,6 +19,7 @@ app = Flask(__name__)
 tree = elemTree.parse('keys.xml') # 사용 환경에 맞춰 절대 경로 적용 후 사용
 app.secret_key = tree.find('string[@name="secret_key"]').text
 server_url = tree.find('string[@name="server_url"]').text
+gen_url = tree.find('string[@name="gen_url"]').text
 
 # 로그인 관리
 login_manager = LoginManager()
@@ -52,26 +53,6 @@ def wait():
 
 @app.route('/transfer/result', methods=["GET", "POST"])
 def result():
-    # 테스트용으로 작성한 코드
-    # 아래 두줄은 배포할 때 삭제해야함
-    # image_name = "sample_image.png"
-    # path_type = "temp"
-    # if request.method == "POST":
-    #     json_data = request.get_json()
-    #     dict_data = json.loads(json.dumps(json_data))
-        
-    #     image_name = dict_data['name']
-    #     if current_user.is_authenticated:
-    #         path_type = current_user.id
-    #     else:
-    #         path_type = "temp"
-            
-    #     image_path = parent_path + f"/user/{path_type}/" + str(image_name)
-    #     image_name = dict_data['img']
-    #     image = Image.open(BytesIO(base64.b64encode(image_name)))
-    #     image.save(image_path)
-    
-    
     image_name = request.args.get('name')
     if current_user.is_authenticated:
             path_type = current_user.id
@@ -327,8 +308,18 @@ def select_savebox():
 def gen_image():
     if request.method == "POST":
         data = request.json
-        prompt = data.get('prompt', '')
+        headers = {'Content-Type': 'application/json'}  # JSON 형식의 데이터를 전송함을 명시
+            
+        # Image Generation server에 데이터 전송
+        response = requests.post(gen_url, json=data, headers=headers)
+        response = response.json()
+
+        # 이미지 형식으로 변환
+        image = Image.open(BytesIO(base64.b64decode(response['img'])))
+        response['img'] = image
         
-    
+        return response
+        
+        
 if __name__ == "__main__":
     app.run(debug=True, port=12380)
