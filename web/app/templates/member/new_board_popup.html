@@ -41,6 +41,9 @@
 
     async function select_savebox() {
         savebox_image_block.innerHTML = "";
+        let savebox_image_select_block = document.createElement("div");
+        savebox_image_select_block.setAttribute("class", "savebox_image_select_block");
+        savebox_image_block.appendChild(savebox_image_select_block);
         
         let savebox_select_close_btn = document.createElement("button");
         savebox_select_close_btn.setAttribute("type", "button");
@@ -50,7 +53,7 @@
         close_img.setAttribute("src", "{{url_for('static', filename='images/popup/vector_x.png')}}");
         savebox_select_close_btn.appendChild(close_img);
 
-        savebox_image_block.appendChild(savebox_select_close_btn);
+        savebox_image_select_block.appendChild(savebox_select_close_btn);
         savebox_select_close_btn.addEventListener('click', function() {
             savebox_image_background.classList.remove('on');
         })
@@ -70,7 +73,7 @@
             let empty_text = document.createElement("div");
             empty_text.setAttribute("class", "empty_text")
             empty_text.innerHTML = "아직 사진이 없습니다.";
-            savebox_image_block.appendChild(empty_text);
+            savebox_image_select_block.appendChild(empty_text);
             return
         }
 
@@ -86,7 +89,7 @@
             savebox_image.setAttribute("src", response_data.image_path + savebox_data[i][1]);
             savebox_block.appendChild(savebox_image);
         
-            savebox_image_block.appendChild(savebox_block);
+            savebox_image_select_block.appendChild(savebox_block);
 
             savebox_block.addEventListener('click', function() {
                 select_board_image.src = savebox_image.src;
