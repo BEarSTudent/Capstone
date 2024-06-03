@@ -53,6 +53,8 @@ def save_image():
         content_target_name = dict_data['content_target_name']
         content_target_image = dict_data['content_target_image']
         content_target_image = Image.open(BytesIO(base64.b64decode(content_target_image)))
+        # image convert
+        content_target_image = convert_to_rgb(content_target_image)
         
         resizing_width = 1000
         # 타겟 이미지 크기 추출
@@ -87,6 +89,9 @@ def save_image():
         # 유저가 이미지와 배경화면 합성을 요구한 경우
         if content_source_image is not None:
             content_source_image = Image.open(BytesIO(base64.b64decode(content_source_image)))
+            # image convert
+            content_source_image = convert_to_rgb(content_source_image)
+            # 이미지 크기 변환
             content_source_image = content_source_image.resize((width, height))
             # 이미지 이름 중복성 검사
             temp = content_source_name
@@ -110,13 +115,21 @@ def save_image():
         # 커스텀 이미지(DALL-E, User Image)를 이용하는 경우
         else:
             style_image = Image.open(BytesIO(base64.b64decode(style_image)))
-            
+        # image convert
+        style_image = convert_to_rgb(style_image)
+        # 이미지 크기 변환
         style_image = style_image.resize((width, height))
-
+        
         # 이미지 변환
         return processing(encoding_type, person_transfer_bool, 
                           content_target_image, content_target_name, style_image, 
                           content_source_image, content_source_name)
+
+# 이미지가 RGBA 인경우 RGB로 변환
+def convert_to_rgb(image:Image):
+    if image.mode != 'RGB':
+        image = image.convert('RGB')
+    return image
 
 # 이미지 변환 작업
 def processing(encoding_type:str, person_transfer_bool:bool, 
@@ -132,52 +145,61 @@ def processing(encoding_type:str, person_transfer_bool:bool,
                 transforms.ToTensor()])
     # PIL 이미지로 변환
     unloader = transforms.ToPILImage()
+    print("style image size: ", style_image.size)
     style_image = loader(style_image).unsqueeze(0)
-    # 배경이미지를 선택하지 않은 경우
-    if content_source_image is None:
-        content_image = loader(content_target_image).unsqueeze(0)
-        image = transfer.run_style_transfer(content_img=content_image, style_img=style_image, num_steps=300)
-        image = unloader(image.squeeze(0))
-        
-        # 인물 변환
-        if person_transfer_bool:
-            mask = segmenter.run(content_target_name)
-            reverse_mask = np.where(mask == 0, 1, 0).astype(np.uint8)
-
-            image = image * reverse_mask
-            content_mask = content_target_image * mask
-            result = image + content_mask
-            
-        else:
-            result = np.array(image)
-
-    # 배경 이미지를 선택한 경우
-    else:
-        mask = segmenter.run(content_target_name)
-        reverse_mask = np.where(mask == 0, 1, 0).astype(np.uint8)
-        content_target_masked = content_target_image * mask
-        
-        # 인물 변환
-        if person_transfer_bool:
-            content_source_image = loader(content_source_image).unsqueeze(0)
-            image = transfer.run_style_transfer(content_img=content_source_image, style_img=style_image, num_steps=300)
+    
+    # 오류 발생 시 True로 변함 
+    exception = False
+    try:
+        # 배경이미지를 선택하지 않은 경우
+        if content_source_image is None:
+            print("content_target_image size: ", content_target_image.size)
+            content_image = loader(content_target_image).unsqueeze(0)
+            print(content_image.shape, "\n", style_image.shape)
+            image = transfer.run_style_transfer(content_img=content_image, style_img=style_image, num_steps=300)
             image = unloader(image.squeeze(0))
             
-            content_source_masked = image * reverse_mask
-            result = content_target_masked + content_source_masked
-        else:
-            content_source_masked = content_source_image * reverse_mask
-            content_image = content_target_masked + content_source_masked
-            content_image = loader(Image.fromarray(content_image)).unsqueeze(0)
-            image = transfer.run_style_transfer(content_img=content_image, style_img=style_image, num_steps=300)
-            result = np.array(unloader(image.squeeze(0)))
-            
+            # 인물 변환
+            if person_transfer_bool:
+                mask = segmenter.run(content_target_name)
+                reverse_mask = np.where(mask == 0, 1, 0).astype(np.uint8)
 
-    result.astype(np.uint8)
-    result = cv2.cvtColor(result, cv2.COLOR_BGR2RGB)
-    _, result = cv2.imencode(encoding_type, result)
-    b64_string = base64.b64encode(result).decode('utf-8')
-    file = {"img": b64_string}
+                image = image * reverse_mask
+                content_mask = content_target_image * mask
+                result = image + content_mask
+                
+            else:
+                result = np.array(image)
+
+        # 배경 이미지를 선택한 경우
+        else:
+            mask = segmenter.run(content_target_name)
+            reverse_mask = np.where(mask == 0, 1, 0).astype(np.uint8)
+            content_target_masked = content_target_image * mask
+            
+            # 인물 변환
+            if person_transfer_bool:
+                content_source_image = loader(content_source_image).unsqueeze(0)
+                image = transfer.run_style_transfer(content_img=content_source_image, style_img=style_image, num_steps=300)
+                image = unloader(image.squeeze(0))
+                
+                content_source_masked = image * reverse_mask
+                result = content_target_masked + content_source_masked
+            else:
+                content_source_masked = content_source_image * reverse_mask
+                content_image = content_target_masked + content_source_masked
+                content_image = loader(Image.fromarray(content_image)).unsqueeze(0)
+                image = transfer.run_style_transfer(content_img=content_image, style_img=style_image, num_steps=300)
+                result = np.array(unloader(image.squeeze(0)))
+            
+        result.astype(np.uint8)
+        result = cv2.cvtColor(result, cv2.COLOR_BGR2RGB)
+        _, result = cv2.imencode(encoding_type, result)
+        b64_string = base64.b64encode(result).decode('utf-8')
+        file = {"img": b64_string}
+        
+    except Exception as e:
+        exception = True
     
     # 임시로 저장한 이미지 삭제
     if os.path.exists(f'{content_path}{content_target_name}'):
@@ -188,7 +210,11 @@ def processing(encoding_type:str, person_transfer_bool:bool,
             os.remove(f'{content_path}{content_source_name}')
     # Garbage collector
     gc.collect()
-    torch.cuda.empty_cache()    
+    torch.cuda.empty_cache()
+    
+    if exception:
+        raise
+     
     return file
 
 # # 테스트용 코드
