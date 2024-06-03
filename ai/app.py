@@ -6,8 +6,20 @@ from PIL import Image
 import torchvision.transforms as transforms
 import numpy as np
 current_path = os.path.dirname(os.path.abspath(__file__))
+# 프로그램 실행시 아래 명령어로 실행. 포트번호는 변경 가능
+# flask run --host='0.0.0.0' --port='21220'
 app = Flask(__name__)
 
+#파일 경로
+content_path = current_path + "/data/content/"
+style_path = current_path + "/data/style/"
+# content path 폴더 생성
+if not os.path.exists(content_path):
+    os.makedirs(content_path)
+
+# 모델 불러오기
+transfer = Transfer()
+segmenter = Segmenter()
 
 @app.route('/upload', methods=['POST'])
 def save_image():
@@ -177,15 +189,16 @@ def processing(encoding_type:str, person_transfer_bool:bool,
             os.remove(f'{content_path}{content_source_name}')
             
     return file
-    
-if __name__ == "__main__":
-    content_path = current_path + "/data/content/"
-    style_path = current_path + "/data/style/"
-    # content path 폴더 생성
-    if not os.path.exists(content_path):
-        os.makedirs(content_path)
+
+# # 테스트용 코드
+# if __name__ == "__main__":
+#     content_path = current_path + "/data/content/"
+#     style_path = current_path + "/data/style/"
+#     # content path 폴더 생성
+#     if not os.path.exists(content_path):
+#         os.makedirs(content_path)
       
-    transfer = Transfer()
-    segmenter = Segmenter()
+#     transfer = Transfer()
+#     segmenter = Segmenter()
     
-    app.run(host='0.0.0.0', port=21220, debug=True)
+#     app.run(host='0.0.0.0', port=21220, debug=True)
