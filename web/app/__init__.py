@@ -116,11 +116,17 @@ def sendfile():
             path += current_user.id
         else:
             path += "temp"
+        
+        # 이미지 파일 이름 변경
+        file_ext = os.path.splitext(content_target_name)[1]
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        new_filename = f"{timestamp}{file_ext}"
+        
         # 이미지 저장
-        image.save(path + f"/{content_target_name}")
+        image.save(path + f"/{new_filename}")
         
         # 반환 타입 지정
-        return redirect(url_for('result', name=content_target_name))
+        return redirect(url_for('result', name=new_filename))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -333,8 +339,13 @@ def edit_profile():
     if request.files['file']:
         f = request.files['file']
         file_path = parent_path + f"/user/{current_user.id}/"
-        f.save(file_path + f.filename)
-        db.user_update(current_user.id, user_data[1], str(input_user_name), f.filename)
+        
+        # 이미지 파일 이름 변경
+        file_ext = os.path.splitext(f.filename)[1]
+        new_filename = f"{current_user.id}{file_ext}"
+        
+        f.save(file_path + new_filename)
+        db.user_update(current_user.id, user_data[1], str(input_user_name), new_filename)
     else:
         db.user_update(current_user.id, user_data[1], str(input_user_name), user_data[3])
     
