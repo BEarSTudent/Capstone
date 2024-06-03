@@ -4,7 +4,13 @@ from diffusers import StableDiffusionPipeline
 import torch
 from io import BytesIO
 
+# Diffusion 모델 불러오기
+model_id = "runwayml/stable-diffusion-v1-5"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
 
+# 프로그램 실행시 아래 명령어로 실행. 포트번호는 변경 가능
+# flask run --host='0.0.0.0' --port='21221'
 app = Flask(__name__)
 
 @app.route("/gen_image", methods=["POST"])
@@ -35,10 +41,11 @@ def gen_image():
         
         file = {"img": img_str}
         return file
-        
-if __name__=="__main__":
-    model_id = "runwayml/stable-diffusion-v1-5"
-    pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
-    pipe = pipe.to("cuda")
-    # 실행
-    app.run(host='0.0.0.0', port=21221, debug=True)
+
+# 테스트용 코드        
+# if __name__=="__main__":
+#     model_id = "runwayml/stable-diffusion-v1-5"
+#     pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+#     pipe = pipe.to("cuda")
+#     # 실행
+#     app.run(host='0.0.0.0', port=21221, debug=True)
