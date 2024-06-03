@@ -47,7 +47,7 @@ section{
     right: 132px;
 }
 
-hr{
+#top_line_board{
     min-width: 1020px;
     margin-left: 100px;
     margin-right: 100px;
@@ -66,6 +66,8 @@ hr{
 .board_image{
     width: 280px;
     height: 180px;
+
+    object-fit: cover;
 }
 
 .board_title{

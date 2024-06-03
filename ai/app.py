@@ -1,16 +1,25 @@
 from src import *
 from flask import Flask, request
-import json
-import base64
+import json, base64, cv2, os
 from io import BytesIO
 from PIL import Image
 import torchvision.transforms as transforms
 import numpy as np
-import cv2
-import os
 current_path = os.path.dirname(os.path.abspath(__file__))
+# 프로그램 실행시 아래 명령어로 실행. 포트번호는 변경 가능
+# flask run --host='0.0.0.0' --port='21220'
 app = Flask(__name__)
 
+#파일 경로
+content_path = current_path + "/data/content/"
+style_path = current_path + "/data/style/"
+# content path 폴더 생성
+if not os.path.exists(content_path):
+    os.makedirs(content_path)
+
+# 모델 불러오기
+transfer = Transfer()
+segmenter = Segmenter()
 
 @app.route('/upload', methods=['POST'])
 def save_image():
@@ -60,7 +69,18 @@ def save_image():
         
         # 이미지 크기 변환
         content_target_image = content_target_image.resize((width, height))
-        content_target_image.save(f"{content_path}{content_target_name}")
+        # 이미지 이름 중복성 검사
+        temp = content_target_name
+        for i in range(101):
+            if os.path.exists(f'{content_path}{temp}'):
+                temp = content_target_name + str(i)
+            else:
+                content_target_image.save(f'{content_path}{temp}')
+                content_target_name = temp
+                break
+            
+            if i == 100:
+                raise
         
         content_source_name = dict_data['content_source_name']
         content_source_image = dict_data['content_source_image']
@@ -68,32 +88,40 @@ def save_image():
         if content_source_image is not None:
             content_source_image = Image.open(BytesIO(base64.b64decode(content_source_image)))
             content_source_image = content_source_image.resize((width, height))
-            content_source_image.save(f'{content_path}{content_source_name}')
+            # 이미지 이름 중복성 검사
+            temp = content_source_name
+            for i in range(101):
+                if os.path.exists(f'{content_path}{temp}'):
+                    temp = content_source_name + str(i)
+                else:
+                    content_source_image.save(f'{content_path}{temp}')
+                    content_source_name = temp
+                    break
+                
+                if i == 100:
+                    raise
             
         # select, dall_e, custom
         style_image = dict_data['style_image']
+        style_name = dict_data['style_name']
         # 제공하는 스타일을 적용하는 경우
         if style_image is None:
-            style_name = dict_data['style_name']
             style_image = Image.open(f'{style_path}{style_name}')
         # 커스텀 이미지(DALL-E, User Image)를 이용하는 경우
         else:
             style_image = Image.open(BytesIO(base64.b64decode(style_image)))
-        style_image = style_image.resize(((width, height)))
-        # 배경이미지을 넣지 않은 경우
-        if content_source_image is None:
-            return processing(encoding_type, person_transfer_bool, 
-                              content_target_image, content_target_name, style_image)
-        # 배경이미지을 넣은 경우
-        else:
-            return processing(encoding_type, person_transfer_bool, 
-                              content_target_image, content_target_name, style_image, 
-                              content_source_image, content_source_name)
+            
+        style_image = style_image.resize((width, height))
+
+        # 이미지 변환
+        return processing(encoding_type, person_transfer_bool, 
+                          content_target_image, content_target_name, style_image, 
+                          content_source_image, content_source_name)
 
 # 이미지 변환 작업
 def processing(encoding_type:str, person_transfer_bool:bool, 
-               content_target_image:Image, content_target_name:str, 
-               style_image:Image, content_source_image=None,content_source_name=None):
+               content_target_image:Image, content_target_name:str, style_image:Image, 
+               content_source_image=None,content_source_name=None):
     '''
     현재 GPU 성능으로 보았을 때 Transfer의 가능한 이미지 크기가 약 HD 정도로 추정
     따라서 필연적으로 target_image보다 화질 저하가 발생한다.
@@ -108,19 +136,20 @@ def processing(encoding_type:str, person_transfer_bool:bool,
     # 배경이미지를 선택하지 않은 경우
     if content_source_image is None:
         content_image = loader(content_target_image).unsqueeze(0)
-        image = transfer.run_style_transfer(content_img=content_image, style_img=style_image)
+        image = transfer.run_style_transfer(content_img=content_image, style_img=style_image, num_steps=300)
         image = unloader(image.squeeze(0))
         
         # 인물 변환
         if person_transfer_bool:
-            result = np.array(image)
-        else:
             mask = segmenter.run(content_target_name)
             reverse_mask = np.where(mask == 0, 1, 0).astype(np.uint8)
 
             image = image * reverse_mask
             content_mask = content_target_image * mask
             result = image + content_mask
+            
+        else:
+            result = np.array(image)
 
     # 배경 이미지를 선택한 경우
     else:
@@ -133,12 +162,12 @@ def processing(encoding_type:str, person_transfer_bool:bool,
             content_source_masked = content_source_image * mask
             content_image = content_target_masked + content_source_masked
             content_image = loader(Image.fromarray(content_image)).unsqueeze(0)
-            image = transfer.run_style_transfer(content_img=content_image, style_img=style_image)
+            image = transfer.run_style_transfer(content_img=content_image, style_img=style_image, num_steps=300)
             result = np.array(unloader(image.squeeze(0)))
             
         else:
             content_target_image = loader(content_target_image).unsqueeze(0)
-            image = transfer.run_style_transfer(content_img=content_target_image, style_img=style_image)
+            image = transfer.run_style_transfer(content_img=content_target_image, style_img=style_image, num_steps=300)
             image = unloader(image.squeeze(0))
             
             content_target_masked = image * reverse_mask
@@ -150,12 +179,26 @@ def processing(encoding_type:str, person_transfer_bool:bool,
     _, result = cv2.imencode(encoding_type, result)
     b64_string = base64.b64encode(result).decode('utf-8')
     file = {"img": b64_string}
+    
+    # 임시로 저장한 이미지 삭제
+    if os.path.exists(f'{content_path}{content_target_name}'):
+        os.remove(f'{content_path}{content_target_name}')
+    
+    if content_source_name is not None:
+        if os.path.exists(f'{content_path}{content_source_name}'):
+            os.remove(f'{content_path}{content_source_name}')
+            
     return file
+
+# # 테스트용 코드
+# if __name__ == "__main__":
+#     content_path = current_path + "/data/content/"
+#     style_path = current_path + "/data/style/"
+#     # content path 폴더 생성
+#     if not os.path.exists(content_path):
+#         os.makedirs(content_path)
+      
+#     transfer = Transfer()
+#     segmenter = Segmenter()
     
-if __name__ == "__main__":
-    content_path = current_path + "/data/content/"
-    style_path = current_path + "/data/style/"
-    transfer = Transfer()
-    segmenter = Segmenter()
-    
-    app.run(host='0.0.0.0', port=21220, debug=True)
+#     app.run(host='0.0.0.0', port=21220, debug=True)

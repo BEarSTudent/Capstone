@@ -72,7 +72,7 @@ class StrDatabase:
         
         self.__write_db(sql)
 
-    def board_select(self, search_text:str, sort_by: str):
+    def board_select(self, search_text: str, sort_by: str):
         """게시판 로드를 위해 str_board의 데이터를 search_text 기반 검색, sort_by 기준 정렬
 
         Args:
@@ -80,23 +80,36 @@ class StrDatabase:
             sort_by (str): 정렬 기준
         
         Returns:
-            tuple: 검색, 정렬된 데이터. recent: ((board_id, board_image, board_title), ...), like/comment: ((board_id, board_image, board_title, count), ...)
+            tuple: 검색, 정렬된 데이터. recent: ((board_id, user_id, board_image, board_title), ...), like/comment: ((board_id, user_id, board_image, board_title, count), ...)
         """
         if sort_by == "like":
-            sql = "SELECT b.board_id, b.board_image, b.board_title, COUNT(l.user_id) AS count FROM str_board b LEFT OUTER JOIN str_like l ON b.board_id = l.board_id "
+            sql = "SELECT b.board_id, b.user_id, b.board_image, b.board_title, COUNT(l.user_id) AS count FROM str_board b LEFT OUTER JOIN str_like l ON b.board_id = l.board_id "
             if search_text != "":
                 sql += "WHERE b.board_title LIKE '%" + search_text + "%' OR b.contents LIKE '%" + search_text + "%' "
             sql += "GROUP BY b.board_id ORDER BY count DESC, b.board_id DESC;"
         elif sort_by == "comment":
-            sql = "SELECT b.board_id, b.board_image, b.board_title, COUNT(c.comment_id) AS count FROM str_board b LEFT OUTER JOIN str_comment c ON b.board_id = c.board_id "
+            sql = "SELECT b.board_id, b.user_id, b.board_image, b.board_title, COUNT(c.comment_id) AS count FROM str_board b LEFT OUTER JOIN str_comment c ON b.board_id = c.board_id "
             if search_text != "":
                 sql += "WHERE b.board_title LIKE '%" + search_text + "%' OR b.contents LIKE '%" + search_text + "%' "
             sql += "GROUP BY b.board_id ORDER BY count DESC, b.board_id DESC;"
         else: # recent
-            sql = "SELECT board_id, board_image, board_title FROM str_board "
+            sql = "SELECT board_id, user_id, board_image, board_title FROM str_board "
             if search_text != "":
                 sql += "WHERE board_title LIKE '%" + search_text + "%' OR contents LIKE '%" + search_text + "%' "
-            sql += "ORDER BY board_id DESC"
+            sql += "ORDER BY board_id DESC;"
+        
+        return self.__read_db(sql)
+    
+    def board_select_user(self, user_id: str):
+        """str_board table에서 user_id를 기반으로 검색한 결과를 반환하는 함수
+
+        Args:
+            user_id (str): 검색할 사용자 id
+
+        Returns:
+            tuple: 사용자 기반 검색 결과. ((board_id, board_image, board title), ...)
+        """
+        sql = "SELECT board_id, board_image, board_title FROM str_board WHERE user_id = '" + user_id + "' ORDER BY board_id DESC;"
         
         return self.__read_db(sql)
     
@@ -144,9 +157,9 @@ class StrDatabase:
             user_id (str): 사용자의 id
         
         Returns:
-            tuple: 사용자의 보관함 데이터. ((savebox_id, user_id, savebox_image), ...)
+            tuple: 사용자의 보관함 데이터. ((savebox_id, savebox_image), ...)
         """
-        sql = "SELECT * FROM str_savebox WHERE user_id='" + user_id + "';"
+        sql = "SELECT savebox_id, savebox_image FROM str_savebox WHERE user_id='" + user_id + "';"
         
         return self.__read_db(sql)
     
@@ -184,13 +197,13 @@ class StrDatabase:
         board_sql = "SELECT * FROM str_board WHERE board_id=" + str(board_id) + ";"
         board_data = self.__read_db(board_sql)[0]
         
-        user_sql = "SELECT * FROM str_user WHERE user_id = '" + board_data[1] + "';"
+        user_sql = "SELECT user_id, user_name, user_image FROM str_user WHERE user_id = '" + board_data[1] + "';"
         user_data = self.__read_db(user_sql)[0]
         
         like_sql = "SELECT COUNT(*) FROM str_like WHERE board_id=" + str(board_id) + ";"
         like_count = int(self.__read_db(like_sql)[0][0])
         
-        comment_sql = "SELECT * FROM str_comment WHERE board_id=" + str(board_id) + ";"
+        comment_sql = "SELECT c.comment_id, c.user_id, u.user_name, u.user_image, c.contents FROM str_comment c, str_user u WHERE c.user_id=u.user_id AND board_id=" + str(board_id) + ";"
         comment_data = self.__read_db(comment_sql)
         
         like_user_sql = "SELECT * FROM str_like WHERE board_id=" + str(board_id) + " AND user_id='" + user_id + "';"

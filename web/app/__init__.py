@@ -1,23 +1,32 @@
-from flask import Flask, render_template, url_for, request, redirect, jsonify, send_from_directory
+from flask import Flask, render_template, url_for, request, redirect, jsonify, send_from_directory, send_file
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from PIL import Image
 from io import BytesIO
-from ops import StrDatabase, User
+try :
+    # 테스트용
+    from ops import StrDatabase, User
+except:
+    # flask run
+    from .ops import StrDatabase, User
 import xml.etree.ElementTree as elemTree
 import os, cv2, requests, json, base64, hashlib
 import numpy as np
+from datetime import datetime
 
 # 부모 디렉토리
 parent_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 현재 디렉토리
 current_path = os.path.dirname(os.path.abspath(__file__))
 
+# 프로그램 실행시 아래 명령어로 실행. 포트번호는 변경 가능
+# flask run --host='0.0.0.0' --port='2190'
 app = Flask(__name__)
 
 # secret_key를 관리하기 위해 xml 파일 사용
-tree = elemTree.parse('keys.xml') # 사용 환경에 맞춰 절대 경로 적용 후 사용
+tree = elemTree.parse('keys.xml') # 사용 환경에 맞춰 파일을 위치시킨 후 사용
 app.secret_key = tree.find('string[@name="secret_key"]').text
 server_url = tree.find('string[@name="server_url"]').text
+gen_url = tree.find('string[@name="gen_url"]').text
 
 # 로그인 관리
 login_manager = LoginManager()
@@ -32,7 +41,11 @@ def render_template_with_banner(template_name: str, **context):
     """banner에 필요한 사용자 데이터를 함께 render_template()하기 위한 함수"""
     if current_user.is_authenticated:
         user_tuple = db.user_select(current_user.id)
-        user_data = (user_tuple[0], user_tuple[2], user_tuple[3])
+        # 프로필을 한 번도 변경하지 않은 경우
+        if user_tuple[3] is None:
+            user_data = (user_tuple[0], user_tuple[2], "None")
+        else:
+            user_data = (user_tuple[0], user_tuple[2], user_tuple[3])
         return render_template(template_name, user_data=user_data, **context)
     else:
         return render_template(template_name, **context)
@@ -51,30 +64,22 @@ def wait():
 
 @app.route('/transfer/result', methods=["GET", "POST"])
 def result():
-    # 테스트용으로 작성한 코드
-    # 아래 두줄은 배포할 때 삭제해야함
-    image_name = "sample_image.png"
-    path_type = "temp"
-    if request.method == "POST":
-        json_data = request.get_json()
-        dict_data = json.loads(json.dumps(json_data))
-        
-        image_name = dict_data['name']
-        if current_user.is_authenticated:
-            path_type = current_user.id
-        else:
-            path_type = "temp"
-            
-        image_path = parent_path + f"/user/{path_type}/" + str(image_name)
-        image_name = dict_data['img']
-        image = Image.open(BytesIO(base64.b64encode(image_name)))
-        image.save(image_path)
+    image_name = request.args.get('name')
+    if current_user.is_authenticated:
+        path_type = current_user.id
+        db.savebox_insert(current_user.id, image_name)
+    else:
+        path_type = "temp"
     
     return render_template_with_banner('/transfer/result.html', type=path_type, image = image_name)
 
 @app.route('/<path_type>/<filename>')
 def image_path(path_type, filename):
-    return send_from_directory(parent_path + "/user/" + path_type, filename)
+    profileImage = parent_path + "/user/" + path_type + "/" + filename
+    if filename == "None" or not os.path.exists(profileImage):
+        return send_from_directory(parent_path + "/app/static/images", "basic_user_image.png")
+    else:
+        return send_from_directory(parent_path + "/user/" + path_type, filename)
 
 @app.route('/sendfile', methods=['POST'])
 def sendfile():
@@ -115,7 +120,7 @@ def sendfile():
         image.save(path + f"/{content_target_name}")
         
         # 반환 타입 지정
-        return 
+        return redirect(url_for('result', name=content_target_name))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -126,12 +131,18 @@ def register():
             result = db.user_select(user_id)
         except Exception as e:
             result = False
+
         if result:
             return jsonify({'exists': True, 'db_error': False})
         else:
             user_pw = data['pw']
             user_pw = hash_password(user_pw)
             user_name = data['user_name']
+            user_id_path = f"{parent_path}/user/{user_id}"
+            
+            if not os.path.exists(user_id_path):
+                os.makedirs(user_id_path)
+                
             try:
                 db.user_insert(user_id, user_pw, user_name)
                 print("redirect")
@@ -206,19 +217,170 @@ def hash_password(password):
     sha_signature = hashlib.sha256(password.encode('utf-8')).hexdigest()
     return sha_signature
 
-@app.route('/community', methods=["GET"])
+@app.route('/community', methods=["GET", "POST"])
 def community():
-    search_text = request.args.get('search_text')
-    sort_by = request.args.get('select_order')
-    
-    if search_text == None:
-        search_text = ""
-    
-    boards = list(db.board_select(search_text, sort_by))
-    for i in range(len(boards)):
-        boards[i] = list(boards[i])
-    
-    return render_template_with_banner("/community/community.html", search_text=search_text, sort_by=sort_by, board_data=boards)
+    if request.method == "POST":
+        # 게시물 로드
+        request_data = request.get_json()
+        search_text = request_data['search_text']
+        sort_by = request_data['sort_by']
+                
+        boards = list(db.board_select(search_text, sort_by))
+        for i in range(len(boards)):
+            boards[i] = [boards[i][0], url_for('image_path', path_type=boards[i][1], filename=boards[i][2]), boards[i][3]]
+        
+        return jsonify({'board_data': boards})
+    else:
+        # 검색어, 정렬 데이터 포함 페이지 반환
+        search_text = request.args.get('search_text')
+        sort_by = request.args.get('select_order')
+        
+        if search_text == None:
+            search_text = ""
+        
+        return render_template_with_banner("/community/community.html", search_text=search_text, sort_by=sort_by)
 
+@app.route('/board/popup', methods=["POST"])
+def show_popup():
+    board_id = request.get_json()['board_id']
+    
+    if current_user.is_authenticated:
+        board_one_data = db.board_one(board_id, current_user.id)
+    else:
+        board_one_data = db.board_one(board_id, "")
+    
+    # 사진 경로 조정
+    board_one_data['board_data'] = list(board_one_data['board_data'])
+    board_one_data['board_data'][3] = url_for('image_path', path_type=board_one_data['board_data'][1], filename=board_one_data['board_data'][3])
+    board_one_data['user_data'] = list(board_one_data['user_data'])
+    board_one_data['user_data'][2] = url_for('image_path', path_type=board_one_data['user_data'][0], filename=str(board_one_data['user_data'][2]))
+    board_one_data['comment_data'] = list(board_one_data['comment_data'])
+    for i in range(len(board_one_data['comment_data'])):
+        board_one_data['comment_data'][i] = list(board_one_data['comment_data'][i])
+        board_one_data['comment_data'][i][3] = url_for('image_path', path_type=board_one_data['comment_data'][i][1], filename=str(board_one_data['comment_data'][i][3]))
+    
+    return jsonify(board_one_data)
+
+@app.route('/board/popup/presslike', methods=["POST"])
+def press_like():
+    board_id = request.get_json()['board_id']
+    pressed = request.get_json()['pressed']
+    
+    if pressed == 0: # 좋아요를 누르지 않았던 경우 -> 추가
+        db.like_insert(board_id, current_user.id)
+    elif pressed == 1: # 좋아요를 눌렀던 경우 -> 삭제
+        db.like_delete(board_id, current_user.id)
+    
+    return jsonify({})
+
+@app.route('/board/popup/newcomment', methods=["POST"])
+def add_comment():
+    board_id = request.get_json()['board_id']
+    input_contents = request.get_json()['contents']
+    
+    db.comment_insert(board_id, current_user.id, input_contents)
+    
+    return jsonify({})
+
+@app.route('/mypage', methods=["GET", "POST"])
+def mypage():
+    if request.method == "POST":
+        # 게시물, 보관함 데이터 반환
+        board_data = list(db.board_select_user(current_user.id))
+        for i in range(len(board_data)):
+            board_data[i] = list(board_data[i])
+            board_data[i][1] = url_for('image_path', path_type=current_user.id, filename=board_data[i][1])
+        
+        savebox_data = list(db.savebox_select(current_user.id))
+        for i in range(len(savebox_data)):
+            savebox_data[i] = list(savebox_data[i])
+            savebox_data[i][1] = url_for('image_path', path_type=current_user.id, filename=savebox_data[i][1])
+        
+        return jsonify({'board_data': board_data, 'savebox_data': savebox_data})
+    else:
+        # 마이페이지 반환
+        return render_template_with_banner("/member/mypage.html")
+
+@app.route('/mypage/deletesavebox', methods=["POST"])
+def delete_savebox():
+    savebox_id = request.get_json()['savebox_id']
+    
+    db.savebox_delete(savebox_id)
+    
+    return redirect(url_for('mypage'))
+
+@app.route('/mypage/pwcheck', methods=["POST"])
+def check_pw():
+    if request.method == "POST":
+        input_pw_data = request.get_json()['check_pw']
+        hashed_input_pw = hash_password(input_pw_data)
+        
+        exist_user_data = db.user_select(current_user.id)
+        user_profile_data = [exist_user_data[0], exist_user_data[2], exist_user_data[3]]
+        
+        if hashed_input_pw == exist_user_data[1]:
+            return jsonify({'pw_match': True, 'user_data': user_profile_data})
+        else:
+            return jsonify({'pw_match': False, 'user_data': user_profile_data})
+
+@app.route('/mypage/editprofile', methods=["POST"])
+def edit_profile():
+    input_user_name = request.form['user_name']
+    
+    user_data = db.user_select(current_user.id)
+    user_image = user_data[3]
+    
+    if(request.files['file'] != None):
+        f = request.files['file']
+        file_path = parent_path + f"/user/{current_user.id}/"
+        f.save(file_path + f.filename)
+    
+    db.user_update(current_user.id, user_data[1], str(input_user_name), f.filename)
+    
+    return redirect(url_for('mypage'))
+
+@app.route("/newboard", methods=["POST"])
+def new_board():
+    new_board_data = request.get_json()
+    
+    now = datetime.now()
+    board_date = now.strftime("%Y-%m-%d %H:%M:%S")
+    
+    image_name = new_board_data['select_image'].split('/')[-1]
+    
+    db.board_insert(current_user.id, board_date, image_name, new_board_data['title_text'], new_board_data['contents_text'])
+    
+    return redirect(url_for('mypage'))
+
+@app.route("/selectsavebox", methods=["POST"])
+def select_savebox():
+    savebox_data = list(db.savebox_select(current_user.id))
+    for i in range(len(savebox_data)):
+        savebox_data[i] = list(savebox_data[i])
+    
+    return jsonify({'savebox_data': savebox_data, 'image_path': url_for('image_path', path_type=current_user.id, filename="")})
+
+@app.route("/gen_image", methods=["POST"])
+def gen_image():
+    if request.method == "POST":
+        data = request.json
+        headers = {'Content-Type': 'application/json'}  # JSON 형식의 데이터를 전송함을 명시
+            
+        # Image Generation server에 데이터 전송
+        response = requests.post(gen_url, json=data, headers=headers)
+        response_data = response.json()
+
+        # 이미지를 base64에서 디코딩하여 PIL 이미지 객체로 변환
+        image_data = base64.b64decode(response_data['img'])
+        image = Image.open(BytesIO(image_data))
+
+        # BytesIO 객체에 이미지를 저장
+        img_io = BytesIO()
+        image.save(img_io, 'PNG')
+        img_io.seek(0)
+
+        return send_file(img_io, mimetype='image/png')
+        
+        
 if __name__ == "__main__":
-    app.run(debug=True, port=12380)
+    app.run(host="0.0.0.0", debug=True, port=2190)

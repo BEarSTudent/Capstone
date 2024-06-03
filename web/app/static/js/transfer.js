@@ -7,6 +7,7 @@ const choose_ex = document.querySelectorAll('.choose');
 const choose_back = document.querySelectorAll('.choose_back');
 const choose_style = document.querySelectorAll('.choose_style');
 const targetName = document.querySelectorAll('.targetname');
+const stBox = document.querySelectorAll('.stnoimgbox');
 
 const uptp_single_Button = document.querySelector('#singleuploadbtn');
 const uptp_double_Button = document.querySelector('#doubleuploadbtn');
@@ -15,6 +16,9 @@ const up_double_Button = document.querySelector('#doublefileupload');
 const sttp_s_Button = document.querySelector('#severgiftbtn');
 const sttp_d_Button = document.querySelector('#dallebtn');
 const sttp_u_Button = document.querySelector('#useruploadbtn');
+const st_s_Button = document.querySelector('#stylenorm');
+const st_g_Button = document.querySelector('#stylegen');
+const st_u_Button = document.querySelector('#stylefileupload');
 const upload_0 = document.querySelector('#imageone-upload');
 const realUpload_0 = document.querySelector('#chooseFile_1');
 const upload_1 = document.querySelector('#image-upload_2');
@@ -23,21 +27,23 @@ const upload_2 = document.querySelector('#image-upload_3');
 const realUpload_2 = document.querySelector('#chooseFile_3');
 const upload_3 = document.querySelector('#style-upload');
 const realUpload_3 = document.querySelector('#chooseFile_4');
+const chat_Log = document.querySelector('#chat_log');
+const chat_Button = document.querySelector('#textsend')
 
 let currentStep = 0;
 let uploadtype = 0;
 let styletype = 0;
+let normtype = 0;
 
 let request_data = {
-    user_id : 0,
-    person_transfer_bool : 1,
     encoding_type : "",
-    content_target_name : "",
+    content_target_name : null,
     content_target_image : null,
-    content_source_name : "",
-    content_source_image : null,
-    style_name : "",
-    style_image : null
+    style_name : null,
+    style_image : null,
+    person_transfer_bool : false,
+    content_source_name : null,
+    content_source_image : null
 }
 
 function stepNext(){
@@ -74,6 +80,35 @@ function hide(){
     }
 }
 
+function generative_clear(){
+    chat_Log.replaceChildren();
+
+    let gline = document.createElement('div');
+    gline.classList.add('chatline');
+
+    let gicon = document.createElement('div');
+    gicon.classList.add('icon');
+    gicon.classList.add('left');
+    let gicontext = document.createTextNode("G");
+    gicon.appendChild(gicontext);
+    gline.appendChild(gicon);
+
+    let gchat = document.createElement('div');
+    gchat.classList.add('chat-text');
+    gchat.classList.add('left');
+    let gchattext = document.createTextNode("원하는 그림을 말씀해주세요");
+    gchat.appendChild(gchattext);
+    gline.appendChild(gchat);
+
+    chat_Log.appendChild(gline);
+
+    let input = document.getElementById('chat');
+    input.value = null;
+
+    const imgElement = document.getElementById('gen-image');
+    imgElement.src = null;
+}
+
 function stepBack(step){
     stepTargets[currentStep].classList.remove('active');
     formTargets[currentStep].classList.add('hidden');
@@ -84,6 +119,10 @@ function stepBack(step){
             choose_style[0].classList.remove('hidden');
             document.getElementById('image-show_4').replaceChildren();
             document.getElementById('fileName_4').textContent = "example.jpg";
+        }else if(styletype == 1){
+            generative_clear();
+        }else{
+            stBox[normtype].classList.remove('select');
         }
     }
     currentStep --;
@@ -103,6 +142,142 @@ function stepBack(step){
     } else{
         uploadTargets[uploadtype].classList.add('hidden');
     }
+}
+
+function select_norm(input){
+    stBox[normtype].classList.remove('select');
+    stBox[input].classList.add('select');
+    normtype = input;
+
+    request_data.style_image = null;
+    switch(input){
+        case 0 :
+            request_data.style_name = "0.png"
+            break;
+        case 1 :
+            request_data.style_name = "1.png"
+            break; 
+        case 2 :
+            request_data.style_name = "2.png"
+            break;
+        case 3 :
+            request_data.style_name = "3.png"
+            break;
+        case 4 :
+            request_data.style_name = "4.png"
+            break;
+        case 5 :
+            request_data.style_name = "5.png"
+            break;               
+    }
+}
+
+function toBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
+}
+
+async function laststep(){
+    styleTargets[styletype].classList.add('hidden');
+
+    for(let i =0; i<6; i++){
+        stepTargets[i].classList.add('last');
+    }
+
+    if(document.getElementById("check_1").checked || document.getElementById("check_2").checked){
+        request_data.person_transfer_bool = true;
+    } 
+
+    let parsing = request_data.content_target_image.type;
+    let replaced_parsing = parsing.replace('image/', '.');
+    request_data.encoding_type = replaced_parsing;
+    request_data.content_target_image = await toBase64(request_data.content_target_image);
+    request_data.style_image = request_data.style_image ? await toBase64(request_data.style_image) : null;
+    request_data.content_source_image =  request_data.content_source_image ? await toBase64( request_data.content_source_image) : null;
+
+    fetch('/sendfile', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(request_data)
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function generative_send(){
+    let uline = document.createElement('div');
+    uline.classList.add('chatline');
+
+    let uicon = document.createElement('div');
+    uicon.classList.add('icon');
+    uicon.classList.add('right');
+    let uicontext = document.createTextNode("I");
+    uicon.appendChild(uicontext);
+    uline.appendChild(uicon);
+
+    let uchat = document.createElement('div');
+    uchat.classList.add('chat-text');
+    uchat.classList.add('right');
+    let userchat = document.getElementById('chat').value;
+    let uchattext = document.createTextNode(userchat);
+    uchat.appendChild(uchattext);
+    uline.appendChild(uchat);
+
+    chat_Log.appendChild(uline);
+
+    let gline = document.createElement('div');
+    gline.classList.add('chatline');
+
+    let gicon = document.createElement('div');
+    gicon.classList.add('icon');
+    gicon.classList.add('left');
+    let gicontext = document.createTextNode("G");
+    gicon.appendChild(gicontext);
+    gline.appendChild(gicon);
+
+    let gchat = document.createElement('div');
+    gchat.classList.add('chat-text');
+    gchat.classList.add('left');
+    let gchattext = document.createTextNode("변환 중입니다...");
+    gchat.appendChild(gchattext);
+    gline.appendChild(gchat);
+
+    chat_Log.appendChild(gline);
+    chat_Log.scrollTop = chat_Log.scrollHeight;
+    const prompt = userchat;
+
+    let input = document.getElementById('chat');
+    input.value = null;
+
+    fetch('/gen_image', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({prompt: prompt})
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        request_data.style_image = blob;
+        const imgElement = document.getElementById('gen-image');
+        const imageUrl = URL.createObjectURL(request_data.style_image);
+        imgElement.src = imageUrl;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }
 
 function loadcontent_target(input){
@@ -208,6 +383,26 @@ window.onload = function(){
     sttp_u_Button.addEventListener('click', ()=>{
         styletype = 2;
         stepNext();
+    });
+
+    st_s_Button.addEventListener('click', ()=>{
+        stepNext();
+        laststep();
+    });
+
+    st_g_Button.addEventListener('click', ()=>{
+        stepNext();
+        laststep();
+    });
+
+
+    st_u_Button.addEventListener('click', ()=>{
+        stepNext();
+        laststep();
+    });
+
+    chat_Button.addEventListener('click', ()=>{
+        generative_send();
     });
 
     upload_0.addEventListener('click', () =>{

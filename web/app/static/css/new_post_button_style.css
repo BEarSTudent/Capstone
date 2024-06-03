@@ -1,4 +1,4 @@
-.new_post_button{
+#new_post_button{
     position: fixed;
     bottom: 32px;
     right: 32px;
@@ -8,8 +8,9 @@
     border-style: none;
     border-radius: 50%;
     background-color: #DF7861;
+    cursor: pointer;
 }
 
-.new_post_button img{
+#new_post_button img{
     width: 32px
 }

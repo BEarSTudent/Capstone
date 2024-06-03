@@ -29,6 +29,10 @@
     pointer-events: all;
 }
 
+.step-status span.last{
+    pointer-events: none;
+}
+
 .hidden{
     display: none;
 }
@@ -74,6 +78,8 @@
 .upex{
     width: 240px;
     height: 160px;
+
+    object-fit: cover;
 }
 
 .righttri{
@@ -194,8 +200,8 @@
 }
 
 .stex{
-    width: 130px;
-    height: 130px;
+    width: inherit;
+    height: inherit;
 }
 
 .sttextbox{
@@ -225,11 +231,43 @@
 
 .styleform{
     width: 1280px;
-    margin:2rem auto;
+    margin: 0 auto;
     display: flex;
     text-align: center;
     justify-content: center;
     align-items: center;
+    margin-bottom: 40px;
+}
+
+.stnobox{
+    width: 1200px;
+    height: 550px;
+    margin-bottom: 30px;
+}
+
+.stnoimgbox{
+    width: 380px;
+    height: 260px;
+    float: left;
+    background: #EEEEEE;
+}
+
+.stnoimgbox.select{
+    outline-style: solid;
+    outline-width: medium;
+}
+
+.stnoimgbox.left{
+    margin-right: 30px;
+}
+
+.stnoimgbox.bottom{
+    margin-top: 30px;
+}
+
+.stnoex{
+    width: 360px;
+    height: 260px;
 }
 
 #style-upload{
@@ -239,4 +277,108 @@
     width: 680px;
     height: 380px;
     background: #EEEEEE;
+}
+
+.generative-chat{
+    width: 600px;
+    float: left;
+}
+
+.chatlog{
+    height: 400px;
+    margin-bottom: 20px;
+    background-color: #000000;
+    overflow-y: auto;
+}
+
+.chatline{
+    padding: 30px;
+}
+
+.icon{
+    width: 50px;
+    height: 50px;
+    padding-top: 5px;
+    border-radius: 50%;
+    font-size: 30px;
+    background-color: #fff;
+}
+
+.icon.left{
+    float: left;
+}
+
+.icon.right{
+    float: right;
+}
+
+.chat-text{
+    text-align: left;
+    margin-top: 7px;
+    max-width: 450px;
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 10px;
+    background-color: #EEEEEE;
+}
+
+.chat-text.left{
+    float: left;
+    margin-left: 10px;
+}
+
+.chat-text.right{
+    float: right;
+    margin-right: 10px;
+}
+
+.text_form{
+    margin-right: 10px;
+    border: 0;
+    outline: none;
+    padding-left: 10px;
+    width: 480px;
+    height: 50px;
+    float: left;
+    background-color: #000000;
+    color: #fff;
+}
+
+.text_form::placeholder{
+    color: #fff;
+}
+
+.text_btn{
+    width: 96px;
+    height: 52px;
+    float: left;
+    background-color: #000000;
+    color: #fff;
+}
+
+.generative-img{
+    margin-left: 30px;
+    width: 600px;
+    float: left;
+}
+
+.gen-img{
+    height: 400px;
+    margin-bottom: 20px;
+    background:#EEEEEE;
+}
+
+#gen-image{
+    width: 600px;
+    height: 400px;
+    object-fit: contain;
+}
+
+.gnext_btn{
+    width: 600px;
+    height: 50px;
+    border: 0;
+    padding: 1rem;
+    background: #DF7861;
+    color: #fff;
 }

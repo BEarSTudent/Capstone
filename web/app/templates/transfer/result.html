@@ -5,8 +5,7 @@
         <link href="{{url_for('static', filename='css/banner_style.css')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/transfer_style.css')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/result_style.css')}}" rel="stylesheet">
-        <!--게시글 작성 팝업 css가 들어가야하는 부분-->
-        <link href="{{url_for('static', filename='css/test_popup_style.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='css/new_board_popup_style.css')}}" rel="stylesheet">
         <script src="{{ url_for('static',filename='js/transfer.js') }}"></script>
         <script src="{{ url_for('static',filename='js/result.js') }}"></script>
     </head>
@@ -21,9 +20,9 @@
                 <img class="result_image" src="{{url_for('image_path', path_type=type, filename=image)}}">
             </div>
             <div>
-                <a href = "/{{type}}/{{image}}" download><button type="button" class="download">다운로드</button></a>
+                <a href = "/{{type}}/{{image}}" download><button type="button" class="download">다운로드</button></a><br>
                 {% if current_user.is_authenticated %}
-                <button id = "shareImage">커뮤니티에 공유하기</button>
+                <button id = "new_post_button">커뮤니티에 공유하기</button>
                 {% endif %}
             </div>
         </div>
@@ -32,8 +31,9 @@
         <div id="postModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <!--게시글 작성 팝업 html이 들어가야하는 부분-->
-                {% include 'community/test_popup.html' %}
+                <div class="new_board_popup_block">
+                    {% include 'member/new_board_popup.html' %}
+                </div>
             </div>
         </div>
         {% endif %}
