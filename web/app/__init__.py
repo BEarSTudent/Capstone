@@ -330,12 +330,13 @@ def edit_profile():
     user_data = db.user_select(current_user.id)
     user_image = user_data[3]
     
-    if(request.files['file'] != None):
+    if request.files['file']:
         f = request.files['file']
         file_path = parent_path + f"/user/{current_user.id}/"
         f.save(file_path + f.filename)
-    
-    db.user_update(current_user.id, user_data[1], str(input_user_name), f.filename)
+        db.user_update(current_user.id, user_data[1], str(input_user_name), f.filename)
+    else:
+        db.user_update(current_user.id, user_data[1], str(input_user_name), user_data[3])
     
     return redirect(url_for('mypage'))
 
