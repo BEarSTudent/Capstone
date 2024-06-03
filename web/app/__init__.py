@@ -2,7 +2,12 @@ from flask import Flask, render_template, url_for, request, redirect, jsonify, s
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from PIL import Image
 from io import BytesIO
-from ops import StrDatabase, User
+try :
+    # 테스트용
+    from ops import StrDatabase, User
+except:
+    # flask run
+    from .ops import StrDatabase, User
 import xml.etree.ElementTree as elemTree
 import os, cv2, requests, json, base64, hashlib
 import numpy as np
@@ -13,6 +18,8 @@ parent_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 현재 디렉토리
 current_path = os.path.dirname(os.path.abspath(__file__))
 
+# 프로그램 실행시 아래 명령어로 실행. 포트번호는 변경 가능
+# flask run --host='0.0.0.0' --port='2190'
 app = Flask(__name__)
 
 # secret_key를 관리하기 위해 xml 파일 사용
