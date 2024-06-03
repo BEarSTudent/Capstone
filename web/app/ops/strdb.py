@@ -68,7 +68,10 @@ class StrDatabase:
             user_name (str): 사용자 이름(닉네임)
             user_image (str): 사용자의 프로필 사진 경로
         """
-        sql = "UPDATE str_user SET pw='" + pw + "', user_name='" + user_name + "', user_image='" + user_image + "' WHERE user_id='" + user_id + "';"
+        if user_image is not None:
+            sql = "UPDATE str_user SET pw='" + pw + "', user_name='" + user_name + "', user_image='" + user_image + "' WHERE user_id='" + user_id + "';"
+        else:
+            sql = "UPDATE str_user SET pw='" + pw + "', user_name='" + user_name + "' WHERE user_id='" + user_id + "';"
         
         self.__write_db(sql)
 

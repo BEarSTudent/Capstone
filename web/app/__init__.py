@@ -345,9 +345,9 @@ def edit_profile():
         new_filename = f"{current_user.id}{file_ext}"
         
         f.save(file_path + new_filename)
-        db.user_update(current_user.id, user_data[1], str(input_user_name), new_filename)
+        db.user_update(current_user.id, user_data[1], input_user_name, new_filename)
     else:
-        db.user_update(current_user.id, user_data[1], str(input_user_name), user_data[3])
+        db.user_update(current_user.id, user_data[1], input_user_name, user_data[3])
     
     return redirect(url_for('mypage'))
 
