@@ -62,12 +62,14 @@
                             <div class="image-show" id="image-show_1">
                                 <!--이미지 띄울 공간-->
                             </div>
+                            <img class="uploadimg hidden" id="img-up1">
                             <div class="choose">
+                                <img class="uploadimg hidden" id="img-up1">
                                 <img class="uploadex" src="{{url_for('static',filename='images/transfer/vector_upload.png')}}">
                                 <div>이곳을 눌러 파일을 업로드하세요</div>
                             </div>
                         </div>
-                        <input type="file"  id="chooseFile_1" name="chooseFile" accept="image/*" required multiple style="display: none;" onclick="loadcontent_target(this);">
+                        <input type="file"  id="chooseFile_1" name="chooseFile" accept="image/*" required style="display: none;" onchange="loadcontent_target(this);">
                     </form>
                 </div>    
                 <div class="fileContainer">
@@ -88,16 +90,17 @@
                                     <div class="image_show" id="image-show_3">
                                         <!--이미지 띄울 공간-->
                                     </div>
-                                    <div class="choose_back">
+                                    <img class="upimg hidden" id="img-up2">
+                                    <div class="choose">
                                         <img class="uploadex" src="{{url_for('static',filename='images/transfer/vector_upload.png')}}">
                                         <div>이곳을 눌러 파일을 업로드하세요</div>
                                     </div>
                                 </div>
-                                <input type="file"  id="chooseFile_3" name="chooseFile" accept="image/*" required multiple style="display: none;" onclick="loadsource_target(this);">
+                                <input type="file"  id="chooseFile_3" name="chooseFile" accept="image/*" required style="display: none;" onchange="loadcontent_target(this);">
                             </form>
                         </div>
                         <div>
-                            <p id="fileName_3">example.jpg</p>
+                            <p class="targetname">example.jpg</p>
                         </div>
                     </div>
 
@@ -109,16 +112,17 @@
                                     <div class="image_show" id="image-show_2">
                                         <!--이미지 띄울 공간-->
                                     </div>
-                                    <div class="choose">
+                                    <img class="upimg hidden" id="img-up3">
+                                    <div class="choose_back">
                                         <img class="uploadex" src="{{url_for('static',filename='images/transfer/vector_upload.png')}}">
                                         <div>이곳을 눌러 파일을 업로드하세요</div>
                                     </div>
                                 </div>
-                                <input type="file"  id="chooseFile_2" name="chooseFile" accept="image/*" required multiple style="display: none;" onclick="loadcontent_target(this);">
+                                <input type="file"  id="chooseFile_2" name="chooseFile" accept="image/*" required style="display: none;" onchange="loadsource_target(this);">
                             </form>
                         </div>
                         <div>
-                            <p class="targetname" id="fileName_2">example.jpg</p>
+                            <p id="fileName_3">example.jpg</p>
                         </div>
                     </div>
                 </div>    
@@ -211,7 +215,7 @@
                 </div>
                 <div class="generative-img">
                     <div class="gen-img" id="gen-imgbox">
-                        <img id="gen-image" src="" alt="">
+                        <img class="hidden" id="gen-image">
                     </div>
                     <button type="button" class="gnext_btn" id="stylegen">다음</button>
                 </div>

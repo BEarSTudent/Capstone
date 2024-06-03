@@ -28,7 +28,10 @@ const realUpload_2 = document.querySelector('#chooseFile_3');
 const upload_3 = document.querySelector('#style-upload');
 const realUpload_3 = document.querySelector('#chooseFile_4');
 const chat_Log = document.querySelector('#chat_log');
-const chat_Button = document.querySelector('#textsend')
+const chat_Button = document.querySelector('#textsend');
+const img_Up1 = document.querySelector('#img-up1');
+const img_Up2 = document.querySelector('#img-up2');
+const img_Up3 = document.querySelector('#img-up3');
 
 let currentStep = 0;
 let uploadtype = 0;
@@ -44,6 +47,78 @@ let request_data = {
     person_transfer_bool : false,
     content_source_name : null,
     content_source_image : null
+}
+
+window.onload = function(){
+    uptp_single_Button.addEventListener('click', ()=>{
+        uploadtype = 0;
+        stepNext();
+    });
+    
+    uptp_double_Button.addEventListener('click', ()=>{
+        uploadtype = 1;
+        stepNext();
+    });
+
+    up_single_Button.addEventListener('click', ()=>{
+        stepNext();
+    });
+
+    up_double_Button.addEventListener('click', ()=>{
+        stepNext();
+    });
+
+    sttp_s_Button.addEventListener('click', ()=>{
+        styletype = 0;
+        stepNext();
+    });
+
+    sttp_d_Button.addEventListener('click', ()=>{
+        styletype = 1;
+        stepNext();
+    });
+
+    sttp_u_Button.addEventListener('click', ()=>{
+        styletype = 2;
+        stepNext();
+    });
+
+    st_s_Button.addEventListener('click', ()=>{
+        stepNext();
+        laststep();
+    });
+
+    st_g_Button.addEventListener('click', ()=>{
+        stepNext();
+        laststep();
+    });
+
+
+    st_u_Button.addEventListener('click', ()=>{
+        stepNext();
+        laststep();
+    });
+
+    chat_Button.addEventListener('click', ()=>{
+        generative_send();
+    });
+
+    upload_0.addEventListener('click', () =>{
+        realUpload_0.click()
+    });
+
+    upload_1.addEventListener('click', () =>{
+        realUpload_1.click()
+    });
+
+    upload_2.addEventListener('click', () =>{
+        realUpload_2.click()
+    });
+
+    upload_3.addEventListener('click', () =>{
+        realUpload_3.click()
+    });
+
 }
 
 function stepNext(){
@@ -70,9 +145,9 @@ function hide(){
     uploadTargets[uploadtype].classList.remove('hidden');
     choose_ex[uploadtype].classList.remove('hidden');
     choose_back[0].classList.remove('hidden');
-+   document.getElementById('image-show_1').replaceChildren();
-    document.getElementById('image-show_2').replaceChildren();
-    document.getElementById('image-show_3').replaceChildren();
+    img_Up1.classList.add('hidden');
+    img_Up2.classList.add('hidden');
+    img_Up3.classList.add('hidden');
     targetName[uploadtype].textContent = "example.jpg";
     document.getElementById('fileName_3').textContent = "example.jpg";
     if(currentStep == 0){
@@ -105,8 +180,8 @@ function generative_clear(){
     let input = document.getElementById('chat');
     input.value = null;
 
-    const imgElement = document.getElementById('gen-image');
-    imgElement.src = null;
+    const imgElement = document.querySelector('#gen-image');
+    imgElement.classList.add('hidden');
 }
 
 function stepBack(step){
@@ -274,6 +349,8 @@ function generative_send(){
         const imgElement = document.getElementById('gen-image');
         const imageUrl = URL.createObjectURL(request_data.style_image);
         imgElement.src = imageUrl;
+        const imgquery = document.querySelector('#gen-image');
+        imgquery.classList.remove('hidden');
     })
     .catch(error => {
         console.error('Error:', error);
@@ -287,24 +364,16 @@ function loadcontent_target(input){
     let name = targetName[uploadtype];
     name.textContent = request_data.content_target_name;
 
-    let newImage = document.createElement("img");
-
-    newImage.src = URL.createObjectURL(request_data.content_target_image);      
-
-    newImage.style.width = "100%";
-    newImage.style.height = "100%";
-    newImage.style.objectFit = "cover";
-
-    let container;
     if(uploadtype == 0){
-        container = document.getElementById('image-show_1');
+        img_Up1.classList.remove('hidden');
+        document.getElementById('img-up1').src = URL.createObjectURL(request_data.content_target_image);
     }else{
-        container = document.getElementById('image-show_2');
+        img_Up2.classList.remove('hidden');
+        document.getElementById('img-up2').src = URL.createObjectURL(request_data.content_target_image);
     }
     
-    container.replaceChildren();
-    container.appendChild(newImage);
     choose_ex[uploadtype].classList.add('hidden');
+    
 }
 
 function loadsource_target(input){
@@ -314,18 +383,9 @@ function loadsource_target(input){
     let name = document.getElementById('fileName_3');
     name.textContent = request_data.content_source_name;
 
-    let newImage = document.createElement("img");
+    img_Up3.classList.remove('hidden');
+    document.getElementById('img-up3').src = URL.createObjectURL(request_data.content_source_image);      
 
-    newImage.src = URL.createObjectURL(request_data.content_source_image);      
-
-    newImage.style.width = "100%";
-    newImage.style.height = "100%";
-    newImage.style.objectFit = "cover";
-
-    let container = document.getElementById('image-show_3');
-    
-    container.replaceChildren();
-    container.appendChild(newImage);
     choose_back[0].classList.add('hidden');
 }
 
@@ -349,76 +409,4 @@ function loadstyle(input){
     container.replaceChildren();
     container.appendChild(newImage);
     choose_style[0].classList.add('hidden');
-}
-
-window.onload = function(){
-    uptp_single_Button.addEventListener('click', ()=>{
-        uploadtype = 0;
-        stepNext();
-    });
-    
-    uptp_double_Button.addEventListener('click', ()=>{
-        uploadtype = 1;
-        stepNext();
-    });
-
-    up_single_Button.addEventListener('click', ()=>{
-        stepNext();
-    });
-
-    up_double_Button.addEventListener('click', ()=>{
-        stepNext();
-    });
-
-    sttp_s_Button.addEventListener('click', ()=>{
-        styletype = 0;
-        stepNext();
-    });
-
-    sttp_d_Button.addEventListener('click', ()=>{
-        styletype = 1;
-        stepNext();
-    });
-
-    sttp_u_Button.addEventListener('click', ()=>{
-        styletype = 2;
-        stepNext();
-    });
-
-    st_s_Button.addEventListener('click', ()=>{
-        stepNext();
-        laststep();
-    });
-
-    st_g_Button.addEventListener('click', ()=>{
-        stepNext();
-        laststep();
-    });
-
-
-    st_u_Button.addEventListener('click', ()=>{
-        stepNext();
-        laststep();
-    });
-
-    chat_Button.addEventListener('click', ()=>{
-        generative_send();
-    });
-
-    upload_0.addEventListener('click', () =>{
-        realUpload_0.click()
-    });
-
-    upload_1.addEventListener('click', () =>{
-        realUpload_1.click()
-    });
-
-    upload_2.addEventListener('click', () =>{
-        realUpload_2.click()
-    });
-
-    upload_3.addEventListener('click', () =>{
-        realUpload_3.click()
-    });
-
 }
