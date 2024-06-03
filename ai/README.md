@@ -59,5 +59,6 @@ cd ops & sh make.sh
 
 8. flask 실행
 ```
-python app.py
+cd ai
+flask run --host='0.0.0.0' --post='21220'
 ```
