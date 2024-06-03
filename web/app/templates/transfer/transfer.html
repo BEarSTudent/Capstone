@@ -91,16 +91,16 @@
                                         <!--이미지 띄울 공간-->
                                     </div>
                                     <img class="upimg hidden" id="img-up2">
-                                    <div class="choose">
+                                    <div class="choose_back">
                                         <img class="uploadex" src="{{url_for('static',filename='images/transfer/vector_upload.png')}}">
                                         <div>이곳을 눌러 파일을 업로드하세요</div>
                                     </div>
                                 </div>
-                                <input type="file"  id="chooseFile_3" name="chooseFile" accept="image/*" required style="display: none;" onchange="loadcontent_target(this);">
+                                <input type="file"  id="chooseFile_3" name="chooseFile" accept="image/*" required style="display: none;" onchange="loadsource_target(this);">
                             </form>
                         </div>
                         <div>
-                            <p class="targetname">example.jpg</p>
+                            <p id="fileName_3">example.jpg</p>
                         </div>
                     </div>
 
@@ -113,16 +113,16 @@
                                         <!--이미지 띄울 공간-->
                                     </div>
                                     <img class="upimg hidden" id="img-up3">
-                                    <div class="choose_back">
+                                    <div class="choose">
                                         <img class="uploadex" src="{{url_for('static',filename='images/transfer/vector_upload.png')}}">
                                         <div>이곳을 눌러 파일을 업로드하세요</div>
                                     </div>
                                 </div>
-                                <input type="file"  id="chooseFile_2" name="chooseFile" accept="image/*" required style="display: none;" onchange="loadsource_target(this);">
+                                <input type="file"  id="chooseFile_2" name="chooseFile" accept="image/*" required style="display: none;" onchange="loadcontent_target(this);">
                             </form>
                         </div>
                         <div>
-                            <p id="fileName_3">example.jpg</p>
+                            <p class="targetname">example.jpg</p>
                         </div>
                     </div>
                 </div>    
@@ -228,12 +228,13 @@
                             <div class="image-show" id="image-show_4">
                                 <!--이미지 띄울 공간-->
                             </div>
+                            <img class="uploadimg hidden" id="img-up4">
                             <div class="choose_style">
                                 <img class="uploadex" src="{{url_for('static',filename='images/transfer/vector_upload.png')}}">
                                 <div>이곳을 눌러 파일을 업로드하세요</div>
                             </div>
                         </div>
-                        <input type="file"  id="chooseFile_4" name="chooseFile" accept="image/*" required multiple style="display: none;" onclick="loadstyle(this);">
+                        <input type="file"  id="chooseFile_4" name="chooseFile" accept="image/*" required style="display: none;" onchange="loadstyle(this);">
                     </form>
                 </div>  
                 <div class="fileContainer">

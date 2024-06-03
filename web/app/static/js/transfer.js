@@ -32,6 +32,7 @@ const chat_Button = document.querySelector('#textsend');
 const img_Up1 = document.querySelector('#img-up1');
 const img_Up2 = document.querySelector('#img-up2');
 const img_Up3 = document.querySelector('#img-up3');
+const img_Up4 = document.querySelector('#img-up4');
 
 let currentStep = 0;
 let uploadtype = 0;
@@ -192,7 +193,7 @@ function stepBack(step){
         styleTargets[styletype].classList.add('hidden');
         if(styletype == 2){
             choose_style[0].classList.remove('hidden');
-            document.getElementById('image-show_4').replaceChildren();
+            img_Up4.classList.add('hidden');
             document.getElementById('fileName_4').textContent = "example.jpg";
         }else if(styletype == 1){
             generative_clear();
@@ -368,8 +369,8 @@ function loadcontent_target(input){
         img_Up1.classList.remove('hidden');
         document.getElementById('img-up1').src = URL.createObjectURL(request_data.content_target_image);
     }else{
-        img_Up2.classList.remove('hidden');
-        document.getElementById('img-up2').src = URL.createObjectURL(request_data.content_target_image);
+        img_Up3.classList.remove('hidden');
+        document.getElementById('img-up3').src = URL.createObjectURL(request_data.content_target_image);
     }
     
     choose_ex[uploadtype].classList.add('hidden');
@@ -383,8 +384,8 @@ function loadsource_target(input){
     let name = document.getElementById('fileName_3');
     name.textContent = request_data.content_source_name;
 
-    img_Up3.classList.remove('hidden');
-    document.getElementById('img-up3').src = URL.createObjectURL(request_data.content_source_image);      
+    img_Up2.classList.remove('hidden');
+    document.getElementById('img-up2').src = URL.createObjectURL(request_data.content_source_image);      
 
     choose_back[0].classList.add('hidden');
 }
@@ -396,17 +397,8 @@ function loadstyle(input){
     let name = document.getElementById('fileName_4');
     name.textContent = request_data.style_name;
 
-    let newImage = document.createElement("img");
+    img_Up4.classList.remove('hidden');
+    document.getElementById('img-up4').src = URL.createObjectURL(request_data.style_image);      
 
-    newImage.src = URL.createObjectURL(request_data.style_image);      
-
-    newImage.style.width = "100%";
-    newImage.style.height = "100%";
-    newImage.style.objectFit = "cover";
-
-    let container = document.getElementById('image-show_4');
-    
-    container.replaceChildren();
-    container.appendChild(newImage);
     choose_style[0].classList.add('hidden');
 }
