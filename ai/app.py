@@ -1,6 +1,6 @@
 from src import *
 from flask import Flask, request
-import json, base64, cv2, os
+import json, base64, cv2, os, gc, torch
 from io import BytesIO
 from PIL import Image
 import torchvision.transforms as transforms
@@ -153,26 +153,25 @@ def processing(encoding_type:str, person_transfer_bool:bool,
 
     # 배경 이미지를 선택한 경우
     else:
-        mask = segmenter.run(content_source_name)
+        mask = segmenter.run(content_target_name)
         reverse_mask = np.where(mask == 0, 1, 0).astype(np.uint8)
+        content_target_masked = content_target_image * mask
         
         # 인물 변환
         if person_transfer_bool:
-            content_target_masked = content_target_image * reverse_mask
-            content_source_masked = content_source_image * mask
+            content_source_image = loader(content_source_image).unsqueeze(0)
+            image = transfer.run_style_transfer(content_img=content_source_image, style_img=style_image, num_steps=300)
+            image = unloader(image.squeeze(0))
+            
+            content_source_masked = image * reverse_mask
+            result = content_target_masked + content_source_masked
+        else:
+            content_source_masked = content_source_image * reverse_mask
             content_image = content_target_masked + content_source_masked
             content_image = loader(Image.fromarray(content_image)).unsqueeze(0)
             image = transfer.run_style_transfer(content_img=content_image, style_img=style_image, num_steps=300)
             result = np.array(unloader(image.squeeze(0)))
             
-        else:
-            content_target_image = loader(content_target_image).unsqueeze(0)
-            image = transfer.run_style_transfer(content_img=content_target_image, style_img=style_image, num_steps=300)
-            image = unloader(image.squeeze(0))
-            
-            content_target_masked = image * reverse_mask
-            content_source_masked = content_source_image * mask
-            result = content_target_masked + content_source_masked
 
     result.astype(np.uint8)
     result = cv2.cvtColor(result, cv2.COLOR_BGR2RGB)
@@ -187,7 +186,9 @@ def processing(encoding_type:str, person_transfer_bool:bool,
     if content_source_name is not None:
         if os.path.exists(f'{content_path}{content_source_name}'):
             os.remove(f'{content_path}{content_source_name}')
-            
+    # Garbage collector
+    gc.collect()
+    torch.cuda.empty_cache()    
     return file
 
 # # 테스트용 코드
