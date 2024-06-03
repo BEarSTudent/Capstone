@@ -1,5 +1,5 @@
 from argparse import ArgumentParser
-import sys, os
+import sys, os, gc, torch
 import mmcv
 from mmseg.apis import inference_segmentor, init_segmentor, show_result_pyplot
 from mmseg.core.evaluation import get_palette
@@ -59,7 +59,9 @@ class Segmenter:
         result = inference_segmentor(self.model, self.args.img)
         mask = (result[0] == 12).astype(np.uint8) #* 255
         mask = np.stack([mask, mask, mask], 2)
-        
+        del result
+        gc.collect()
+        torch.cuda.empty_cache()
         return mask
 
 if __name__ == "__main__":
