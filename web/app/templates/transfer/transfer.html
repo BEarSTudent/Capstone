@@ -18,15 +18,15 @@
             <div class = "singleupload">
                 <div class="uploadimg_ex">
                     <div class="uploadimg_ex_one">
-                        <img class="upex" src="{{url_for('static',filename='images/sample_image.png')}}">
+                        <img class="upex" src="{{url_for('static',filename='images/transfer/upex_1_before.jpg')}}">
                     </div>
                     <div class="uploadimg_ex_one">
                         <img class= "righttri" src="{{url_for('static',filename='images/transfer/vector_right_triangle.png')}}">
                     </div>
                     <div class="uploadimg_ex_hor">
-                        <img class="upex" src="{{url_for('static',filename='images/sample_image.png')}}">
+                        <img class="upex" src="{{url_for('static',filename='images/transfer/upex_1_full.jpg')}}">
                         <div>OR</div>
-                        <img class="upex" src="{{url_for('static',filename='images/sample_image.png')}}"> 
+                        <img class="upex" src="{{url_for('static',filename='images/transfer/upex_1_backgroundonly.jpg')}}"> 
                     </div>
                 </div>
                 <p class="textex">사진에 새로운 화풍을 적용해보세요. 사진 전체에 적용할 수도, 인물을 제외한 배경에만 적용할 수도 있습니다.</p>
@@ -36,17 +36,17 @@
             <div class = "doubleupload">
                 <div class="uploadimg_ex">
                     <div class="uploadimg_ex_hor">
-                        <img class="upex" src="{{url_for('static',filename='images/sample_image.png')}}">
+                        <img class="upex" src="{{url_for('static',filename='images/transfer/upex_2_background.jpg')}}">
                         <div>
                             <img class="plus" src="{{url_for('static',filename='images/transfer/vector_plus.png')}}">
                         </div>
-                        <img class="upex" src="{{url_for('static',filename='images/sample_image.png')}}">
+                        <img class="upex" src="{{url_for('static',filename='images/transfer/upex_2_before.jpg')}}">
                     </div>
                     <div class="uploadimg_ex_one">
                         <img class= "righttri" src="{{url_for('static',filename='images/transfer/vector_right_triangle.png')}}">
                     </div>
                     <div class="uploadimg_ex_one">
-                        <img class="upex" src="{{url_for('static',filename='images/sample_image.png')}}">
+                        <img class="upex" src="{{url_for('static',filename='images/transfer/upex_2_after.jpg')}}">
                     </div>
                 </div>
                 <p class="textex">새로운 배경에 인물을 합성해보세요. 배경에 새로운 화풍을 적용한 뒤, 인물을 사진의 위치에 합성합니다.</p>
@@ -78,7 +78,7 @@
 
                 <div class="ckeckbox1"><input type="checkbox" name="segmentation" id="check_1" value="0">인물 제외하고 화풍 변경하기</div>
 
-                <button type="button" class="next_btn" id="singlefileupload">다음</button>
+                <button type="button" class="next_btn" id="singlefileupload" disabled>다음</button>
             </div>
             <div class="upload uploaddouble-conntainer hidden">
                 <div id="imagetwo-upload">
@@ -129,7 +129,7 @@
 
                 <div class="ckeckbox1"><input type="checkbox" name="segmentation" id="check_2" value="0">인물 제외하고 화풍 변경하기</div>
 
-                <button type="button" class="next_btn" id="doublefileupload">다음</button>
+                <button type="button" class="next_btn" id="doublefileupload" disabled>다음</button>
             </div>
         </div>
 
@@ -198,7 +198,7 @@
                         <img class="stnoex" src="{{url_for('static', filename='images/transfer/5.png')}}">
                     </div>
                 </div>
-                <button type="button" class="next_btn" id="stylenorm">다음</button>
+                <button type="button" class="next_btn" id="stylenorm" disabled>다음</button>
             </div>
             <div class="style generative-container hidden">
                 <div class="generative-chat">
@@ -217,7 +217,7 @@
                     <div class="gen-img" id="gen-imgbox">
                         <img class="hidden" id="gen-image">
                     </div>
-                    <button type="button" class="gnext_btn" id="stylegen">다음</button>
+                    <button type="button" class="gnext_btn" id="stylegen" disabled>다음</button>
                 </div>
 
             </div>
@@ -240,13 +240,13 @@
                 <div class="fileContainer">
                         <p id="fileName_4">example.jpg</p>
                 </div>
-                <button type="button" class="next_btn" id="stylefileupload">다음</button>
+                <button type="button" class="next_btn" id="stylefileupload" disabled>다음</button>
             </div>
         </div>
 
         <div class="form hidden">
             <CENTER>
-            <img class="rotating-image-clockwise", src="{{url_for('static',filename='images/transfer/Loading.png')}}">
+            <img class="rotating-image-clockwise", src="{{url_for('static',filename='images/transfer/loading.png')}}">
             </CENTER>
             <p class="wait_text">잠시만 기다려주세요</p>
         </div>

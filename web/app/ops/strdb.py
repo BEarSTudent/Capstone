@@ -206,7 +206,7 @@ class StrDatabase:
         like_sql = "SELECT COUNT(*) FROM str_like WHERE board_id=" + str(board_id) + ";"
         like_count = int(self.__read_db(like_sql)[0][0])
         
-        comment_sql = "SELECT c.comment_id, c.user_id, u.user_name, u.user_image, c.contents FROM str_comment c, str_user u WHERE c.user_id=u.user_id AND board_id=" + str(board_id) + ";"
+        comment_sql = "SELECT c.comment_id, c.user_id, u.user_name, u.user_image, c.contents FROM str_comment c, str_user u WHERE c.user_id=u.user_id AND board_id=" + str(board_id) + " ORDER BY c.comment_id;"
         comment_data = self.__read_db(comment_sql)
         
         like_user_sql = "SELECT * FROM str_like WHERE board_id=" + str(board_id) + " AND user_id='" + user_id + "';"

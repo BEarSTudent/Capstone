@@ -38,6 +38,7 @@ let currentStep = 0;
 let uploadtype = 0;
 let styletype = 0;
 let normtype = 0;
+let uploadnum =0;
 
 let request_data = {
     encoding_type : "",
@@ -151,6 +152,13 @@ function hide(){
     img_Up3.classList.add('hidden');
     targetName[uploadtype].textContent = "example.jpg";
     document.getElementById('fileName_3').textContent = "example.jpg";
+
+    let button1 = document.getElementById('singlefileupload');
+    button1.disabled = true;
+    let button2 = document.getElementById('doublefileupload');
+    button2.disabled = true;
+    uploadnum = 0;
+
     if(currentStep == 0){
         uploadTargets[uploadtype].classList.add('hidden');
     }
@@ -195,10 +203,16 @@ function stepBack(step){
             choose_style[0].classList.remove('hidden');
             img_Up4.classList.add('hidden');
             document.getElementById('fileName_4').textContent = "example.jpg";
+            let button3 = document.getElementById('stylefileupload');
+            button3.disabled = true;
         }else if(styletype == 1){
             generative_clear();
+            let button2 = document.getElementById('stylegen');
+            button2.disabled = true;
         }else{
             stBox[normtype].classList.remove('select');
+            let button1 = document.getElementById('stylenorm');
+            button1.disabled = true;
         }
     }
     currentStep --;
@@ -224,6 +238,9 @@ function select_norm(input){
     stBox[normtype].classList.remove('select');
     stBox[input].classList.add('select');
     normtype = input;
+
+    let button = document.getElementById('stylenorm');
+    button.disabled = false;
 
     request_data.style_image = null;
     switch(input){
@@ -352,6 +369,8 @@ function generative_send(){
         imgElement.src = imageUrl;
         const imgquery = document.querySelector('#gen-image');
         imgquery.classList.remove('hidden');
+        let button = document.getElementById('stylegen');
+        button.disabled = false;
     })
     .catch(error => {
         console.error('Error:', error);
@@ -374,7 +393,16 @@ function loadcontent_target(input){
     }
     
     choose_ex[uploadtype].classList.add('hidden');
-    
+    if(input.files.length > 0){
+        let button1 = document.getElementById('singlefileupload');
+        button1.disabled = false;
+        if(uploadnum == 0){
+            uploadnum = 1;
+        }else{
+            let button2 = document.getElementById('doublefileupload');
+            button2.disabled = false;
+        }
+    }
 }
 
 function loadsource_target(input){
@@ -388,6 +416,14 @@ function loadsource_target(input){
     document.getElementById('img-up2').src = URL.createObjectURL(request_data.content_source_image);      
 
     choose_back[0].classList.add('hidden');
+    if(input.files.length > 0){
+        if(uploadnum == 0){
+            uploadnum = 1;
+        }else{
+            let button2 = document.getElementById('doublefileupload');
+            button2.disabled = false;
+        }
+    }
 }
 
 function loadstyle(input){
@@ -401,4 +437,9 @@ function loadstyle(input){
     document.getElementById('img-up4').src = URL.createObjectURL(request_data.style_image);      
 
     choose_style[0].classList.add('hidden');
+
+    if(input.files.length > 0){
+            let button = document.getElementById('stylefileupload');
+            button.disabled = false;
+    }
 }

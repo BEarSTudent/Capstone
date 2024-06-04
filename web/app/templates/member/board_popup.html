@@ -86,7 +86,7 @@
         popup_board_title.innerHTML = response_data.board_data[4];
 
         let popup_board_contents = document.getElementById("popup_board_contents");
-        popup_board_contents.innerHTML = response_data.board_data[5];
+        popup_board_contents.innerHTML = response_data.board_data[5].replaceAll("\n", "<br/>");
 
         let popup_board_date = document.getElementById("popup_board_date");
         popup_board_date.innerHTML = response_data.board_data[2];
