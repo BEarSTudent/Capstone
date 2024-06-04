@@ -9,8 +9,7 @@ except:
     # flask run
     from .ops import StrDatabase, User
 import xml.etree.ElementTree as elemTree
-import os, cv2, requests, json, base64, hashlib
-import numpy as np
+import os, requests, base64, hashlib
 from datetime import datetime
 
 # 부모 디렉토리
