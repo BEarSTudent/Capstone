@@ -113,6 +113,12 @@ STR(Style Transfer for Recollection)팀은 style transfer 기법을 이용하여
 
 
 ### 회원 기능
+- 회원가입 기능: 유저 아이디 중복성 검사, 유저 비밀번호 규칙성 검사, 비밀번호 일치성 검사, 유저 이름 규칙성 검사
+- 로그인: 등록된 사용자 인지 검사. 등록된 사용자이면 로그인 성공
+  
+  ![스크린샷 2024-05-18 오후 3 54 25](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/56315335/5e115089-6a69-4c06-9edd-b6cd407e8108) | ![스크린샷 2024-05-19 오전 3 13 26](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/56315335/195c9065-2950-4657-a051-78d5bcb389d7)
+  ----- | -----
+  
 
 <br/>
 
