@@ -42,5 +42,6 @@ conda install -y flask
 
 5. flask 실행
 ```
-python app.py
+cd gen
+flask run --host='0.0.0.0' --post='21221'
 ```
