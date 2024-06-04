@@ -20,7 +20,7 @@
                 <img class="result_image" src="{{url_for('image_path', path_type=type, filename=image)}}">
             </div>
             <div>
-                <a href = "/{{type}}/{{image}}" download><button type="button" class="download">다운로드</button></a>
+                <a href = "/{{type}}/{{image}}" download><button type="button" class="download">다운로드</button></a><br>
                 {% if current_user.is_authenticated %}
                 <button id = "new_post_button">커뮤니티에 공유하기</button>
                 {% endif %}

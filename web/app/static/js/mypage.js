@@ -1,4 +1,22 @@
-function mypage() {
+let select = document.getElementsByClassName("board_select");
+
+let user_board_data;
+let user_savebox_data;
+
+async function mypage() {
+    // 게시물, 보관함 데이터 요청
+    const response_data = await fetch('mypage', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+    })
+    .then(res => res.json())
+
+    user_board_data = response_data.board_data;
+    user_savebox_data = response_data.savebox_data;
+
     let board_num = document.getElementById("board_num");
     board_num.innerHTML = user_board_data.length + "개";
     let savebox_num = document.getElementById("savebox_num");
@@ -31,19 +49,7 @@ function user_savebox() {
     load_boards();
 
     let savebox_popup_background = document.querySelector(".savebox_popup_background");
-    let savebox_popup_image = document.querySelector(".savebox_popup_image");
     let savebox_popup_close_button = document.querySelector(".savebox_popup_close_button");
-
-    let board_boxes = document.getElementsByClassName("board_block");
-
-    for(let i = 0; i < board_boxes.length; i++){
-        board_boxes[i].addEventListener('click', function(){
-            savebox_popup_background.classList.add('on');
-            savebox_popup_image.setAttribute("id", board_boxes[i].id);
-            savebox_popup_image.src = board_boxes[i].src;
-            document.getElementById("savebox_download_button").href += board_boxes[i].src.split('/')[-1];
-        })
-    }
 
     savebox_popup_close_button.addEventListener('click', function(){
         savebox_popup_background.classList.remove('on');
@@ -51,7 +57,7 @@ function user_savebox() {
 }
 
 function clear_board() {
-    boards.innerHTML = ''
+    document.getElementsByClassName('boards')[0].innerHTML = ''
 }
 
 function check_pw() {

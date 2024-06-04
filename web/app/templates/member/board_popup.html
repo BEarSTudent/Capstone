@@ -9,7 +9,7 @@
             <div id="popup_user_id">@ididid</div>
         </div>
         
-        <button type="button" class="close_btn"></button>
+        <button type="button" class="close_btn"><img src="{{url_for('static', filename='images/popup/vector_x.png')}}"></button>
 
         <div>
             <div id="popup_board_title">
@@ -29,9 +29,9 @@
         
         <div>
             <!--like and comment number-->
-            <img id="popup_board_like_image" src="../../static/images/popup/vector_like_outline.png">
+            <img id="popup_board_like_image" src="{{url_for('static', filename='images/popup/vector_like_outline.png')}}">
             <span id="popup_board_like_num">000</span>
-            <img id="popup_board_comment_image" src="../../static/images/popup/vector_comment.png" width="40px">
+            <img id="popup_board_comment_image" src="{{url_for('static', filename='images/popup/vector_comment.png')}}" width="40px">
             <span id="popup_board_comment_num">댓글 00개</span>
         </div>
 
@@ -42,7 +42,7 @@
         {% if current_user.is_authenticated %}
         <div id="popup_new_comment">
             <!--new comment-->
-            <img id="new_comment_user_image" src="{{url_for('image_path', path_type='user_image', filename=user_data[2])}}">
+            <img id="new_comment_user_image" src="{{url_for('image_path', path_type=user_data[0], filename=user_data[2])}}">
             <input id="new_comment_text" type="text" placeholder="댓글 작성" onkeypress="enter_submit_check(event)">
             <input id="new_comment_submit" type="submit" value="작성" onclick="new_comment_submit()">
         </div>
@@ -55,13 +55,6 @@
     let board_boxes = document.getElementsByClassName("board_block");
     const modalClose = document.querySelector('.close_btn');
     let board_popup = document.querySelector(".board_popup");
-
-    for(let i = 0; i < board_boxes.length; i++){
-        board_boxes[i].addEventListener('click', function(){
-            modal_popup.classList.add('on');
-            popup_data(board_boxes[i].id);
-        })
-    }
 
     modalClose.addEventListener('click', function(){
         modal_popup.classList.remove('on');
@@ -83,7 +76,7 @@
         popup_board_image.setAttribute("src", response_data.board_data[3]);
 
         let popup_user_image = document.getElementById("popup_user_image");
-        popup_user_image.setAttribute("src", response_data.image_path + response_data.user_data[2]);
+        popup_user_image.setAttribute("src", response_data.user_data[2]);
         let popup_user_name = document.getElementById("popup_user_name");
         popup_user_name.innerHTML = response_data.user_data[1];
         let popup_user_id = document.getElementById("popup_user_id");
@@ -93,19 +86,23 @@
         popup_board_title.innerHTML = response_data.board_data[4];
 
         let popup_board_contents = document.getElementById("popup_board_contents");
-        popup_board_contents.innerHTML = response_data.board_data[5];
+        popup_board_contents.innerHTML = response_data.board_data[5].replaceAll("\n", "<br/>");
 
         let popup_board_date = document.getElementById("popup_board_date");
         popup_board_date.innerHTML = response_data.board_data[2];
 
         let popup_board_like_image = document.getElementById("popup_board_like_image");
-        if (response_data.like_user_data) {
-            popup_board_like_image.setAttribute("src", "../../static/images/popup/vector_like_fill.png");
-            popup_board_like_image.setAttribute("onclick", "press_like(1)");
+        if (response_data.like_user_data) { // 좋아요를 눌렀던 경우
+            popup_board_like_image.setAttribute("src", "{{url_for('static', filename='images/popup/vector_like_fill.png')}}");
+            {% if current_user.is_authenticated %} // 로그인 시 버튼 활성화
+                popup_board_like_image.setAttribute("onclick", "press_like(1)");
+            {% endif %}
         }
-        else {
-            popup_board_like_image.setAttribute("src", "../../static/images/popup/vector_like_outline.png");
-            popup_board_like_image.setAttribute("onclick", "press_like(0)");
+        else { // 좋아요를 누르지 않았던 경우
+            popup_board_like_image.setAttribute("src", "{{url_for('static', filename='images/popup/vector_like_outline.png')}}");
+            {% if current_user.is_authenticated %} // 로그인 시 버튼 활성화
+                popup_board_like_image.setAttribute("onclick", "press_like(0)");
+            {% endif %}
         }
 
         // comments
@@ -122,7 +119,7 @@
 
             let comment_user_image = document.createElement("img");
             comment_user_image.setAttribute("class", "comment_user_image");
-            comment_user_image.setAttribute("src", response_data.image_path + response_data.comment_data[i][3]);
+            comment_user_image.setAttribute("src", response_data.comment_data[i][3]);
 
             let comment_user_name = document.createElement("div");
             comment_user_name.setAttribute("class", "comment_user_name");
@@ -172,14 +169,19 @@
         new_comment_text.value = "";
         new_comment_text.blur();
 
-        await fetch("/board/popup/newcomment", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({'board_id': board_id, 'contents': input_contents})
-        })
-
+        if (input_contents == '') {
+            alert("댓글 내용을 입력해주세요.");
+        }
+        else {
+            await fetch("/board/popup/newcomment", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({'board_id': board_id, 'contents': input_contents})
+            })
+        }
+        
         popup_data(board_id);
     }
 </script>

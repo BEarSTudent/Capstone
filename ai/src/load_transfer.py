@@ -10,6 +10,8 @@ from PIL import Image
 import torchvision.transforms as transforms
 import torchvision.models as models
 
+import gc
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def gram_matrix(input):
@@ -213,4 +215,9 @@ class Transfer:
         with torch.no_grad():
             input_img.clamp_(0, 1)
 
+        # 텐서 삭제 및 메모리 해제
+        del model, style_losses, content_losses, optimizer
+        gc.collect()
+        torch.cuda.empty_cache()
+        
         return input_img.cpu()

@@ -78,6 +78,8 @@
 .upex{
     width: 240px;
     height: 160px;
+
+    object-fit: cover;
 }
 
 .righttri{
@@ -121,6 +123,12 @@
     background: #EEEEEE;
 }
 
+.uploadimg{
+    width: 680px;
+    height: 380px;
+    object-fit: contain;
+}
+
 .uploadex{
     width: 64px;
     height: 64px;
@@ -154,6 +162,13 @@
     width: 300px;
     height: 300px;
     background: #EEEEEE;
+}
+
+.upimg{
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+ 
 }
 
 .styletype-container{
@@ -198,8 +213,8 @@
 }
 
 .stex{
-    width: 130px;
-    height: 130px;
+    width: inherit;
+    height: inherit;
 }
 
 .sttextbox{

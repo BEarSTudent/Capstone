@@ -68,7 +68,10 @@ class StrDatabase:
             user_name (str): 사용자 이름(닉네임)
             user_image (str): 사용자의 프로필 사진 경로
         """
-        sql = "UPDATE str_user SET pw='" + pw + "', user_name='" + user_name + "', user_image='" + user_image + "' WHERE user_id='" + user_id + "';"
+        if user_image is not None:
+            sql = "UPDATE str_user SET pw='" + pw + "', user_name='" + user_name + "', user_image='" + user_image + "' WHERE user_id='" + user_id + "';"
+        else:
+            sql = "UPDATE str_user SET pw='" + pw + "', user_name='" + user_name + "' WHERE user_id='" + user_id + "';"
         
         self.__write_db(sql)
 
@@ -80,20 +83,20 @@ class StrDatabase:
             sort_by (str): 정렬 기준
         
         Returns:
-            tuple: 검색, 정렬된 데이터. recent: ((board_id, board_image, board_title), ...), like/comment: ((board_id, board_image, board_title, count), ...)
+            tuple: 검색, 정렬된 데이터. recent: ((board_id, user_id, board_image, board_title), ...), like/comment: ((board_id, user_id, board_image, board_title, count), ...)
         """
         if sort_by == "like":
-            sql = "SELECT b.board_id, b.board_image, b.board_title, COUNT(l.user_id) AS count FROM str_board b LEFT OUTER JOIN str_like l ON b.board_id = l.board_id "
+            sql = "SELECT b.board_id, b.user_id, b.board_image, b.board_title, COUNT(l.user_id) AS count FROM str_board b LEFT OUTER JOIN str_like l ON b.board_id = l.board_id "
             if search_text != "":
                 sql += "WHERE b.board_title LIKE '%" + search_text + "%' OR b.contents LIKE '%" + search_text + "%' "
             sql += "GROUP BY b.board_id ORDER BY count DESC, b.board_id DESC;"
         elif sort_by == "comment":
-            sql = "SELECT b.board_id, b.board_image, b.board_title, COUNT(c.comment_id) AS count FROM str_board b LEFT OUTER JOIN str_comment c ON b.board_id = c.board_id "
+            sql = "SELECT b.board_id, b.user_id, b.board_image, b.board_title, COUNT(c.comment_id) AS count FROM str_board b LEFT OUTER JOIN str_comment c ON b.board_id = c.board_id "
             if search_text != "":
                 sql += "WHERE b.board_title LIKE '%" + search_text + "%' OR b.contents LIKE '%" + search_text + "%' "
             sql += "GROUP BY b.board_id ORDER BY count DESC, b.board_id DESC;"
         else: # recent
-            sql = "SELECT board_id, board_image, board_title FROM str_board "
+            sql = "SELECT board_id, user_id, board_image, board_title FROM str_board "
             if search_text != "":
                 sql += "WHERE board_title LIKE '%" + search_text + "%' OR contents LIKE '%" + search_text + "%' "
             sql += "ORDER BY board_id DESC;"
@@ -203,7 +206,7 @@ class StrDatabase:
         like_sql = "SELECT COUNT(*) FROM str_like WHERE board_id=" + str(board_id) + ";"
         like_count = int(self.__read_db(like_sql)[0][0])
         
-        comment_sql = "SELECT c.comment_id, c.user_id, u.user_name, u.user_image, c.contents FROM str_comment c, str_user u WHERE c.user_id=u.user_id AND board_id=" + str(board_id) + ";"
+        comment_sql = "SELECT c.comment_id, c.user_id, u.user_name, u.user_image, c.contents FROM str_comment c, str_user u WHERE c.user_id=u.user_id AND board_id=" + str(board_id) + " ORDER BY c.comment_id;"
         comment_data = self.__read_db(comment_sql)
         
         like_user_sql = "SELECT * FROM str_like WHERE board_id=" + str(board_id) + " AND user_id='" + user_id + "';"

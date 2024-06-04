@@ -1,4 +1,9 @@
+let last_num = 0;
+let board_data;
+
 function load_boards() {
+    let boards = document.getElementsByClassName("boards")[0];
+
     if (board_data.length <= 0) {
         let empty_text = document.createElement("div");
         empty_text.setAttribute("class", "empty_text")
@@ -32,6 +37,25 @@ function load_boards() {
             board_title.innerHTML = board_data[i][2];
             
             board_block.appendChild(board_title);
+
+            // 게시글 팝업
+            board_block.addEventListener('click', function(){
+                document.querySelector(".popup_block").classList.add('on');
+                popup_data(board_block.id);
+            })
+        }
+        else {
+            // 보관함 팝업
+            board_block.addEventListener('click', function(){
+                document.querySelector(".savebox_popup_background").classList.add('on');
+
+                let savebox_popup_image = document.querySelector(".savebox_popup_image");
+                savebox_popup_image.setAttribute("id", board_block.id);
+                savebox_popup_image.src = board_image.src;
+                
+                let savebox_download_button = document.getElementById("savebox_download_button");
+                savebox_download_button.setAttribute("href", '/' + savebox_download_button.href.split('/').at(-2) + '/' + board_image.src.split('/').at(-1));
+            })
         }
         
         boards.appendChild(board_block);

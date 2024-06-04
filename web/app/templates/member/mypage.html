@@ -20,7 +20,7 @@
         <section>
             <!--profile-->
             <div id="profile">
-                <img id="user_image" src="{{url_for('image_path', path_type='user_image', filename=user_data[2])}}" width="80px">
+                <img id="user_image" src="{{url_for('image_path', path_type=user_data[0], filename=user_data[2])}}" width="80px">
                 <div id="user_text">
                     <div id="user_name_id_block">
                         <span id="user_name">{{user_data[1]}}</span>
@@ -46,18 +46,10 @@
                 <span class="board_select" onclick="user_savebox()">보관함</span>
             </div>
 
-            <div id="boards"></div>
+            <div class="boards"></div>
         </section>
         
         <script>
-            let boards = document.getElementById("boards");
-            let select = document.getElementsByClassName("board_select");
-            let board_data;
-            let last_num = 0;
-
-            let user_board_data = {{ board_data|safe }};
-            let user_savebox_data = {{ savebox_data|safe }};
-
             mypage();
         </script>
 
@@ -78,9 +70,9 @@
         <div class="savebox_popup_background">
             <div class="savebox_popup_block">
                 <img class="savebox_popup_image">
-                <button type="button" class="savebox_popup_close_button"></button>
-                <a id="savebox_download_button" href = "/{{user_data[0]}}/" download><img id="savebox_download" src="../../static/images/mypage/vector_download.png"></a>
-                <img id="savebox_delete" onclick="delete_savebox()" src="../../static/images/mypage/vector_delete.png">
+                <button type="button" class="savebox_popup_close_button"><img src="{{url_for('static', filename='images/popup/vector_x.png')}}"></button>
+                <a id="savebox_download_button" href = "/{{user_data[0]}}/" download><img id="savebox_download" src="{{url_for('static', filename='images/mypage/vector_download.png')}}"></a>
+                <img id="savebox_delete" onclick="delete_savebox()" src="{{url_for('static', filename='images/mypage/vector_delete.png')}}">
             </div>
         </div>
     </body>
