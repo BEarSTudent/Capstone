@@ -213,7 +213,7 @@ def processing(encoding_type:str, person_transfer_bool:bool,
     torch.cuda.empty_cache()
     
     if exception:
-        raise
+        raise Exception
      
     return file
 
