@@ -43,6 +43,59 @@ STR(Style Transfer for Recollection)팀은 style transfer 기법을 이용하여
 
 ### 이미지 변환 기능
 
+상단 배너의 [Trnsfer]를 통해 **게시판 페이지** 접근 가능
+
+**이미지 변환 기능의 process 바**
+![image](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/54662446/1e23974b-af35-4fd4-b067-584321be730e)
+
+- 현재 진행중인 단계를 주황색 글씨와 bold 체로 표현
+- 지나간 단계는 검은색 글씨로 아직 진행하지 못한 단계는 회색으로 표현
+- 지나간 단계의 글자를 클릭할 경우 해당 단계로 돌아가는 것이 가능
+
+**업로드 유형 선택**
+![image](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/54662446/b4d7a99a-b4d6-451a-b7e5-40bc114ebd85)
+
+- 사진 한장을 업로드 하여 화풍을 변경할 것인지 배경 사진과 인물 사진을 각각 업로드 할것인지 유형을 선택하는 단계
+- 각각의 업로드 유형의 예시 이미지와 설명 제공
+
+
+**사진 업로드**
+
+한장 업로드 | 두장 업로드
+----- | -----
+![image](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/54662446/f3fc0136-da2f-444e-bfb2-59628c7dcef5)|![image](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/54662446/c1d54d7a-daf6-4bc8-aacd-78a393fbde3a)
+
+- 회색 박스를 클릭하여 화풍 변경을 적용할 이미지 업로드 가능
+- 하단 다음 버튼 위 인물을 제외하고 화풍 변경하기 체크 박스를 통해 화풍 변환시 인물을 제외하는 옵션 선택 가능
+
+
+**화풍 유형 선택**
+![image](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/54662446/fcc5824c-e5a8-453a-ae49-6809a20b41f8)
+
+- 적용할 화풍을 선택, 생성, 업로드 하기 위해 제공 화풍 선택, 생성모델을 통한 이미지 생성, 직접 업로드 선택지 제공
+- 각각의 화풍 유형 선택의 예시 이미지와 설명 제공
+
+**화풍 선택**
+제공 화풍 선택 | 생성모델을 통한 이미지 생성 | 직접 업로드
+----- | ----- | -----
+![image](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/54662446/e7bed627-2e60-49a1-9a4a-ceabb7e05e5f)|![image](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/54662446/e207e2fa-0c21-4e64-b8a5-6e1aff9acf95)|![image](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/54662446/9aba12a9-1989-40a0-95f6-d89a0e4af4b5)
+
+- 제공 화풍 선택의 경우 6가지의 기본 화풍 중 한가지를 클릭하면 테두리가 생기며 선택이 됨
+- 생성 모델을 통한 이미지 생성시 왼쪽 하단부 prompt 창에 원하는 텍스트를 입력하고 전송 버튼을 누르면 변환중입니다... 라는 메세지와 함께 이미지 생성, 생성된 이미지는 우측 박스에 업로드
+- 직접 업로드의 경우 자신이 원하는 화풍의 사진을 회색 박스를 클릭하여 직접 업로드 가능
+
+**대기 화면**
+![image](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/54662446/0889f3aa-5486-40d1-a4b5-99e1e97ae757)
+
+- 화풍 선택 단계 까지 마친 후 결과가 도달하기 까지 대기하는 화면
+- 중앙의 로딩 이미지 회전을 통해 시각적인 대기 화면 제공 
+
+**결과 화면**
+![image](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/54662446/235b1ed4-fa0b-4eb5-af1b-11825125b776)
+
+- 화면 중앙에 화풍 변경 결과 사진 업로드
+- 하단 다운로드 버튼을 통해 사진 다운로드 가능
+
 <br/>
 
 
