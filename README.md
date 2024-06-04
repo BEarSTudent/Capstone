@@ -91,10 +91,14 @@ STR(Style Transfer for Recollection)팀은 style transfer 기법을 이용하여
 - 중앙의 로딩 이미지 회전을 통해 시각적인 대기 화면 제공 
 
 **결과 화면**
-![image](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/54662446/235b1ed4-fa0b-4eb5-af1b-11825125b776)
+로그아웃 | 로그인
+----- | -----
+![image](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/54662446/235b1ed4-fa0b-4eb5-af1b-11825125b776)|![image](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/54662446/3ebe1f85-f25d-4819-a3b5-13be3cf40966)
+
 
 - 화면 중앙에 화풍 변경 결과 사진 업로드
 - 하단 다운로드 버튼을 통해 사진 다운로드 가능
+- 로그인시 하단 커뮤니티에 공유하기 버튼을 통해 게시물 작성 페이지로 연동
 
 <br/>
 
