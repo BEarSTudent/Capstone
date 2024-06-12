@@ -5,6 +5,7 @@ from io import BytesIO
 from PIL import Image
 import torchvision.transforms as transforms
 import numpy as np
+from datetime import datetime
 current_path = os.path.dirname(os.path.abspath(__file__))
 # 프로그램 실행시 아래 명령어로 실행. 포트번호는 변경 가능
 # flask run --host='0.0.0.0' --port='21220'
@@ -72,17 +73,10 @@ def save_image():
         # 이미지 크기 변환
         content_target_image = content_target_image.resize((width, height))
         # 이미지 이름 중복성 검사
-        temp = content_target_name
-        for i in range(101):
-            if os.path.exists(f'{content_path}{temp}'):
-                temp = content_target_name + str(i)
-            else:
-                content_target_image.save(f'{content_path}{temp}')
-                content_target_name = temp
-                break
-            
-            if i == 100:
-                raise
+        if os.path.exists(f'{content_path}{content_target_name}'):
+            timestamp = datetime.now().strftime("%H%M%S_")
+            content_target_name = timestamp + content_target_name
+        content_target_image.save(f'{content_path}{content_target_name}')
         
         content_source_name = dict_data['content_source_name']
         content_source_image = dict_data['content_source_image']
@@ -94,17 +88,10 @@ def save_image():
             # 이미지 크기 변환
             content_source_image = content_source_image.resize((width, height))
             # 이미지 이름 중복성 검사
-            temp = content_source_name
-            for i in range(101):
-                if os.path.exists(f'{content_path}{temp}'):
-                    temp = content_source_name + str(i)
-                else:
-                    content_source_image.save(f'{content_path}{temp}')
-                    content_source_name = temp
-                    break
-                
-                if i == 100:
-                    raise
+            if os.path.exists(f'{content_path}{content_source_name}'):
+                timestamp = datetime.now().strftime("%H%M%S_")
+                content_source_name = timestamp + content_source_name
+            content_target_image.save(f'{content_path}{content_source_name}')
             
         # select, dall_e, custom
         style_image = dict_data['style_image']
