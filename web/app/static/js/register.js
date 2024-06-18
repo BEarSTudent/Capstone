@@ -61,7 +61,7 @@ function validateUserName() {
     var userName = document.getElementById('user_name').value;
     if (!usernameLimit.test(userName)) {
         name_pass = false;
-        document.getElementById('name_error').innerHTML = "2~20자리 숫자, 특수문자(~!@#$%^&*()_-)만 가능합니다";
+        document.getElementById('name_error').innerHTML = "2~20자리 영어, 한글, 숫자, 특수문자(~!@#$%^&*()_-)만 가능합니다";
     } else {
         name_pass = true;
         document.getElementById('name_error').innerHTML = " ";
