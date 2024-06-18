@@ -9,7 +9,7 @@
 2. [Drive Guide](#Drive-Guide)
     1. [패키지 설치](#1-패키지-설치)
     2. [mysql 설정](#2-mysql-설정)
-    3. [uwsgi.ini & uwsgi.log 생성](#3-uwsgi-ini-&-uwsgi-log-생성)
+    3. [uwsgi.ini & uwsgi.log 생성](#3-uwsgiini--uwsgilog-생성)
     4. [nginx 설정](#4-nginx-설정)
     5. [bashrc 설정](#5-bashrc-설정)
     6. [실행](#6-실행)
