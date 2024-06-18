@@ -3,16 +3,16 @@
 
 1. [Install Guide](#Install-Guide)
 
-    1. [docker Ubuntu 이미지 설치](#1.-Ubuntu-22.04-설치)
-    2. [가상환경 설치](#2.-가상환경-설치)
-    3. [라이브러리 설치](#3.-라이브러리-설치)
+    1. [docker Ubuntu 이미지 설치](#1-Ubuntu-22.04-설치)
+    2. [가상환경 설치](#2-가상환경-설치)
+    3. [라이브러리 설치](#3-라이브러리-설치)
 2. [Drive Guide](#Drive-Guide)
-    1. [패키지 설치](#1.-패키지-설치)
-    2. [mysql 설정](#2.-mysql-설정)
-    3. [uwsgi.ini & uwsgi.log 생성](#3.-uwsgi.ini-&-uwsgi.log-생성)
-    4. [nginx 설정](#4.-nginx-설정)
-    5. [bashrc 설정](#5.-bashrc-설정)
-    6. [실행](#6.-실행)
+    1. [패키지 설치](#1-패키지-설치)
+    2. [mysql 설정](#2-mysql-설정)
+    3. [uwsgi.ini & uwsgi.log 생성](#3-uwsgi.ini-&-uwsgi.log-생성)
+    4. [nginx 설정](#4-nginx-설정)
+    5. [bashrc 설정](#5-bashrc-설정)
+    6. [실행](#6-실행)
 ## Install Guide
 ### 1. Ubuntu 22.04 설치
 docker에서 ubuntu 22.04 이미지를 다운받아줍니다.
