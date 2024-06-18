@@ -57,7 +57,7 @@ function validatePasswordMatch() {
 }
 
 function validateUserName() {
-    var usernameLimit = /^[a-zA-Z0-9~!@#$%^&*()_-]{2,20}$/;
+    var usernameLimit = /^[a-zA-Z0-9가-힣~!@#$%^&*()_-]{2,20}$/;
     var userName = document.getElementById('user_name').value;
     if (!usernameLimit.test(userName)) {
         name_pass = false;
