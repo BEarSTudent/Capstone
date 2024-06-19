@@ -41,9 +41,6 @@
 
     async function select_savebox() {
         savebox_image_block.innerHTML = "";
-        let savebox_image_select_block = document.createElement("div");
-        savebox_image_select_block.setAttribute("class", "savebox_image_select_block");
-        savebox_image_block.appendChild(savebox_image_select_block);
         
         let savebox_select_close_btn = document.createElement("button");
         savebox_select_close_btn.setAttribute("type", "button");
@@ -53,11 +50,15 @@
         close_img.setAttribute("src", "{{url_for('static', filename='images/popup/vector_x.png')}}");
         savebox_select_close_btn.appendChild(close_img);
 
-        savebox_image_select_block.appendChild(savebox_select_close_btn);
+        savebox_image_block.appendChild(savebox_select_close_btn);
         savebox_select_close_btn.addEventListener('click', function() {
             savebox_image_background.classList.remove('on');
         })
 
+        let savebox_image_select_block = document.createElement("div");
+        savebox_image_select_block.setAttribute("class", "savebox_image_select_block");
+        savebox_image_block.appendChild(savebox_image_select_block);
+        
         const response_data = await fetch("/selectsavebox", {
             method: "POST",
             headers: {
