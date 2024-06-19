@@ -299,10 +299,10 @@ async function laststep(){
         },
         body: JSON.stringify(request_data)
     })
+    .then(res => res.json())
     .then(response => {
-        if (response.redirected) {
-            window.location.href = response.url;
-        }
+        window.location.href = "/transfer/result?name=" + response.name;
+        
     })
     .catch(error => {
         console.error('Error:', error);

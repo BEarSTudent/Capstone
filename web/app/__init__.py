@@ -123,9 +123,8 @@ def sendfile():
         
         # 이미지 저장
         image.save(path + f"/{new_filename}")
-        
-        # 반환 타입 지정
-        return redirect(url_for('result', name=new_filename))
+                
+        return jsonify({'name': new_filename})
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
