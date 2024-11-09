@@ -5,7 +5,7 @@ __pycache__/
 .Ds_Store
 *.pyc
 .vscode/
-user/
+user/*
 
 # 폴더 유지용
 !ai/release/empty.txt
