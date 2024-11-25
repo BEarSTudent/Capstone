@@ -1,13 +1,13 @@
 from .Transfer_module import Transfer_module
 from .Segmentation_module import Segmenter
-import cv2, os, gc, torch
+import os, gc, torch
 from PIL import Image
 import torchvision.transforms as transforms
 import numpy as np
 
 # content path 폴더 생성
-if not os.path.exists("./content"):
-    os.makedirs("./content")
+if not os.path.exists("./ops/content"):
+    os.makedirs("./ops/content")
 
 class Transfer:
     def __init__(self):
