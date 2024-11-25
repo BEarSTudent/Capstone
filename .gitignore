@@ -1,6 +1,6 @@
-ops/ViT-Adapter
-ops/release/*
-ops/content/*
+src/ViT-Adapter
+src/release/*
+src/content/*
 user/*
 __pycache__/
 .Ds_Store
@@ -9,8 +9,8 @@ __pycache__/
 user/*
 
 # 폴더 유지용
-!ops/release/empty.txt
-!ops/content/empty.txt
+!src/release/empty.txt
+!src/content/empty.txt
 !user/temp/sample_image.png
 !user/user_image/empty.txt
 # keys

@@ -2,18 +2,13 @@ from flask import Flask, render_template, url_for, request, redirect, jsonify, s
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from PIL import Image
 from io import BytesIO
-try :
-    # 테스트용
-    from ops import StrDatabase, User, Transfer, Generation
-except:
-    # flask run
-    from .ops import StrDatabase, User, Transfer, Generation
+from src import StrDatabase, User, Transfer, Generation
 import xml.etree.ElementTree as elemTree
 import os, base64, json, hashlib
 from datetime import datetime
 
 # 프로그램 실행시 아래 명령어로 실행. 포트번호는 변경 가능
-# flask run --host='0.0.0.0' --port='2190'
+# flask run --host 0.0.0.0 --port 2190
 app = Flask(__name__)
 
 # secret_key를 관리하기 위해 xml 파일 사용
@@ -133,7 +128,7 @@ def sendfile():
         
         # 이미지 크기 변환 & data에 저장
         content_target_image = content_target_image.resize((width, height))
-        content_target_image.save(f'./ops/content/{content_target_name}') # target image 저장 -> segmentation model에서 사용
+        content_target_image.save(f'src/content/{content_target_name}') # target image 저장 -> segmentation model에서 사용
         data['content_target_image'] = content_target_image
         if content_source_image is not None:
             content_source_image = Image.open(BytesIO(base64.b64decode(content_source_image)))

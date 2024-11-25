@@ -6,8 +6,8 @@ import torchvision.transforms as transforms
 import numpy as np
 
 # content path 폴더 생성
-if not os.path.exists("./ops/content"):
-    os.makedirs("./ops/content")
+if not os.path.exists("src/content"):
+    os.makedirs("src/content")
 
 class Transfer:
     def __init__(self):
@@ -101,8 +101,8 @@ class Transfer:
             exception = True
         
         # 임시로 저장한 이미지 삭제
-        if os.path.exists(f'./ops/content/{content_target_name}'):
-            os.remove(f'./ops/content/{content_target_name}')
+        if os.path.exists(f'src/content/{content_target_name}'):
+            os.remove(f'src/content/{content_target_name}')
 
         # Garbage collector
         gc.collect()

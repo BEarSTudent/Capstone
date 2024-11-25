@@ -1,10 +1,11 @@
 from argparse import ArgumentParser
-import sys, gc, torch
+import sys, gc, torch, os
 from mmseg.apis import inference_segmentor, init_segmentor
 from mmcv.runner import load_checkpoint
 from mmseg.core import get_classes
 import numpy as np
-sys.path.append("./ops/ViT-Adapter/segmentation")
+
+sys.path.append("src/ViT-Adapter/segmentation")
 import mmcv_custom   # noqa: F401,F403
 import mmseg_custom   # noqa: F401,F403
 
@@ -12,8 +13,8 @@ class Segmenter:
     def __init__(self):
         self.parser = ArgumentParser()
         self.parse_args()
-        self.config = "./ops/ViT-Adapter/segmentation/configs/ade20k/upernet_augreg_adapter_base_512_160k_ade20k.py"
-        self.checkpoint = "./ops/release/upernet_augreg_adapter_base_512_160k_ade20k.pth.tar"
+        self.config =  "src/ViT-Adapter/segmentation/configs/ade20k/upernet_augreg_adapter_base_512_160k_ade20k.py"
+        self.checkpoint = "src/release/upernet_augreg_adapter_base_512_160k_ade20k.pth.tar"
         self.img = ""
         self.args = self.parser.parse_args([self.config, 
                                             self.checkpoint, 
@@ -47,7 +48,7 @@ class Segmenter:
             self.model.CLASSES = get_classes(self.args.palette)
     
     def run(self, img_name:str)->np:
-        self.args.img = f"./ops/content/{img_name}"
+        self.args.img = f"src/content/{img_name}"
         
         result = inference_segmentor(self.model, self.args.img)
         mask = (result[0] == 12).astype(np.uint8) #* 255
