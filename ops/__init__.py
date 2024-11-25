@@ -1,6 +1,6 @@
 from .strdb import *
 from .user import *
-from .load_transfer import Transfer
-from .load_segmentation import Segmenter
+from .ImageTransfer import Transfer
+from .ImageGenerate import Generation
 
-__all__ = ['StrDatabase', 'User', 'Transfer', 'Segmenter']
+__all__ = ['StrDatabase', 'User', 'Transfer', 'Generation']
