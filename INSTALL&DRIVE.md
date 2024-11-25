@@ -1,21 +1,24 @@
 # Install & Drive Guide
 ## 목차
-
-1. [Install Guide](#Install-Guide)
-
+1. [환경](#환경)
+2. [Install Guide](#Install-Guide)
     1. [docker Ubuntu 이미지 설치](#1-Ubuntu-22.04-설치)
     2. [가상환경 설치](#2-가상환경-설치)
     3. [라이브러리 설치](#3-라이브러리-설치)
-2. [Drive Guide](#Drive-Guide)
+3. [Drive Guide](#Drive-Guide)
     1. [패키지 설치](#1-패키지-설치)
     2. [mysql 설정](#2-mysql-설정)
-    3. [uwsgi.ini & uwsgi.log 생성](#3-uwsgiini--uwsgilog-생성)
-    4. [nginx 설정](#4-nginx-설정)
-    5. [bashrc 설정](#5-bashrc-설정)
-    6. [실행](#6-실행)
+    3. [ViT-Adapter git clone](#3-vit-adapter-git-clone)
+    4. [ops 파일 생성 및 실행](#4-ops-파일-생성-및-실행)
+    5. [pretrain weight 다운](#5-pretrain-weight-다운)
+    6. [flask 실행](#6-flask-실행)
+4. [Diffusion Model GPU 사용 방법](#diffusion-model-gpu-사용-방법)
+## 환경
+#### Ubuntu 22.04, CUDA >= 12.1, VRAM >= 12~13GiB
+
 ## Install Guide
 ### 1. Ubuntu 22.04 설치
-docker에서 ubuntu 22.04 이미지를 다운받아줍니다.
+ubuntu 22.04 를 설치해줍니다.
 
 ### 2. 가상환경 설치
 차례대로 터미널에 입력해주세요
@@ -29,18 +32,18 @@ bash anaconda.sh
 sudo vi ~/.bashrc
 export PATH=~/anaconda3/bin:~/anaconda3/condabin:$PATH
 source ~/.bashrc
-conda create -n capstone python=3.8
-conda activate capstone
 ```
 ### 3. 라이브러리 설치
+
+conda_requirements.txt에 필요한 라이브러리가 적혀있습니다. 실행하면 자동으로 설치됩니다.
 ```
-conda install -y pillow flask flask-login requests pymysql uwsgi
+conda env create -f conda_requirements.txt
 ```
 
 ## Drive Guide
 ### 1. 패키지 설치
 ```
-sudo apt install -y mysql-server nginx
+sudo apt install -y mariadb-server mariadb-client
 ```
 ### 2. mysql 설정
 데이터베이스 생성
@@ -112,74 +115,37 @@ cd StyleTransfer_Capstone/web/app
 </resources>
 
 ```
-### 3. uwsgi.ini & uwsgi.log 생성
+
+### 3. ViT-Adapter git clone
 ```
-cd StyleTransfer_Capstone/web/app
-vi uwsgi.log # 생성만하면 됩니다.
-vi uwsgi.ini
-```
-아래 내용을 입력해주세요.
-```
-[uwsgi]
-module = __init__
-callable = app
-
-socket = /tmp/capstone.sock
-chmod-socket = 666
-vacuum = true
-processes = 4
-threads = 8
-
-daemonize = /home/capstone/strproject/web/app/uwsgi.log
-
-die-on-term = true
-
-# 가상 환경 설정
-home = /home/capstone/anaconda3/envs/capstone
-
-# 환경 변수 설정
-env = PYTHONPATH=/home/capstone/anaconda3/envs/capstone/lib/python3.8
-
-chdir = /home/capstone/strproject/web/app
-```
-### 4. nginx 설정
-```
-sudo vim /etc/nginx/sites-enabled/default
-```
-```
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
-    root /var/www/html;
-
-    index index.html index.htm index.nginx-debian.html;
-    server_name capstone.juyeolweb.site juyeolweb.site;
-
-    location / {
-        try_files $uri @app;
-        client_max_body_size 20M;
-    }
-
-    location @app {
-        include uwsgi_params;
-        uwsgi_pass unix:/tmp/capstone.sock;
-    }
-}
+cd src
+git clone https://github.com/czczup/ViT-Adapter.git
 ```
 
-### 5. bashrc 설정
+### 4. ops 파일 생성 및 실행
 ```
-service ssh restart
-service mysql restart
-su - capstone -c "/home/capstone/anaconda3/envs/capstone/bin/uwsgi --ini /home/capstone/strproject/web/app/uwsgi.ini"
-service nginx restart
+cd ViT-Adapter/segmentation
+ln -s ../detection/ops ./
+cd ops & sh make.sh
+```
+만약 sh make.sh가 작동하지 않는다면 아래를 실행해 주세요.
+```
+./make.sh
 ```
 
+### 5. pretrain weight 다운
+![스크린샷 2024-05-21 오후 9 29 57](https://github.com/STRCapstone/StyleTransfer_Capstone/assets/56315335/c1bf0b3a-9da6-46d7-8c77-b597b9e9a1c9)
 
-### 6. 실행
+다운로드 받은 파일을 src/release 안에 넣어주세요
+
+### 6. flask 실행
+최상위 폴더로 이동하신 후 아래 코드를 터미널에 입력해주세요
 ```
-cd StyleTransfer_Capstone/web/app
-uwsgi --ini uwsgi.ini
-sudo nginx restart
+flask run --host 0.0.0.0 --post 2190
+```
+
+## Diffusion Model GPU 사용 방법
+app.py안의 Generation 객체를 생성하는 코드에 아래와 같이 변경해주시면 생성모델이 GPU에서 동작하게 됩니다.(default: cpu)
+```
+gen_model = Generation() -> gen_model = Generation(cuda=True)
 ```
