@@ -1,6 +1,7 @@
-ai/ViT-Adapter
-ai/released/*
-ai/data/*
+ops/ViT-Adapter
+ops/release/*
+ops/content/*
+user/*
 __pycache__/
 .Ds_Store
 *.pyc
@@ -8,9 +9,9 @@ __pycache__/
 user/*
 
 # 폴더 유지용
-!ai/release/empty.txt
-!ai/data/style
-!user/temp
-!user/user_image
+!ops/release/empty.txt
+!ops/content/empty.txt
+!user/temp/sample_image.png
+!user/user_image/empty.txt
 # keys
 keys.xml
