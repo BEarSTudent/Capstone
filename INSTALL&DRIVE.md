@@ -46,7 +46,7 @@ sudo apt install -y mysql-server nginx
 데이터베이스 생성
 ```
 CREATE DATABASE str_capstone;
-USE str_capstone
+USE str_capstone;
 ```
 테이블 생성
 ```
