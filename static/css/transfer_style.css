@@ -261,7 +261,6 @@
     width: 1200px;
     height: 550px;
     margin-bottom: 30px;
-    cursor: pointer;
 }
 
 .stnoimgbox{
@@ -269,6 +268,7 @@
     height: 260px;
     float: left;
     background: #EEEEEE;
+    cursor: pointer;
 }
 
 .stnoimgbox.select{
