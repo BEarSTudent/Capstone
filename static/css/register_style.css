@@ -26,6 +26,7 @@ h1{
     background: #DF7861;
     color: #000;
     margin-top: 80px;
+    cursor: pointer;
 }
 .inner_div{
     width: 800px;
