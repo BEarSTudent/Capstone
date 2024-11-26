@@ -66,11 +66,11 @@ def result():
 
 @app.route('/<path_type>/<filename>')
 def image_path(path_type, filename):
-    profileImage = "./user/" + path_type + "/" + filename
+    profileImage = "user/" + path_type + "/" + filename
     if filename == "None" or not os.path.exists(profileImage):
-        return send_from_directory("./static/images", "basic_user_image.png")
+        return send_from_directory("static/images", "basic_user_image.png")
     else:
-        return send_from_directory("./user/" + path_type, filename)
+        return send_from_directory("user/" + path_type, filename)
 
 def convert_to_rgb(image:Image):
     if image.mode != 'RGB':
@@ -109,10 +109,10 @@ def sendfile():
         
         # 제공하는 스타일을 적용하는 경우
         if data['style_image'] is None:
-            style_image = Image.open('./static/images/transfer/' + data['style_name'])
+            style_image = Image.open('static/images/transfer/' + data['style_name'])
         # 커스텀 스타일 이미지를 적용하는 경우
         else:
-            style_image = Image.open(BytesIO(base64.b64decode(style_image)))
+            style_image = Image.open(BytesIO(base64.b64decode(data['style_image'])))
         
         # 이미지 재조정된 크기 구하기
         width, height = content_target_image.size
@@ -139,7 +139,7 @@ def sendfile():
         # 반환 값은 변환된 이미지임
         image = transfer_model.processing(data=data)
         
-        path = "./user/"
+        path = "user/"
         if current_user.is_authenticated:
             path += current_user.id
         else:
@@ -169,7 +169,7 @@ def register():
             user_pw = data['pw']
             user_pw = hash_password(user_pw)
             user_name = data['user_name']
-            user_id_path = f"./user/{user_id}"
+            user_id_path = f"user/{user_id}"
             
             if not os.path.exists(user_id_path):
                 os.makedirs(user_id_path)
@@ -363,7 +363,7 @@ def edit_profile():
     
     if request.files['file']:
         f = request.files['file']
-        file_path = f"./user/{current_user.id}/"
+        file_path = f"user/{current_user.id}/"
         
         # 이미지 파일 이름 변경
         file_ext = os.path.splitext(f.filename)[1]
