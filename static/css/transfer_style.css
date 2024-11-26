@@ -27,6 +27,7 @@
 .step-status span.prev{
     color: #000000;
     pointer-events: all;
+    cursor: pointer;
 }
 
 .step-status span.last{
@@ -104,6 +105,7 @@
     padding: 1rem;
     background: #DF7861;
     color: #fff;
+    cursor: pointer;
 }
 
 .uploadform{
@@ -121,6 +123,7 @@
     width: 680px;
     height: 380px;
     background: #EEEEEE;
+    cursor: pointer;
 }
 
 .uploadimg{
@@ -142,6 +145,7 @@
     padding: 1rem;
     background: #DF7861;
     color: #fff;
+    cursor: pointer;
 }
 
 #imagetwo-upload{
@@ -162,6 +166,7 @@
     width: 300px;
     height: 300px;
     background: #EEEEEE;
+    cursor: pointer;
 }
 
 .upimg{
@@ -231,6 +236,7 @@
     padding: 1rem;
     background: #DF7861;
     color: #fff;
+    cursor: pointer;
 }
 
 .v-line_2{
@@ -263,6 +269,7 @@
     height: 260px;
     float: left;
     background: #EEEEEE;
+    cursor: pointer;
 }
 
 .stnoimgbox.select{
@@ -290,6 +297,7 @@
     width: 680px;
     height: 380px;
     background: #EEEEEE;
+    cursor: pointer;
 }
 
 .generative-chat{
@@ -367,6 +375,7 @@
     float: left;
     background-color: #000000;
     color: #fff;
+    cursor: pointer;
 }
 
 .generative-img{
@@ -394,4 +403,5 @@
     padding: 1rem;
     background: #DF7861;
     color: #fff;
+    cursor: pointer;
 }

@@ -55,6 +55,7 @@
     position: relative;
     top: 456px;
     right: 112px;
+    cursor: pointer;
 }
 
 #title_text{
@@ -84,6 +85,7 @@
     margin: 20px;
     border-style: none;
     border-radius: 20px;
+    cursor: pointer;
 }
 
 /* select image block */
@@ -145,6 +147,7 @@
     height: 160px;
     object-fit: contain;
     background-color: #EEEEEE;
+    cursor: pointer;
 }
 
 .empty_text{

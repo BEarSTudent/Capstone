@@ -5,6 +5,7 @@
     border: 0;
     background: #DF7861;
     color: #fff;
+    cursor: pointer;
 }
 .result_block{
     text-align: center;
@@ -23,4 +24,5 @@
     font-size: 1.5em;
     background: #fff;
     border: 0;
+    cursor: pointer;
 }

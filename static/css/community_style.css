@@ -47,6 +47,10 @@ section{
     right: 132px;
 }
 
+#select_sort_by{
+    cursor: pointer;
+}
+
 #top_line_board{
     min-width: 1020px;
     margin-left: 100px;
@@ -61,6 +65,7 @@ section{
 .board_block{
     display: inline-block;
     margin: 20px 40px 20px 40px;
+    cursor: pointer;
 }
 
 .board_image{
