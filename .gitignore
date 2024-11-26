@@ -1,16 +1,17 @@
-ai/ViT-Adapter
-ai/released/*
-ai/data/*
+src/ViT-Adapter
+src/release/*
+src/content/*
+user/*
 __pycache__/
 .Ds_Store
 *.pyc
 .vscode/
-user/
+user/*
 
 # 폴더 유지용
-!ai/release/empty.txt
-!ai/data/style
-!user/temp
-!user/user_image
+!src/release/empty.txt
+!src/content/empty.txt
+!user/temp/sample_image.png
+!user/user_image/empty.txt
 # keys
 keys.xml
