@@ -74,11 +74,11 @@ def result():
 
 @app.route('/<path_type>/<filename>')
 def image_path(path_type, filename):
-    profileImage = parent_path + "/user/" + path_type + "/" + filename
+    profileImage = current_path + "/user/" + path_type + "/" + filename
     if filename == "None" or not os.path.exists(profileImage):
-        return send_from_directory(parent_path + "/app/static/images", "basic_user_image.png")
+        return send_from_directory(current_path + "/static/images", "basic_user_image.png")
     else:
-        return send_from_directory(parent_path + "/user/" + path_type, filename)
+        return send_from_directory(current_path + "/user/" + path_type, filename)
 
 @app.route('/sendfile', methods=['POST'])
 def sendfile():
@@ -110,7 +110,7 @@ def sendfile():
         
         # 이미지 형식으로 변환
         image = Image.open(BytesIO(base64.b64decode(response['img'])))
-        path = parent_path + "/user/"
+        path = current_path + "/user/"
         if current_user.is_authenticated:
             path += current_user.id
         else:
@@ -142,7 +142,7 @@ def register():
             user_pw = data['pw']
             user_pw = hash_password(user_pw)
             user_name = data['user_name']
-            user_id_path = f"{parent_path}/user/{user_id}"
+            user_id_path = f"{current_path}/user/{user_id}"
             
             if not os.path.exists(user_id_path):
                 os.makedirs(user_id_path)
@@ -336,7 +336,7 @@ def edit_profile():
     
     if request.files['file']:
         f = request.files['file']
-        file_path = parent_path + f"/user/{current_user.id}/"
+        file_path = current_path + f"/user/{current_user.id}/"
         
         # 이미지 파일 이름 변경
         file_ext = os.path.splitext(f.filename)[1]
