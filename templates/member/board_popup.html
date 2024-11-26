@@ -96,12 +96,14 @@
             popup_board_like_image.setAttribute("src", "{{url_for('static', filename='images/popup/vector_like_fill.png')}}");
             {% if current_user.is_authenticated %} // 로그인 시 버튼 활성화
                 popup_board_like_image.setAttribute("onclick", "press_like(1)");
+                popup_board_like_image.style.cursor = 'pointer';
             {% endif %}
         }
         else { // 좋아요를 누르지 않았던 경우
             popup_board_like_image.setAttribute("src", "{{url_for('static', filename='images/popup/vector_like_outline.png')}}");
             {% if current_user.is_authenticated %} // 로그인 시 버튼 활성화
                 popup_board_like_image.setAttribute("onclick", "press_like(0)");
+                popup_board_like_image.style.cursor = 'pointer';
             {% endif %}
         }
 
