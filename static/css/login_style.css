@@ -36,6 +36,7 @@ hr{
     color: #fff;
     margin-top: 20px;
     margin-bottom: 30px;
+    cursor: pointer;
 }
 .register{
     width: 100%;
@@ -45,6 +46,7 @@ hr{
     background: #ECB390;
     color: #000;
     margin-top: 30px;
+    cursor: pointer;
 }
 .inner_div{
     width: 550px;
