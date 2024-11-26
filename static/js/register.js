@@ -20,13 +20,12 @@ window.onload = function() {
 function validateUserId() {
     var idLimit = /^[a-zA-Z0-9~!@#$%^&*()_-]{2,16}$/;
     var userId = document.getElementById('user_id').value;
+    id_duplication_check = false;
     if (!idLimit.test(userId)) {
-        id_duplication_check = false;
         document.getElementById('id_error').innerHTML = "2~16자의 영문 소대문자, 숫자와 특수기호'~!@#$%^&*()_-'만 사용 가능합니다.";
     } else if (!id_duplication_check) {
         document.getElementById('id_error').innerHTML = "중복 확인이 필요합니다";
     } else {
-        id_duplication_check = true
         document.getElementById('id_error').innerHTML = " ";
     }
 }
@@ -70,31 +69,36 @@ function validateUserName() {
 
 async function checkUserId(event) {
     event.preventDefault();  // 기본 폼 제출 동작을 막음
+    var idLimit = /^[a-zA-Z0-9~!@#$%^&*()_-]{2,16}$/;
+    var userId = document.getElementById('user_id').value;
 
-    const userId = document.getElementById('user_id').value;
-    const response = await fetch('/check_id', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ user_id: userId }),
-    });
-
-    const result = await response.json();
-
-    if (result.exists) {
-        id_duplication_check = false;
-        document.getElementById('id_error').innerHTML = '사용 중인 ID입니다';
-    } else {
-        id_duplication_check = true;
-        document.getElementById('id_error').innerHTML = '사용 가능합니다';
+    if(idLimit.test(userId)){
+        const userId = document.getElementById('user_id').value;
+        const response = await fetch('/check_id', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_id: userId }),
+        });
+        
+        const result = await response.json();
+        
+        if (result.exists) {
+            id_duplication_check = false;
+            document.getElementById('id_error').innerHTML = '사용 중인 ID입니다';
+        } else {
+            id_duplication_check = true;
+            document.getElementById('id_error').innerHTML = '사용 가능합니다';
+        }
+    } else{
+        document.getElementById('id_error').innerHTML = "2~16자의 영문 소대문자, 숫자와 특수기호'~!@#$%^&*()_-'만 사용 가능합니다.";    
     }
 }
 
 async function postdata(event) {
     event.preventDefault();  // 기본 폼 제출 동작을 막음
 
-    validateUserId();
     validatePassword();
     validatePasswordMatch();
     validateUserName();
