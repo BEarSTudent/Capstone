@@ -57,7 +57,11 @@ class StrDatabase:
         """
         sql = "SELECT * FROM str_user WHERE user_id = '" + user_id + "';"
         
-        return self.__read_db(sql)[0]
+        result = self.__read_db(sql)
+        if len(result):
+            return result[0]
+        else:
+            return result
     
     def user_update(self, user_id: str, pw: str, user_name: str, user_image: str):
         """str_user table의 데이터를 업데이트하는 함수
